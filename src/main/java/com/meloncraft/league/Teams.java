@@ -19,8 +19,10 @@ public class Teams {
     int count;
     int emptySlot;
     int emptySlot2;
+    Location blueSpawn, purpleSpawn;
     public Teams() {
-        Location blueSpawn, purpleSpawn;
+        getConfig(). = blueSpawn;
+        getConfig(). = purpleSpawn;
         blueTeam  = new Player[4];
         purpleTeam  = new Player[4];
         int count = 0;
@@ -105,7 +107,7 @@ public class Teams {
         if (emptySlot2 < 5) {
             purpleTeam[emptySlot2] = player;
             player.sendMessage("You have joined the Purple Team!");
-            player.
+            player.teleport(blueSpawn);
             return true;
         }
         else {

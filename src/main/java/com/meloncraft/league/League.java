@@ -34,6 +34,7 @@ public final class League extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 	if (cmd.getName().equalsIgnoreCase("l")) { // If the player typed /basic then do the following...
+            //Version command. Displays Version.
 		if (args[0].equalsIgnoreCase("version")) {
                     sender.sendMessage(version);
                     return true;
