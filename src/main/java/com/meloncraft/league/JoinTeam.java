@@ -48,19 +48,39 @@ public class JoinTeam implements Listener {
     public void onSwitch(PlayerInteractEvent event) {
         //BLUE switcher clicked
         if (event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("blue-switcher.x") && event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("blue-switcher.y") && event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("blue-switcher.z")) {
-            if (team.getTeamSize("purple") < 5) {
-                team.addPurple(event.getPlayer());
+            if (team.getPurpleQueue().contains(event.getPlayer())) {
+                team.removePurpleQueue(event.getPlayer());
+                event.getPlayer().sendMessage("You are no longer on the Join-Purple Queue!");
             }
             else {
-                event.getPlayer().sendMessage("The PURPLE team is full! You have been added to the switch queue.");
+                if (team.getTeamSize("purple") < 5) {
+                    team.addPurple(event.getPlayer());
+                    if (!team.getBlueQueue().isEmpty()) {
+                        team.getBlueQueue(0).sendMessage("You have been taken off the Queue and moved to BLUE!");
+                        team.addBlue(team.removeBlueQueue());
+                    }
+                }
+                else {
+                    event.getPlayer().sendMessage("The PURPLE team is full! You have been added to the switch queue.");
+                }
             }
         }
         if (event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("purple-switcher.x") && event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("purple-switcher.y") && event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("purple-switcher.z")) {
-            if (team.getTeamSize("blue") < 5) {
-                team.addBlue(event.getPlayer());
+            if (team.getPurpleQueue().contains(event.getPlayer())) {
+                team.removePurpleQueue(event.getPlayer());
+                event.getPlayer().sendMessage("You are no longer on the Join-Purple Queue!");
             }
             else {
-                event.getPlayer().sendMessage("The PURPLE team is full! You have been added to the switch queue.");
+                if (team.getTeamSize("blue") < 5) {
+                    team.addBlue(event.getPlayer());
+                    if (!team.getPurpleQueue().isEmpty()) {
+                        team.getPurpleQueue(0).sendMessage("You have been taken off the Queue and moved to PURPLE!");
+                        team.addPurple(team.removePurpleQueue());
+                    }
+                }
+                else {
+                    event.getPlayer().sendMessage("The BLUE team is full! You have been added to the switch queue.");
+                }
             }
         }
     }

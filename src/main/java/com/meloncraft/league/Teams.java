@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 public class Teams {
     private static Player[] blueTeam;
     private static Player[] purpleTeam;
+    private static List<Player> blueQueue, purpleQueue;
     private static int count;
     private static int emptySlot, emptySlot2;
     private static double x, y, z;
@@ -144,6 +145,43 @@ public class Teams {
     
     public static Player[] getPurpleTeam() {
         return purpleTeam;
+    }
+    //-------------------------
+    //adds a player to the queue to join Blue
+    public static void addBlueQueue(Player player) {
+        blueQueue.add(player);
+    }
+    //adds a player to the queue to join Purple
+    public static void addPurpleQueue(Player player) {
+        purpleQueue.add(player);
+    }
+    //---------------------------
+    public static List<Player> getBlueQueue() {
+        return blueQueue;
+    }
+    public static List<Player> getPurpleQueue() {
+        return purpleQueue;
+    }
+    //----------------------------
+    public static Player removeBlueQueue() {
+        return blueQueue.remove(0);
+    }
+    public static Player removePurpleQueue() {
+        return purpleQueue.remove(0);
+    }
+    
+    public static boolean removeBlueQueue(Player player) {
+        return blueQueue.remove(player);
+    }
+    public static boolean removePurpleQueue(Player player) {
+        return purpleQueue.remove(player);
+    }
+    //----------------------------
+    public static Player getBlueQueue(int i) {
+        return blueQueue.get(i);
+    }
+    public static Player getPurpleQueue(int i) {
+        return purpleQueue.get(i);
     }
     
 }
