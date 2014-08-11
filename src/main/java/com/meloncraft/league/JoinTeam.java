@@ -6,19 +6,20 @@
 
 package com.meloncraft.league;
 
-import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.inventory.ItemStack;
 
 /**
  *
  * @author Gary
  */
 public class JoinTeam implements Listener {
-    Teams team = new Teams();
-    
+    Teams team;
+    League plugin;
+    FileConfiguration config = plugin.getConfig();
     
     public JoinTeam(League plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -42,4 +43,26 @@ public class JoinTeam implements Listener {
             team.addPurple(event.getPlayer());
         }
     }
+    
+    @EventHandler
+    public void onSwitch(PlayerInteractEvent event) {
+        //BLUE switcher clicked
+        if (event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("blue-switcher.x") && event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("blue-switcher.y") && event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("blue-switcher.z")) {
+            if (team.getTeamSize("purple") < 5) {
+                team.addPurple(event.getPlayer());
+            }
+            else {
+                event.getPlayer().sendMessage("The PURPLE team is full! You have been added to the switch queue.");
+            }
+        }
+        if (event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("purple-switcher.x") && event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("purple-switcher.y") && event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("purple-switcher.z")) {
+            if (team.getTeamSize("blue") < 5) {
+                team.addBlue(event.getPlayer());
+            }
+            else {
+                event.getPlayer().sendMessage("The PURPLE team is full! You have been added to the switch queue.");
+            }
+        }
+    }
 }
+

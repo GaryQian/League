@@ -6,19 +6,40 @@
 
 package com.meloncraft.league;
 
+import java.util.List;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 /**
  *
  * @author Gary
  */
 public final class League extends JavaPlugin {
+    public List<World> worlds;
+    public World mainWorld;
+    
     @Override
     public void onEnable() {
-        getConfig();
+        this.saveDefaultConfig();
+        this.getConfig();
+        
+        
         new JoinTeam(this);
-        new Teams();
+        //new Teams();
+        
+        worlds = this.getServer().getWorlds();
+        mainWorld = worlds.get(0);
+        
+        //Set Lobby Location
+        Teams.setLobby(getConfig().getInt("blue-lobby.x"), 
+                getConfig().getInt("blue-lobby.y"),
+                getConfig().getInt("blue-lobby.z"),
+                getConfig().getInt("purple-lobby.x"),
+                getConfig().getInt("purple-lobby.y"),
+                getConfig().getInt("purple-lobby.z"),
+                mainWorld);
     }
     
     @Override

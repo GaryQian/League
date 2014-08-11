@@ -1,2 +1,40 @@
-## YAML Template.
----
+#League Configuration
+#Developed by the MelonCraft Network
+#Authors: BioSmasher (Gary Qian)
+#         DBeck43 (Daniel Beck)
+
+
+
+#DO NOT TOUCH CONFIG VERSION!
+config-version: 1
+
+#Lobby location to select teams and choose champions
+blue-lobby:
+    x:
+    y:
+    z:
+purple-lobby:
+    x:
+    y:
+    z:
+ 
+#Spawn location to select teams and choose champions
+blue-spawn:
+    x:
+    y:
+    z:
+purple-spawn:
+    x:
+    y:
+    z:
+
+
+#Coordinates of the Team switcher blocks
+blue-switcher:
+    x:
+    y:
+    z:
+purple-switcher:
+    x:
+    y:
+    z:

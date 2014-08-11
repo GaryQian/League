@@ -6,7 +6,9 @@
 
 package com.meloncraft.league;
 
+import java.util.List;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 /**
@@ -14,22 +16,31 @@ import org.bukkit.entity.Player;
  * @author Gary
  */
 public class Teams {
-    static Player[] blueTeam;
-    static Player[] purpleTeam;
-    int count;
-    int emptySlot;
-    int emptySlot2;
-    Location blueSpawn, purpleSpawn;
+    private static Player[] blueTeam;
+    private static Player[] purpleTeam;
+    private static int count;
+    private static int emptySlot, emptySlot2;
+    private static double x, y, z;
+    private static Location blueLobby, purpleLobby;
+    public List<World> worlds;
+    public World mainWorld;
+    League plugin;
+    
+    
     public Teams() {
-        getConfig(). = blueSpawn;
-        getConfig(). = purpleSpawn;
         blueTeam  = new Player[4];
         purpleTeam  = new Player[4];
         int count = 0;
         emptySlot = 0;
+        
     }
     
-    public int getEmptySlot(String team) {
+    public static void setLobby(double x1, double y1, double z1, double x2, double y2, double z2, World world) {
+        blueLobby = new Location(world, x1, y1, z1);
+        purpleLobby = new Location(world, x2, y2, z2);
+    }
+    
+    public static int getEmptySlot(String team) {
         count = 0;
         if (team.equalsIgnoreCase("blue")) {
             while (count < 5) {
@@ -60,7 +71,7 @@ public class Teams {
         
     }
     
-    public int getTeamSize(String team) {
+    public static int getTeamSize(String team) {
         count = 0;
         emptySlot = 0;
         if (team.equalsIgnoreCase("blue")) {
@@ -89,11 +100,12 @@ public class Teams {
         }
     }
     
-    public boolean addBlue(Player player) {
+    public static boolean addBlue(Player player) {
         emptySlot2 = getEmptySlot("blue");
         if (emptySlot2 < 5) {
             blueTeam[emptySlot2] = player;
             player.sendMessage("You have joined the Blue Team!");
+            player.teleport(blueLobby);
             return true;
         }
         else {
@@ -102,12 +114,12 @@ public class Teams {
         
     }
     
-    public boolean addPurple(Player player) {
+    public static boolean addPurple(Player player) {
         emptySlot2 = getEmptySlot("purple");
         if (emptySlot2 < 5) {
             purpleTeam[emptySlot2] = player;
             player.sendMessage("You have joined the Purple Team!");
-            player.teleport(blueSpawn);
+            player.teleport(blueLobby);
             return true;
         }
         else {
@@ -116,21 +128,21 @@ public class Teams {
         
     }
     
-    public int getBlueSize() {
+    public static int getBlueSize() {
         emptySlot2 = getTeamSize("blue");
         return emptySlot2;
     }
     
-    public int getPurpleSize() {
+    public static int getPurpleSize() {
         emptySlot2 = getTeamSize("purple");
         return emptySlot2;
     }
     
-    public Player[] getBlueTeam() {
+    public static Player[] getBlueTeam() {
         return blueTeam;
     }
     
-    public Player[] getPurpleTeam() {
+    public static Player[] getPurpleTeam() {
         return purpleTeam;
     }
     
