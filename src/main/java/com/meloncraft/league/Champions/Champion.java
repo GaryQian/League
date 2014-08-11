@@ -1,0 +1,38 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.meloncraft.league.Champions;
+
+/**
+ *
+ * @author Gary
+ */
+public class Champion {
+    public int health, armor, AD, AP, speed, mana, energy, level;
+    public double healthRegen, manaRegen;
+    
+    //adds Bonus stats above basic based on the champion.
+    public Champion() {
+        health = 80;
+        armor = 0;
+        AD = 6;
+        AP = 6;
+        speed = 1;
+        mana = 20;
+        healthRegen = 5;
+        manaRegen = 1;
+        level = 1;
+    }
+    
+    public void addLevel() {
+        level++;
+        health += 5;
+        AD += 1;
+        AP += 1;
+        mana += 2;
+    }
+    
+}
