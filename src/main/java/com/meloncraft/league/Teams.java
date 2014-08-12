@@ -33,7 +33,7 @@ public class Teams {
         purpleTeam  = new Player[4];
         int count = 0;
         emptySlot = 0;
-        
+        plugin = this.plugin;
     }
     
     public static void setLobby(double x1, double y1, double z1, double x2, double y2, double z2, World world) {

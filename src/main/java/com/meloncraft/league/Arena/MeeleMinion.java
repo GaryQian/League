@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package com.meloncraft.league;
+package com.meloncraft.league.Arena;
 
+import com.meloncraft.league.League;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Zombie;
@@ -14,7 +15,7 @@ import org.bukkit.entity.Zombie;
  *
  * @author Gary
  */
-public class MeeleMinion {
+/*public class MeeleMinion implements Minion{
     public double range;
     public boolean team;
     public Zombie minion;
@@ -27,4 +28,8 @@ public class MeeleMinion {
                 
     }
     
-}
+    public Entity getTarget() {
+        
+    }
+    
+}*/

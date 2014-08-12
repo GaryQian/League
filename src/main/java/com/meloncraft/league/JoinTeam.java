@@ -23,6 +23,7 @@ public class JoinTeam implements Listener {
     
     public JoinTeam(League plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        plugin = this.plugin;
     }
     
     public String decideSmallerTeam() {

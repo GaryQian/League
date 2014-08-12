@@ -19,8 +19,9 @@ import org.bukkit.scheduler.BukkitTask;
  * @author Gary
  */
 public class MinionSpawnTask extends BukkitRunnable{
-    static League plugin;
+    League plugin;
     public static List<Entity> blueMidMinions, purpleMidMinions, blueTopMinions, purpleTopMinions, blueBotMinions, purpleBotMinions;
+    static MinionPopulation minionPopulation;
     
     public MinionSpawnTask(League plugin) {
         this.plugin = plugin;
@@ -31,7 +32,7 @@ public class MinionSpawnTask extends BukkitRunnable{
     @Override
     public void run() {
         // What you want to schedule goes here
-        blueMidMinions.add(plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y"), plugin.getConfig().getDouble("blue-nexus.z")) , EntityType.ZOMBIE));
+        /*blueMidMinions.add(plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y"), plugin.getConfig().getDouble("blue-nexus.z")) , EntityType.ZOMBIE));
         purpleMidMinions.add(plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("purple-nexus.x"), plugin.getConfig().getDouble("purple-nexus.y"), plugin.getConfig().getDouble("purple-nexus.z")) , EntityType.ZOMBIE));
         
         blueTopMinions.add(plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y"), plugin.getConfig().getDouble("blue-nexus.z")) , EntityType.ZOMBIE));
@@ -39,5 +40,13 @@ public class MinionSpawnTask extends BukkitRunnable{
         
         blueBotMinions.add(plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y"), plugin.getConfig().getDouble("blue-nexus.z")) , EntityType.ZOMBIE));
         purpleBotMinions.add(plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("purple-nexus.x"), plugin.getConfig().getDouble("purple-nexus.y"), plugin.getConfig().getDouble("purple-nexus.z")) , EntityType.ZOMBIE));
+        */
+        
+        minionPopulation.addBlueMidMinion();
+        minionPopulation.addBlueTopMinion();
+        minionPopulation.addBlueBotMinion();
+        minionPopulation.addPurpleMidMinion();
+        minionPopulation.addPurpleTopMinion();
+        minionPopulation.addPurpleBotMinion();
     }
 }

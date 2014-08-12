@@ -25,6 +25,8 @@ public class ArenaHandler {
         //plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
     
+    
+    //spawns a wave of minions
     public void spawnMinionWave() {
         BukkitTask spawnWaves = new MinionSpawnWaveTask(this.plugin).runTaskTimer(this.plugin, 800, 600);
     }
