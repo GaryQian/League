@@ -1,4 +1,4 @@
-package com.meloncraft.league.Arena;
+package com.meloncraft.league.Arena.Minions;
 
 import com.meloncraft.league.League;
 import java.util.List;

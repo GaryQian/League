@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.meloncraft.league.Arena;
+package com.meloncraft.league.Arena.Minions;
 
 import com.meloncraft.league.League;
 import org.bukkit.scheduler.BukkitRunnable;

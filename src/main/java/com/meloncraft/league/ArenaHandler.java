@@ -6,7 +6,7 @@
 
 package com.meloncraft.league;
 
-import com.meloncraft.league.Arena.MinionSpawnWaveTask;
+import com.meloncraft.league.Arena.Minions.MinionSpawnWaveTask;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitTask;
 
