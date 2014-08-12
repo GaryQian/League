@@ -28,11 +28,18 @@ public class Champion {
     }
     
     public void addLevel() {
+        /* This should be overwritten in subclasses to make different champions scale different
         level++;
         health += 5;
         AD += 1;
         AP += 1;
         mana += 2;
+        */
+    }
+    
+    public void QAttack(){
+        //Again over written
+        //why not just make this an interface??
     }
     
 }
