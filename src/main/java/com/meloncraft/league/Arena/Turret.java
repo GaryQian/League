@@ -7,6 +7,7 @@
 package com.meloncraft.league.Arena;
 
 import com.meloncraft.league.League;
+import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -18,8 +19,10 @@ public class Turret {
     League plugin;
     public Location center;
     public World world;
+    public boolean team; //TRUE = blue FALSE = purple
+    public List<Location> turretBody;
     
-    public Turret() {
+    public Turret(Location cent, boolean tea) {
         
     }
 }
