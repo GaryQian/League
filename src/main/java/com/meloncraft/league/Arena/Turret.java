@@ -70,4 +70,8 @@ public class Turret {
             turretBody.add(temp);
         }
     }
+    
+    public List<Location> getTurretBody() {
+        return turretBody;
+    }
 }

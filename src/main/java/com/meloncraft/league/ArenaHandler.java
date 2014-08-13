@@ -24,7 +24,7 @@ public class ArenaHandler {
     
     public void ArenaHandler() {
         world = plugin.mainWorld;
-        blueMid1 = new Turret()
+        //blueMid1 = new Turret()
         
         //plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
