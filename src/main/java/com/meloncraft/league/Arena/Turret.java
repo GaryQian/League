@@ -21,8 +21,14 @@ public class Turret {
     public World world;
     public boolean team; //TRUE = blue FALSE = purple
     public List<Location> turretBody;
+    public int damage;
+    public static int reward;
     
     public Turret(Location cent, boolean tea) {
+        
+        damage = 20;
+        reward = 150;
+        
         
         addColumnToBody(cent);
         
