@@ -6,10 +6,13 @@
 
 package com.meloncraft.league.Arena;
 
+import com.meloncraft.league.Arena.Minions.MeeleMinion;
+import com.meloncraft.league.Champions.Champion;
 import com.meloncraft.league.League;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 
 /**
  *
@@ -23,6 +26,7 @@ public class Turret {
     public List<Location> turretBody;
     public int damage;
     public static int reward;
+    public Entity target;
     
     public Turret(Location cent, boolean tea) {
         
@@ -79,5 +83,14 @@ public class Turret {
     
     public List<Location> getTurretBody() {
         return turretBody;
+    }
+    
+    public Entity findTarget() {
+        //center.getWorld().getEntitiesByClasses(MeeleMinion, MageMinion, Champion);
+        return target;
+    }
+    
+    public Location getLocation() {
+        return center;
     }
 }

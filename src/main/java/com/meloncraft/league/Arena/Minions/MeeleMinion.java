@@ -15,7 +15,7 @@ import org.bukkit.entity.Zombie;
  *
  * @author Gary
  */
-/*public class MeeleMinion implements Minion{
+public class MeeleMinion implements Minion{
     public double range;
     public boolean team;
     public Zombie minion;
@@ -28,8 +28,8 @@ import org.bukkit.entity.Zombie;
                 
     }
     
-    public Entity getTarget() {
+    /*public Entity getTarget() {
         
-    }
+    }*/
     
-}*/
+}
