@@ -6,30 +6,12 @@
 
 package com.meloncraft.league.Arena.Minions;
 
-import com.meloncraft.league.League;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Zombie;
+import net.minecraft.server.v1_7_R4.EntitySkeleton;
 
 /**
  *
  * @author Gary
  */
-public class MeeleMinion implements Minion{
-    public double range;
-    public boolean team;
-    public Zombie minion;
-    League plugin;
-    public World world;
-    
-    public void MeeleMinion() {
-        world = plugin.mainWorld;
-        
-                
-    }
-    
-    /*public Entity getTarget() {
-        
-    }*/
+public class MeeleMinion extends EntitySkeleton {
     
 }
