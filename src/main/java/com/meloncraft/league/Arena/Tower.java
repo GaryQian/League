@@ -27,12 +27,14 @@ public class Tower {
     public World world;
     public boolean team; //TRUE = blue FALSE = purple
     public List<Location> turretBody;
-    public int damage;
+    public int timesHit;
+    public double damage, damageBase;
     public static int reward;
-    public Entity target, targetChampion;
+    public Entity target, targetChampion, lastHit;
     public Class<Minion> minionClass;
     public Class<Champion> championClass;
     public Collection<Entity> allEntities;
+    public boolean championAttacked;
     
     private double distance, distance2;
     private boolean isMinionInRange;
@@ -43,8 +45,9 @@ public class Tower {
     
     public Tower(Location cent, boolean tea) {
         
-        damage = 20;
+        damageBase = 20;
         reward = 150;
+        championAttacked = false;
         
         
         addColumnToBody(cent);
@@ -125,26 +128,54 @@ public class Tower {
                     }
                     else if (entity instanceof Champion) {
                         if (!isMinionInRange) {
-                            
-                            isMinionInRange = true;
-                            targetChampion = entity;
-                            distance2 = distance;
+                            champion = (Champion) entity;
+                            if (champion.getTeam() != team) {
+                                isMinionInRange = true;
+                                targetChampion = entity;
+                                distance2 = distance;
+                            }
                         }
                     }
                 }
             }
         }
+        
+        if (championAttacked) {
+            if (targetChampion != null) {
+                isMinionInRange = false;
+            }
+        }
+        
         if (!isMinionInRange) {
             return target;
         }
         else {
             targetChampionPlayer = (Player) targetChampion.getBukkitEntity();
             targetChampionPlayer.sendMessage("WARNING: You have been targeted by the tower!");
-            return targetChampion;
+            target = targetChampion;
+            return target;
         }
     }
     
     public Location getLocation() {
         return center;
+    }
+    
+    public void setChampionAttacked(boolean bool) {
+        championAttacked = bool;
+    }
+    
+    public void attack() {
+        if (target.equals(lastHit)) {
+            
+            damage = damageBase + (damageBase * Math.pow(1.25, timesHit));
+            timesHit++;
+        }
+        else {
+            timesHit = 1;
+            damage = damageBase;
+        }
+        
+        target.hit(damage);
     }
 }
