@@ -50,4 +50,8 @@ public class Champion extends EntityPlayer{
     public boolean getTeam() {
         return team;
     }
+    
+    public void hit(double damage) {
+        
+    }
 }

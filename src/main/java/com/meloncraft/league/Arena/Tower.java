@@ -175,6 +175,10 @@ public class Tower {
             timesHit = 1;
             damage = damageBase;
         }
+        if (target instanceof Champion) {
+            targetChampionPlayer = (Player) target.getBukkitEntity();
+            targetChampionPlayer.sendMessage("You have been hit by the tower!");
+        }
         
         target.hit(damage);
     }
