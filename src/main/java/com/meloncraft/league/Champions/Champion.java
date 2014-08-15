@@ -16,6 +16,7 @@ import net.minecraft.server.v1_7_R4.World;
 public class Champion extends EntityPlayer{
     public int health, armor, AD, AP, speed, mana, energy, level;
     public double healthRegen, manaRegen;
+    public boolean team; //TRUE = Blue FALSE = purple
     
     //adds Bonus stats above basic based on the champion.
     public Champion(World world) {
@@ -46,4 +47,7 @@ public class Champion extends EntityPlayer{
         //why not just make this an interface??
     }
     
+    public boolean getTeam() {
+        return team;
+    }
 }

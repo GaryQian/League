@@ -37,6 +37,8 @@ public class Tower {
     private double distance, distance2;
     private boolean isMinionInRange;
     private Player targetChampionPlayer;
+    private Minion minion;
+    private Champion champion;
     
     
     public Tower(Location cent, boolean tea) {
@@ -99,25 +101,31 @@ public class Tower {
     public Entity findTarget() {
         
         //allEntities = center.getWorld().getEntitiesByClasses(championClass, minionClass);
-        
+        //gets a list of all entities, and checks if they are within range. If they are, minions get priority, unless champion is being attacked.
         allEntities = world.a(minionClass, AxisAlignedBB.a(-80, 30, -80, 80, 10, 80));
+        allEntities.addAll(world.a(minionClass, AxisAlignedBB.a(-80, 30, -80, 80, 10, 80)));
         
         distance2 = 10;
         isMinionInRange = false;
         target = null;
         targetChampion = null;
+        
         for (Entity entity : allEntities) {
             distance = entity.getBukkitEntity().getLocation().distance(center);
             if (distance < 8) {
             
                 if (distance < distance2) {
                     if (entity instanceof Minion) {
-                        isMinionInRange = true;
-                        target = entity;
-                        distance2 = distance;
+                        minion = (Minion) entity;
+                        if (minion.getTeam() != team) {
+                            isMinionInRange = true;
+                            target = entity;
+                            distance2 = distance;
+                        }
                     }
                     else if (entity instanceof Champion) {
                         if (!isMinionInRange) {
+                            
                             isMinionInRange = true;
                             targetChampion = entity;
                             distance2 = distance;

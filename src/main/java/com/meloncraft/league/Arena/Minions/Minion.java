@@ -18,13 +18,18 @@ import net.minecraft.server.v1_7_R4.World;
  */
 public class Minion extends EntitySkeleton{
     World world;
+    public boolean team; //TRUE = blue FALSE = purple
     //sets up the health and other stats of minions
     public Minion(World world) {
         super(world);
     }
     
-    public Entity getTarget() {
+    /*public Entity getTarget() {
         world.
         return
+    }*/
+    
+    public boolean getTeam() {
+        return team;
     }
 }
