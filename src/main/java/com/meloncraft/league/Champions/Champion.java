@@ -6,16 +6,20 @@
 
 package com.meloncraft.league.Champions;
 
+import net.minecraft.server.v1_7_R4.EntityPlayer;
+import net.minecraft.server.v1_7_R4.World;
+
 /**
  *
  * @author Gary
  */
-public class Champion {
+public class Champion extends EntityPlayer{
     public int health, armor, AD, AP, speed, mana, energy, level;
     public double healthRegen, manaRegen;
     
     //adds Bonus stats above basic based on the champion.
-    public Champion() {
+    public Champion(World world) {
+        super(world);
         health = 80;
         armor = 0;
         AD = 6;

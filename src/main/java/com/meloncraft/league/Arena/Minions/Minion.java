@@ -6,17 +6,25 @@
 
 package com.meloncraft.league.Arena.Minions;
 
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
+import net.minecraft.server.v1_7_R4.Entity;
+import net.minecraft.server.v1_7_R4.EntitySkeleton;
+import net.minecraft.server.v1_7_R4.World;
+//import org.bukkit.World;
+
 
 /**
  *
  * @author Gary
  */
-public interface Minion extends LivingEntity{
-    
+public class Minion extends EntitySkeleton{
+    World world;
     //sets up the health and other stats of minions
-    public void setupMinion();
+    public Minion(World world) {
+        super(world);
+    }
     
-    public Entity getTarget();
+    public Entity getTarget() {
+        world.
+        return
+    }
 }

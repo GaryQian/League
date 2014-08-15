@@ -6,19 +6,22 @@
 
 package com.meloncraft.league.Arena;
 
-import com.meloncraft.league.Arena.Minions.MeeleMinion;
+import com.meloncraft.league.Arena.Minions.Minion;
 import com.meloncraft.league.Champions.Champion;
 import com.meloncraft.league.League;
+import java.util.Collection;
 import java.util.List;
+import net.minecraft.server.v1_7_R4.AxisAlignedBB;
+import net.minecraft.server.v1_7_R4.Entity;
+import net.minecraft.server.v1_7_R4.World;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 /**
  *
  * @author Gary
  */
-public class Turret {
+public class Tower {
     League plugin;
     public Location center, temp;
     public World world;
@@ -26,9 +29,17 @@ public class Turret {
     public List<Location> turretBody;
     public int damage;
     public static int reward;
-    public Entity target;
+    public Entity target, targetChampion;
+    public Class<Minion> minionClass;
+    public Class<Champion> championClass;
+    public Collection<Entity> allEntities;
     
-    public Turret(Location cent, boolean tea) {
+    private double distance, distance2;
+    private boolean isMinionInRange;
+    private Player targetChampionPlayer;
+    
+    
+    public Tower(Location cent, boolean tea) {
         
         damage = 20;
         reward = 150;
@@ -86,8 +97,43 @@ public class Turret {
     }
     
     public Entity findTarget() {
-        //center.getWorld().getEntitiesByClasses(MeeleMinion, MageMinion, Champion);
-        return target;
+        
+        //allEntities = center.getWorld().getEntitiesByClasses(championClass, minionClass);
+        
+        allEntities = world.a(minionClass, AxisAlignedBB.a(-80, 30, -80, 80, 10, 80));
+        
+        distance2 = 10;
+        isMinionInRange = false;
+        target = null;
+        targetChampion = null;
+        for (Entity entity : allEntities) {
+            distance = entity.getBukkitEntity().getLocation().distance(center);
+            if (distance < 8) {
+            
+                if (distance < distance2) {
+                    if (entity instanceof Minion) {
+                        isMinionInRange = true;
+                        target = entity;
+                        distance2 = distance;
+                    }
+                    else if (entity instanceof Champion) {
+                        if (!isMinionInRange) {
+                            isMinionInRange = true;
+                            targetChampion = entity;
+                            distance2 = distance;
+                        }
+                    }
+                }
+            }
+        }
+        if (!isMinionInRange) {
+            return target;
+        }
+        else {
+            targetChampionPlayer = (Player) targetChampion.getBukkitEntity();
+            targetChampionPlayer.sendMessage("WARNING: You have been targeted by the tower!");
+            return targetChampion;
+        }
     }
     
     public Location getLocation() {

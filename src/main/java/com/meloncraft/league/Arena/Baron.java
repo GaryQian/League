@@ -4,14 +4,14 @@
  * and open the template in the editor.
  */
 
-package com.meloncraft.league.Arena.Minions;
+package com.meloncraft.league.Arena;
 
-import net.minecraft.server.v1_7_R4.EntitySkeleton;
+import net.minecraft.server.v1_7_R4.EntityWither;
 
 /**
  *
  * @author Gary
  */
-public class MeeleMinion extends Minion {
+public class Baron extends EntityWither{
     
 }

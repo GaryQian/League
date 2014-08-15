@@ -4,9 +4,13 @@
  */
 package com.meloncraft.league.Arena;
 
+import static com.meloncraft.league.Arena.CustomEntityType.Dragon;
+import static com.meloncraft.league.Arena.CustomEntityType.MageMinion;
 import com.meloncraft.league.Arena.Minions.MeeleMinion;
+import net.minecraft.server.v1_7_R4.EntityInsentient;
+import net.minecraft.server.v1_7_R4.EntitySkeleton;
+import net.minecraft.server.v1_7_R4.EntityWither;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.EntityInsentient;
 
 /**
  *

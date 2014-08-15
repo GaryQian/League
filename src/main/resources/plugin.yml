@@ -12,3 +12,4 @@ commands:
       #usage: /team
       #permission: proximityspawner.team
       #permission-message: You don't have proximityspawner.team
+#depend: [ProtocolLib]

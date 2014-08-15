@@ -27,6 +27,7 @@ public final class League extends JavaPlugin {
         
         
         new JoinTeam(this);
+        new GeneralListeners(this);
         //new Teams();
         
         worlds = this.getServer().getWorlds();
