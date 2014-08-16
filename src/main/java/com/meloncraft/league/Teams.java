@@ -72,6 +72,15 @@ public class Teams {
         
     }
     
+    public static String getSmallerTeam() {
+        if (getTeamSize("blue") <= getTeamSize("purple")) {
+            return "blue";
+        }
+        else {
+            return "purple";
+        }
+    }
+    
     public static int getTeamSize(String team) {
         count = 0;
         emptySlot = 0;
@@ -120,7 +129,7 @@ public class Teams {
         if (emptySlot2 < 5) {
             purpleTeam[emptySlot2] = player;
             player.sendMessage("You have joined the Purple Team!");
-            player.teleport(blueLobby);
+            player.teleport(purpleLobby);
             return true;
         }
         else {

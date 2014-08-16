@@ -26,6 +26,7 @@ public final class League extends JavaPlugin {
         
         new GeneralListeners(this);
         new JoinTeam(this);
+        new ArenaHandler(this);
         
         //new Teams();
         
@@ -68,7 +69,7 @@ public final class League extends JavaPlugin {
                     JoinTeam.team.addBlue(sender.getServer().getPlayer(sender.getName()));
                 }
                 else if(args[0].equalsIgnoreCase("joinpurple")) {
-                    JoinTeam.team.addBlue(sender.getServer().getPlayer(sender.getName()));
+                    JoinTeam.team.addPurple(sender.getServer().getPlayer(sender.getName()));
                 }
 	}
 	return false;

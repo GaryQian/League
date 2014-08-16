@@ -23,7 +23,8 @@ public class ArenaHandler {
     Tower blueMid1;
     Tower blueMid2, blueMid3, blueTop1, blueTop2, blueTop3, blueBot1, blueBot2, blueBot3, blueNexus1, blueNexus2, purpleMid1, purpleMid2, purpleMid3, purpleTop1, purpleTop2, purpleTop3, purpleBot1, purpleBot2, purpleBot3, purpleNexus1, purpleNexus2;
     
-    public void ArenaHandler() {
+    public ArenaHandler(League plug) {
+        plugin = plug;
         world = plugin.mainWorld;
         //blueMid1 = new Turret()
         

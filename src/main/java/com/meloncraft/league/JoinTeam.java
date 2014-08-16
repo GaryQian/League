@@ -9,10 +9,12 @@ package com.meloncraft.league;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
  *
@@ -23,10 +25,12 @@ public class JoinTeam implements Listener {
     //League plugin;
     public Location blueSwitcher, purpleSwitcher;
     public World world;
+    Player player;
     //FileConfiguration config = plugin.getConfig();
+    League plugin;
     
-    public JoinTeam(League plugin) {
-        //plugin = this.plugin;
+    public JoinTeam(League plug) {
+        plugin = plug;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         
         team = new Teams(plugin);
@@ -45,15 +49,29 @@ public class JoinTeam implements Listener {
         }
     }
     
-    @EventHandler
-    public void onJoin(PlayerLoginEvent event) {
-        event.getPlayer().sendMessage("TEST");
-        if (decideSmallerTeam().equals("blue")) {
-            team.addBlue(event.getPlayer());
+    public void assignTeam(Player player) {
+        if (team.getSmallerTeam().equals("blue")) {
+            if (team.addBlue(player)) {
+            plugin.getLogger().info(player.getName() + " Joined Blue");
+            }
         }
         else {
-            team.addPurple(event.getPlayer());
+            if (team.addPurple(player)) {
+            plugin.getLogger().info(player.getName() + " Joined Purple");
+            }
         }
+    }
+    
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        player = event.getPlayer();
+        assignTeam(player);
+    }
+    
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        player = event.getPlayer();
+        team.removePlayer(player);
     }
     
     @EventHandler
