@@ -6,6 +6,8 @@
 
 package com.meloncraft.league;
 
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,13 +19,21 @@ import org.bukkit.event.player.PlayerLoginEvent;
  * @author Gary
  */
 public class JoinTeam implements Listener {
-    Teams team;
-    League plugin;
-    FileConfiguration config = plugin.getConfig();
+    public static Teams team;
+    //League plugin;
+    public Location blueSwitcher, purpleSwitcher;
+    public World world;
+    //FileConfiguration config = plugin.getConfig();
     
     public JoinTeam(League plugin) {
+        //plugin = this.plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        plugin = this.plugin;
+        
+        team = new Teams(plugin);
+        FileConfiguration config = plugin.getConfig();
+        world = plugin.mainWorld;
+        blueSwitcher = new Location(world, plugin.getConfig().getInt("blue-switcher.x"), plugin.getConfig().getInt("blue-switcher.y"), plugin.getConfig().getInt("blue-switcher.z"));
+        purpleSwitcher = new Location(world, plugin.getConfig().getInt("purple-switcher.x"), plugin.getConfig().getInt("purple-switcher.y"), plugin.getConfig().getInt("purple-switcher.z"));
     }
     
     public String decideSmallerTeam() {
@@ -37,6 +47,7 @@ public class JoinTeam implements Listener {
     
     @EventHandler
     public void onJoin(PlayerLoginEvent event) {
+        event.getPlayer().sendMessage("TEST");
         if (decideSmallerTeam().equals("blue")) {
             team.addBlue(event.getPlayer());
         }
@@ -47,8 +58,9 @@ public class JoinTeam implements Listener {
     
     @EventHandler
     public void onSwitch(PlayerInteractEvent event) {
+        
         //BLUE switcher clicked
-        if (event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("blue-switcher.x") && event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("blue-switcher.y") && event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("blue-switcher.z")) {
+        if (event.getClickedBlock().getLocation().equals(blueSwitcher)) {
             if (team.getPurpleQueue().contains(event.getPlayer())) {
                 team.removePurpleQueue(event.getPlayer());
                 event.getPlayer().sendMessage("You are no longer on the Join-Purple Queue!");
@@ -66,7 +78,7 @@ public class JoinTeam implements Listener {
                 }
             }
         }
-        if (event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("purple-switcher.x") && event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("purple-switcher.y") && event.getClickedBlock().getLocation().getX() == plugin.getConfig().getInt("purple-switcher.z")) {
+        if (event.getClickedBlock().getLocation().equals(purpleSwitcher)) {
             if (team.getPurpleQueue().contains(event.getPlayer())) {
                 team.removePurpleQueue(event.getPlayer());
                 event.getPlayer().sendMessage("You are no longer on the Join-Purple Queue!");

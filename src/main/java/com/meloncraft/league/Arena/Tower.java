@@ -30,7 +30,9 @@ public class Tower {
     public int timesHit;
     public double damage, damageBase;
     public static int reward;
-    public Entity target, targetChampion, lastHit;
+    public Entity target, lastHit;
+    public Champion targetChampion;
+    public Minion targetMinion;
     public Class<Minion> minionClass;
     public Class<Champion> championClass;
     public Collection<Entity> allEntities;
@@ -131,7 +133,7 @@ public class Tower {
                             champion = (Champion) entity;
                             if (champion.getTeam() != team) {
                                 isMinionInRange = true;
-                                targetChampion = entity;
+                                targetChampion = (Champion) entity;
                                 distance2 = distance;
                             }
                         }
@@ -165,6 +167,7 @@ public class Tower {
         championAttacked = bool;
     }
     
+    //attack target, calculates damage
     public void attack() {
         if (target.equals(lastHit)) {
             
@@ -178,8 +181,14 @@ public class Tower {
         if (target instanceof Champion) {
             targetChampionPlayer = (Player) target.getBukkitEntity();
             targetChampionPlayer.sendMessage("You have been hit by the tower!");
+            targetChampion = (Champion) target;
+            targetChampion.hit(damage);
+            
+        }
+        else {
+            targetMinion = (Minion) target;
+            targetMinion.hit(damage);
         }
         
-        target.hit(damage);
     }
 }

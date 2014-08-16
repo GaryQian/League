@@ -4,9 +4,8 @@
  */
 package com.meloncraft.league.Arena;
 
-import static com.meloncraft.league.Arena.CustomEntityType.Dragon;
-import static com.meloncraft.league.Arena.CustomEntityType.MageMinion;
-import com.meloncraft.league.Arena.Minions.MeeleMinion;
+import com.meloncraft.league.Arena.Monsters.Dragon;
+import com.meloncraft.league.Arena.Minions.Minion;
 import net.minecraft.server.v1_7_R4.EntityInsentient;
 import net.minecraft.server.v1_7_R4.EntitySkeleton;
 import net.minecraft.server.v1_7_R4.EntityWither;
@@ -18,10 +17,11 @@ import org.bukkit.entity.EntityType;
  */
 public enum CustomEntityType {
  
-    MeeleMinion("MeeleMinion", 51, EntityType.SKELETON, EntitySkeleton.class, MeeleMinion.class),
-    MageMinion("MageMinion", 51, EntityType.SKELETON, EntitySkeleton.class, MageMinion.class),
-    Dragon("Dragon", 51, EntityType.ENDER_DRAGON, EntitySkeleton.class, Dragon.class),
-    Baron("Baron", 51, EntityType.WITHER, EntityWither.class, Baron.class);
+    MeeleMinion("MeeleMinion", 51, EntityType.SKELETON, EntitySkeleton.class, Minion.class),
+    MageMinion("MageMinion", 51, EntityType.SKELETON, EntitySkeleton.class, Minion.class),
+    Dragon("Dragon", 63, EntityType.ENDER_DRAGON, EntitySkeleton.class, Dragon.class),
+    //Champion("Champion", 51, EntityType.PLAYER, EntityPlayer.class, Champion.class),
+    Baron("Baron", 64, EntityType.WITHER, EntityWither.class, Baron.class);
  
     private String name;
     private int id;

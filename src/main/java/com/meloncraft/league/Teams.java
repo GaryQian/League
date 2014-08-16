@@ -27,13 +27,13 @@ public class Teams {
     public World mainWorld;
     League plugin;
     
-    
-    public Teams() {
+    public Teams(League plug) {
         blueTeam  = new Player[4];
         purpleTeam  = new Player[4];
         int count = 0;
         emptySlot = 0;
-        plugin = this.plugin;
+        plugin = plug;
+        setLobby(plugin.getConfig().getInt("blue-lobby.x"), plugin.getConfig().getInt("blue-lobby.y"), plugin.getConfig().getInt("blue-lobby.z"), plugin.getConfig().getInt("purple-lobby.x"), plugin.getConfig().getInt("purple-lobby.y"), plugin.getConfig().getInt("purple-lobby.z"), mainWorld);
     }
     
     public static void setLobby(double x1, double y1, double z1, double x2, double y2, double z2, World world) {
@@ -76,7 +76,7 @@ public class Teams {
         count = 0;
         emptySlot = 0;
         if (team.equalsIgnoreCase("blue")) {
-            while (count < 5) {
+            while (count < 4) {
                 if (blueTeam[count] == null) {
                     count++;
                 }
@@ -88,7 +88,7 @@ public class Teams {
             return emptySlot;
         }
         else {
-            while (count < 5) {
+            while (count < 4) {
                 if (purpleTeam[count] == null) {
                     count++;
                 }

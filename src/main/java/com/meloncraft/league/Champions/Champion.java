@@ -7,7 +7,12 @@
 package com.meloncraft.league.Champions;
 
 import net.minecraft.server.v1_7_R4.EntityPlayer;
-import net.minecraft.server.v1_7_R4.World;
+import net.minecraft.server.v1_7_R4.MinecraftServer;
+import net.minecraft.server.v1_7_R4.PlayerInteractManager;
+import net.minecraft.server.v1_7_R4.WorldServer;
+import net.minecraft.util.com.mojang.authlib.GameProfile;
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
 
 /**
  *
@@ -18,9 +23,12 @@ public class Champion extends EntityPlayer{
     public double healthRegen, manaRegen;
     public boolean team; //TRUE = Blue FALSE = purple
     
+    
+    static MinecraftServer server = ((CraftServer)Bukkit.getServer()).getHandle().getServer();
     //adds Bonus stats above basic based on the champion.
-    public Champion(World world) {
-        super(world);
+    //public Champion(World world) {
+    public Champion(WorldServer world, GameProfile s, PlayerInteractManager itemInWorldManager) {
+        super(server , world, s, itemInWorldManager);
         health = 80;
         armor = 0;
         AD = 6;

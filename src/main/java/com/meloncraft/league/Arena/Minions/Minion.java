@@ -32,4 +32,8 @@ public class Minion extends EntitySkeleton{
     public boolean getTeam() {
         return team;
     }
+    
+    public void hit(double damage) {
+        
+    }
 }

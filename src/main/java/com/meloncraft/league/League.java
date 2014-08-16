@@ -10,7 +10,6 @@ import java.util.List;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 /**
  *
@@ -25,9 +24,9 @@ public final class League extends JavaPlugin {
         this.saveDefaultConfig();
         this.getConfig();
         
-        
-        new JoinTeam(this);
         new GeneralListeners(this);
+        new JoinTeam(this);
+        
         //new Teams();
         
         worlds = this.getServer().getWorlds();
@@ -62,12 +61,14 @@ public final class League extends JavaPlugin {
                     return true;
                 }
                 
-                else if (args[0].equalsIgnoreCase("help") || args[1].equalsIgnoreCase("")) {
-                    
-                }
-                
                 else if(args[0].equalsIgnoreCase("default")) {
                     
+                }
+                else if(args[0].equalsIgnoreCase("joinblue")) {
+                    JoinTeam.team.addBlue(sender.getServer().getPlayer(sender.getName()));
+                }
+                else if(args[0].equalsIgnoreCase("joinpurple")) {
+                    JoinTeam.team.addBlue(sender.getServer().getPlayer(sender.getName()));
                 }
 	}
 	return false;

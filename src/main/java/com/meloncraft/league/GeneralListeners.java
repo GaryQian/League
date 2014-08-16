@@ -17,12 +17,13 @@ import org.bukkit.event.entity.ItemSpawnEvent;
  */
 public class GeneralListeners implements Listener {
     Teams team;
-    League plugin;
-    FileConfiguration config = plugin.getConfig();
+    //League plugin;
+    
     
     public GeneralListeners(League plugin) {
+        FileConfiguration config = plugin.getConfig();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        plugin = this.plugin;
+        //plugin = this.plugin;
     }
     
     

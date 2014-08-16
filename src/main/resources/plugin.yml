@@ -2,11 +2,11 @@ name: League
 main: com.meloncraft.league.League
 version: 1.0
 commands:
-   #proxspawn:
-      #description: Spawns zombies around players.
-      #usage: /proximityspawn
-      #permission: proximityspawner.use
-      #permission-message: You don't have proximityspawner.use
+   l:
+      description: Spawns zombies around players.
+      usage: /l
+      permission: league.version
+      permission-message: You don't have league.version
    #team:
       #description: Adds friend to your team.
       #usage: /team
