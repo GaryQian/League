@@ -64,8 +64,7 @@ public class JoinTeam implements Listener {
     
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        player = event.getPlayer();
-        assignTeam(player);
+        assignTeam(event.getPlayer());
     }
     
     @EventHandler
@@ -77,43 +76,45 @@ public class JoinTeam implements Listener {
     @EventHandler
     public void onSwitch(PlayerInteractEvent event) {
         plugin.getLogger().info("" + event.getClickedBlock().getLocation().getX());
-        
+        player = event.getPlayer();
         //BLUE switcher clicked
         if (event.getClickedBlock().getLocation().equals(blueSwitcher)) {
-            if (team.getPurpleQueue().contains(event.getPlayer())) {
-                team.removePurpleQueue(event.getPlayer());
-                event.getPlayer().sendMessage("You are no longer on the Join-Purple Queue!");
+            if (team.getPurpleQueue().contains(player)) {
+                team.removePurpleQueue(player);
+                player.sendMessage("You are no longer on the Join-Purple Queue!");
             }
             else {
                 if (team.getTeamSize("purple") < 5) {
-                    team.addPurple(event.getPlayer());
+                    team.removePlayer(player);
+                    team.addPurple(player);
                     if (!team.getBlueQueue().isEmpty()) {
                         team.getBlueQueue(0).sendMessage("You have been taken off the Queue and moved to BLUE!");
                         team.addBlue(team.removeBlueQueue());
                     }
                 }
                 else {
-                    event.getPlayer().sendMessage("The PURPLE team is full! You have been added to the switch queue.");
+                    player.sendMessage("The PURPLE team is full! You have been added to the switch queue.");
                 }
             }
         }
         
         //purple switcher clicked
         if (event.getClickedBlock().getLocation().equals(purpleSwitcher)) {
-            if (team.getPurpleQueue().contains(event.getPlayer())) {
-                team.removePurpleQueue(event.getPlayer());
-                event.getPlayer().sendMessage("You are no longer on the Join-Purple Queue!");
+            if (team.getPurpleQueue().contains(player)) {
+                team.removePurpleQueue(player);
+                player.sendMessage("You are no longer on the Join-Purple Queue!");
             }
             else {
                 if (team.getTeamSize("blue") < 5) {
-                    team.addBlue(event.getPlayer());
+                    team.removePlayer(player);
+                    team.addBlue(player);
                     if (!team.getPurpleQueue().isEmpty()) {
                         team.getPurpleQueue(0).sendMessage("You have been taken off the Queue and moved to PURPLE!");
                         team.addPurple(team.removePurpleQueue());
                     }
                 }
                 else {
-                    event.getPlayer().sendMessage("The BLUE team is full! You have been added to the switch queue.");
+                    player.sendMessage("The BLUE team is full! You have been added to the switch queue.");
                 }
             }
         }
