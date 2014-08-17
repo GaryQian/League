@@ -16,8 +16,8 @@ import org.bukkit.entity.Player;
  * @author Gary
  */
 public class Teams {
-    private static Player[] blueTeam;
-    private static Player[] purpleTeam;
+    private static List<Player> blueTeam;
+    private static List<Player> purpleTeam;
     private static List<Player> blueQueue, purpleQueue;
     private static int count;
     private static int emptySlot, emptySlot2;
@@ -28,8 +28,8 @@ public class Teams {
     League plugin;
     
     public Teams(League plug) {
-        blueTeam  = new Player[4];
-        purpleTeam  = new Player[4];
+        //blueTeam  = new Player[4];
+        //purpleTeam  = new Player[4];
         int count = 0;
         emptySlot = 0;
         plugin = plug;
@@ -39,37 +39,6 @@ public class Teams {
     public static void setLobby(double x1, double y1, double z1, double x2, double y2, double z2, World world) {
         blueLobby = new Location(world, x1, y1, z1);
         purpleLobby = new Location(world, x2, y2, z2);
-    }
-    
-    public static int getEmptySlot(String team) {
-        count = 0;
-        if (team.equalsIgnoreCase("blue")) {
-            while (count < 5) {
-                if (blueTeam[count] == null) {
-                    emptySlot = count;
-                    count = 10;
-                }
-                else {
-                    count++;
-                    emptySlot = 5;
-                }
-            }
-            return emptySlot;
-        }
-        else {
-            while (count < 5) {
-                if (purpleTeam[count] == null) {
-                    emptySlot = count;
-                    count = 10;
-                }
-                else {
-                    count++;
-                    emptySlot = 5;
-                }
-            }
-            return emptySlot;
-        }
-        
     }
     
     public static String getSmallerTeam() {
@@ -85,35 +54,18 @@ public class Teams {
         count = 0;
         emptySlot = 0;
         if (team.equalsIgnoreCase("blue")) {
-            while (count < 4) {
-                if (blueTeam[count] == null) {
-                    count++;
-                }
-                else {
-                    count++;
-                    emptySlot++;
-                }
-            }
-            return emptySlot;
+            return blueTeam.size();
+
         }
         else {
-            while (count < 4) {
-                if (purpleTeam[count] == null) {
-                    count++;
-                }
-                else {
-                    count++;
-                    emptySlot++;
-                }
-            }
-            return emptySlot;
+            
+            return purpleTeam.size();
         }
     }
     
     public static boolean addBlue(Player player) {
-        emptySlot2 = getEmptySlot("blue");
-        if (emptySlot2 < 5) {
-            blueTeam[emptySlot2] = player;
+        if (getTeamSize("blue") < 5) {
+            blueTeam.add(player);
             player.sendMessage("You have joined the Blue Team!");
             player.teleport(blueLobby);
             return true;
@@ -125,9 +77,8 @@ public class Teams {
     }
     
     public static boolean addPurple(Player player) {
-        emptySlot2 = getEmptySlot("purple");
-        if (emptySlot2 < 5) {
-            purpleTeam[emptySlot2] = player;
+        if (getTeamSize("purple") < 5) {
+            purpleTeam.add(player);
             player.sendMessage("You have joined the Purple Team!");
             player.teleport(purpleLobby);
             return true;
@@ -139,20 +90,18 @@ public class Teams {
     }
     
     public static int getBlueSize() {
-        emptySlot2 = getTeamSize("blue");
-        return emptySlot2;
+        return blueTeam.size();
     }
     
     public static int getPurpleSize() {
-        emptySlot2 = getTeamSize("purple");
-        return emptySlot2;
+        return purpleTeam.size();
     }
     
-    public static Player[] getBlueTeam() {
+    public static List<Player> getBlueTeam() {
         return blueTeam;
     }
     
-    public static Player[] getPurpleTeam() {
+    public static List<Player> getPurpleTeam() {
         return purpleTeam;
     }
     //-------------------------
