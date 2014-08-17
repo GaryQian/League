@@ -104,6 +104,31 @@ public class Teams {
     public static List<Player> getPurpleTeam() {
         return purpleTeam;
     }
+    
+    public static boolean removePlayer(Player player) {
+        if (blueTeam.contains(player)) {
+            blueTeam.remove(player);
+            return true;
+        }
+        else if (purpleTeam.contains(player)) {
+            purpleTeam.remove(player);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     //-------------------------
     //adds a player to the queue to join Blue
     public static void addBlueQueue(Player player) {

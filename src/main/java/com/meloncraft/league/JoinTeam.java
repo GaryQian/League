@@ -76,6 +76,7 @@ public class JoinTeam implements Listener {
     
     @EventHandler
     public void onSwitch(PlayerInteractEvent event) {
+        plugin.getLogger().info("" + event.getClickedBlock().getLocation().getX());
         
         //BLUE switcher clicked
         if (event.getClickedBlock().getLocation().equals(blueSwitcher)) {
@@ -96,6 +97,8 @@ public class JoinTeam implements Listener {
                 }
             }
         }
+        
+        //purple switcher clicked
         if (event.getClickedBlock().getLocation().equals(purpleSwitcher)) {
             if (team.getPurpleQueue().contains(event.getPlayer())) {
                 team.removePurpleQueue(event.getPlayer());
