@@ -8,6 +8,8 @@
 #DO NOT TOUCH CONFIG VERSION!
 config-version: 1
 
+maintain-day: true
+
 #Lobby location to select teams and choose champions
 blue-lobby:
     x:
@@ -49,3 +51,9 @@ purple-nexus:
     x:
     y:
     z:
+
+
+turret-height:
+
+#TURRET CENTERS
+#These are the coordinates of the top center block of the turret.

@@ -10,6 +10,7 @@ import com.meloncraft.league.Arena.Minions.MinionSpawnWaveTask;
 import com.meloncraft.league.Arena.Turret;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitTask;
 
 
@@ -22,14 +23,47 @@ public class ArenaHandler {
     League plugin;
     Teams teams;
     World world;
+    FileConfiguration config;
     Turret blueMid1, blueMid2, blueMid3, blueTop1, blueTop2, blueTop3, blueBot1, blueBot2, blueBot3, blueNexus1, blueNexus2, purpleMid1, purpleMid2, purpleMid3, purpleTop1, purpleTop2, purpleTop3, purpleBot1, purpleBot2, purpleBot3, purpleNexus1, purpleNexus2;
     
     public ArenaHandler(League plug, Teams tea) {
         teams = tea;
         plugin = plug;
         world = plugin.mainWorld;
-        //blueMid1 = new Turret()
+        config = plugin.getConfig();
+        //create Turrets
+        blueMid1 = new Turret(new Location(world, config.getDouble("blueMid1.x"), config.getDouble("blueMid1.y"), config.getDouble("blueMid1.z")), "blue", teams, plugin);
+        blueMid2 = new Turret(new Location(world, config.getDouble("blueMid2.x"), config.getDouble("blueMid2.y"), config.getDouble("blueMid2.z")), "blue", teams, plugin);
+        blueMid3 = new Turret(new Location(world, config.getDouble("blueMid3.x"), config.getDouble("blueMid3.y"), config.getDouble("blueMid3.z")), "blue", teams, plugin);
         
+        blueBot1 = new Turret(new Location(world, config.getDouble("blueBot1.x"), config.getDouble("blueBot1.y"), config.getDouble("blueBot1.z")), "blue", teams, plugin);
+        blueBot2 = new Turret(new Location(world, config.getDouble("blueBot2.x"), config.getDouble("blueBot2.y"), config.getDouble("blueBot2.z")), "blue", teams, plugin);
+        blueBot3 = new Turret(new Location(world, config.getDouble("blueBot3.x"), config.getDouble("blueBot3.y"), config.getDouble("blueBot3.z")), "blue", teams, plugin);
+        
+        blueTop1 = new Turret(new Location(world, config.getDouble("blueTop1.x"), config.getDouble("blueTop1.y"), config.getDouble("blueTop1.z")), "blue", teams, plugin);
+        blueTop2 = new Turret(new Location(world, config.getDouble("blueTop2.x"), config.getDouble("blueTop2.y"), config.getDouble("blueTop2.z")), "blue", teams, plugin);
+        blueTop3 = new Turret(new Location(world, config.getDouble("blueTop3.x"), config.getDouble("blueTop3.y"), config.getDouble("blueTop3.z")), "blue", teams, plugin);
+        
+        blueNexus1 = new Turret(new Location(world, config.getDouble("blueNexus1.x"), config.getDouble("blueNexus1.y"), config.getDouble("blueNexus1.z")), "blue", teams, plugin);
+        blueNexus2 = new Turret(new Location(world, config.getDouble("blueNexus2.x"), config.getDouble("blueNexus2.y"), config.getDouble("blueNexus2.z")), "blue", teams, plugin);
+        
+        
+        
+        
+        purpleMid1 = new Turret(new Location(world, config.getDouble("purpleMid1.x"), config.getDouble("purpleMid1.y"), config.getDouble("purpleMid1.z")), "purple", teams, plugin);
+        purpleMid2 = new Turret(new Location(world, config.getDouble("purpleMid2.x"), config.getDouble("purpleMid2.y"), config.getDouble("purpleMid2.z")), "purple", teams, plugin);
+        purpleMid3 = new Turret(new Location(world, config.getDouble("purpleMid3.x"), config.getDouble("purpleMid3.y"), config.getDouble("purpleMid3.z")), "purple", teams, plugin);
+        
+        purpleBot1 = new Turret(new Location(world, config.getDouble("purpleBot1.x"), config.getDouble("purpleBot1.y"), config.getDouble("purpleBot1.z")), "purple", teams, plugin);
+        purpleBot2 = new Turret(new Location(world, config.getDouble("purpleBot2.x"), config.getDouble("purpleBot2.y"), config.getDouble("purpleBot2.z")), "purple", teams, plugin);
+        purpleBot3 = new Turret(new Location(world, config.getDouble("purpleBot3.x"), config.getDouble("purpleBot3.y"), config.getDouble("purpleBot3.z")), "purple", teams, plugin);
+        
+        purpleTop1 = new Turret(new Location(world, config.getDouble("purpleTop1.x"), config.getDouble("purpleTop1.y"), config.getDouble("purpleTop1.z")), "purple", teams, plugin);
+        purpleTop2 = new Turret(new Location(world, config.getDouble("purpleTop2.x"), config.getDouble("purpleTop2.y"), config.getDouble("purpleTop2.z")), "purple", teams, plugin);
+        purpleTop3 = new Turret(new Location(world, config.getDouble("purpleTop3.x"), config.getDouble("purpleTop3.y"), config.getDouble("purpleTop3.z")), "purple", teams, plugin);
+        
+        purpleNexus1 = new Turret(new Location(world, config.getDouble("purpleNexus1.x"), config.getDouble("purpleNexus1.y"), config.getDouble("purpleNexus1.z")), "purple", teams, plugin);
+        purpleNexus2 = new Turret(new Location(world, config.getDouble("purpleNexus2.x"), config.getDouble("purpleNexus2.y"), config.getDouble("purpleNexus2.z")), "purple", teams, plugin);
         //plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
     
@@ -128,6 +162,10 @@ public class ArenaHandler {
     
     //spawns a wave of minions
     public void spawnMinionWave() {
-        BukkitTask spawnWaves = new MinionSpawnWaveTask(this.plugin).runTaskTimer(this.plugin, 800, 600);
+        BukkitTask spawnWaves = new MinionSpawnWaveTask(plugin).runTaskTimer(plugin, 800, 600);
+    }
+    
+    public void maintainDay() {
+        BukkitTask task = new DayTask(plugin).runTaskTimer(plugin, 100, 1500);
     }
 }

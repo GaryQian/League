@@ -30,7 +30,7 @@ public class Turret {
     public String team;
     public Teams teams;
     public List<Location> turretBody;
-    public int timesHit, health;
+    public int timesHit, health, height;
     public double damage, damageBase, incomingDamage;
     public static int reward;
     public Entity target, lastHit;
@@ -48,14 +48,15 @@ public class Turret {
     private Player targetBukkitPlayer;
     
     
-    public Turret(Location cent, String tea, Teams te) {
-        
+    public Turret(Location cent, String tea, Teams te, League plug) {
+        plugin = plug;
         team = tea;
         teams = te;
         health = 200;
         damageBase = 20;
         reward = 150;
         championAttacked = false;
+        height = plugin.getConfig().getInt("turret-height");
         
         
         addColumnToBody(cent);
@@ -98,7 +99,7 @@ public class Turret {
     
     public void addColumnToBody(Location loc) {
         //The number counted to is the height
-        for (int count = 0; count < 5; count++) {
+        for (int count = 0; count < height; count++) {
             temp = loc;
             temp.setY(loc.getBlockY() - count);
             turretBody.add(temp);

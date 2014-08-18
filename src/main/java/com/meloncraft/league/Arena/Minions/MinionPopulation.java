@@ -20,8 +20,8 @@ public class MinionPopulation {
     //List<Minion> blueMinions, purpleMinions;
     public static List<Minion> blueMidMinions, purpleMidMinions, blueTopMinions, purpleTopMinions, blueBotMinions, purpleBotMinions, allMinions;
     
-    public MinionPopulation() {
-        plugin = this.plugin;
+    public MinionPopulation(League plug) {
+        plugin = plug;
     }
     
     public int getPopulation() {
@@ -52,7 +52,7 @@ public class MinionPopulation {
         
     }
     
-    public static  void addBlueMidMinion() {
+    public static void addBlueMidMinion() {
         blueMidMinions.add((Minion) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y"), plugin.getConfig().getDouble("blue-nexus.z")) , EntityType.ZOMBIE));
     }
     public static void addBlueTopMinion() {

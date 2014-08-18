@@ -23,8 +23,8 @@ public class MinionSpawnTask extends BukkitRunnable{
     public static List<Entity> blueMidMinions, purpleMidMinions, blueTopMinions, purpleTopMinions, blueBotMinions, purpleBotMinions;
     static MinionPopulation minionPopulation;
     
-    public MinionSpawnTask(League plugin) {
-        this.plugin = plugin;
+    public MinionSpawnTask(League plug) {
+        this.plugin = plug;
     }
     
     

@@ -11,6 +11,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 /**
  *
  * @author Gary
@@ -30,6 +31,13 @@ public final class League extends JavaPlugin {
         arena = new ArenaHandler(this, teams);
         new GeneralListeners(this, arena, teams);
         new JoinTeam(this, teams);
+        
+        
+        //keep time day
+        if (this.getConfig().getBoolean("maintain-day")) {
+            arena.maintainDay();
+        }
+        
 
         
         //new Teams();
@@ -45,6 +53,8 @@ public final class League extends JavaPlugin {
                 getConfig().getInt("purple-lobby.y"),
                 getConfig().getInt("purple-lobby.z"),
                 mainWorld);
+        
+        
     }
     
     @Override
