@@ -6,6 +6,7 @@
 
 package com.meloncraft.league;
 
+import com.meloncraft.league.Champions.Champion;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -18,8 +19,8 @@ import org.bukkit.entity.Player;
 public class Teams {
     private static List<Player> blueTeam;
     private static List<Player> purpleTeam;
-    private static String[] blueChampions;
-    private static String[] purpleChampions;
+    private static Champion[] blueChampions;
+    private static Champion[] purpleChampions;
     private static List<Player> blueQueue, purpleQueue;
     private static int count;
     private static int emptySlot, emptySlot2;
@@ -32,8 +33,8 @@ public class Teams {
     public Teams(League plug) {
         //blueTeam  = new Player[4];
         //purpleTeam  = new Player[4];
-        blueChampions = new String[4];
-        purpleChampions = new String[4];
+        blueChampions = new Champion[4];
+        purpleChampions = new Champion[4];
         int count = 0;
         emptySlot = 0;
         plugin = plug;
@@ -189,13 +190,13 @@ public class Teams {
     //Champion storage
     public static void setChampion(Player player, String champion) {
         if (getTeam(player).equals("blue")) {
-            blueChampions[blueTeam.lastIndexOf(player)] = champion;
+            blueChampions[blueTeam.lastIndexOf(player)] = new Champion(player, champion);
         }
         else {
-            purpleChampions[purpleTeam.lastIndexOf(player)] = champion;
+            purpleChampions[purpleTeam.lastIndexOf(player)] = new Champion(player, champion);
         }
     }
-    public static String getChampion(Player player) {
+    public static Champion getChampion(Player player) {
         if (getTeam(player).equals("blue")) {
             return blueChampions[blueTeam.lastIndexOf(player)];
         }
@@ -203,11 +204,11 @@ public class Teams {
             return purpleChampions[purpleTeam.lastIndexOf(player)];
         }
     }
-    public static String[] getBlueChampions() {
+    public static Champion[] getBlueChampions() {
         return blueChampions;
     }
     
-    public static String[] getPurpleChampions() {
+    public static Champion[] getPurpleChampions() {
         return purpleChampions;
     }
 }

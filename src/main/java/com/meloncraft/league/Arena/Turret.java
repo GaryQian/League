@@ -21,14 +21,14 @@ import org.bukkit.entity.Player;
  *
  * @author Gary
  */
-public class Tower {
+public class Turret {
     League plugin;
     public Location center, temp;
     public World world;
     public boolean team; //TRUE = blue FALSE = purple
     public List<Location> turretBody;
-    public int timesHit;
-    public double damage, damageBase;
+    public int timesHit, health;
+    public double damage, damageBase, incomingDamage;
     public static int reward;
     public Entity target, lastHit;
     public Champion targetChampion;
@@ -45,8 +45,8 @@ public class Tower {
     private Champion champion;
     
     
-    public Tower(Location cent, boolean tea) {
-        
+    public Turret(Location cent, boolean tea) {
+        health = 200;
         damageBase = 20;
         reward = 150;
         championAttacked = false;
@@ -101,6 +101,17 @@ public class Tower {
     
     public List<Location> getTurretBody() {
         return turretBody;
+    }
+    
+    
+    //checks if the location is part of the turret
+    public boolean isTurretBody(Location loc) {
+        if (turretBody.contains(loc)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     
     public Entity findTarget() {
@@ -178,7 +189,7 @@ public class Tower {
             timesHit = 1;
             damage = damageBase;
         }
-        if (target instanceof Champion) {
+        if (target instanceof Player) {
             targetChampionPlayer = (Player) target.getBukkitEntity();
             targetChampionPlayer.sendMessage("You have been hit by the tower!");
             targetChampion = (Champion) target;
@@ -189,6 +200,16 @@ public class Tower {
             targetMinion = (Minion) target;
             targetMinion.hit(damage);
         }
+        
+    }
+    
+    public void hit(double damage) {
+        incomingDamage = damage * 0.6;
+        health -= damage;
+        refresh();
+    }
+    
+    public void refresh() {
         
     }
 }

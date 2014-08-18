@@ -22,22 +22,19 @@ import org.bukkit.event.player.PlayerQuitEvent;
  */
 public class JoinTeam implements Listener {
     public static Teams team;
-    //League plugin;
-    public Location blueSwitcher, purpleSwitcher;
+    //public Location blueSwitcher, purpleSwitcher;
     public World world;
     Player player;
-    //FileConfiguration config = plugin.getConfig();
     League plugin;
     
-    public JoinTeam(League plug) {
+    public JoinTeam(League plug, Teams tea) {
         plugin = plug;
+        team = tea;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        
-        team = new Teams(plugin);
         FileConfiguration config = plugin.getConfig();
         world = plugin.mainWorld;
-        blueSwitcher = new Location(world, plugin.getConfig().getInt("blue-switcher.x"), plugin.getConfig().getInt("blue-switcher.y"), plugin.getConfig().getInt("blue-switcher.z"));
-        purpleSwitcher = new Location(world, plugin.getConfig().getInt("purple-switcher.x"), plugin.getConfig().getInt("purple-switcher.y"), plugin.getConfig().getInt("purple-switcher.z"));
+        //blueSwitcher = new Location(world, plugin.getConfig().getInt("blue-switcher.x"), plugin.getConfig().getInt("blue-switcher.y"), plugin.getConfig().getInt("blue-switcher.z"));
+        //purpleSwitcher = new Location(world, plugin.getConfig().getInt("purple-switcher.x"), plugin.getConfig().getInt("purple-switcher.y"), plugin.getConfig().getInt("purple-switcher.z"));
     }
     
     public String decideSmallerTeam() {
@@ -73,51 +70,6 @@ public class JoinTeam implements Listener {
         team.removePlayer(player);
     }
     
-    @EventHandler
-    public void onSwitch(PlayerInteractEvent event) {
-        plugin.getLogger().info("" + event.getClickedBlock().getLocation().getX());
-        player = event.getPlayer();
-        //BLUE switcher clicked
-        if (event.getClickedBlock().getLocation().equals(blueSwitcher)) {
-            if (team.getPurpleQueue().contains(player)) {
-                team.removePurpleQueue(player);
-                player.sendMessage("You are no longer on the Join-Purple Queue!");
-            }
-            else {
-                if (team.getTeamSize("purple") < 5) {
-                    team.removePlayer(player);
-                    team.addPurple(player);
-                    if (!team.getBlueQueue().isEmpty()) {
-                        team.getBlueQueue(0).sendMessage("You have been taken off the Queue and moved to BLUE!");
-                        team.addBlue(team.removeBlueQueue());
-                    }
-                }
-                else {
-                    player.sendMessage("The PURPLE team is full! You have been added to the switch queue.");
-                }
-            }
-        }
-        
-        //purple switcher clicked
-        if (event.getClickedBlock().getLocation().equals(purpleSwitcher)) {
-            if (team.getPurpleQueue().contains(player)) {
-                team.removePurpleQueue(player);
-                player.sendMessage("You are no longer on the Join-Purple Queue!");
-            }
-            else {
-                if (team.getTeamSize("blue") < 5) {
-                    team.removePlayer(player);
-                    team.addBlue(player);
-                    if (!team.getPurpleQueue().isEmpty()) {
-                        team.getPurpleQueue(0).sendMessage("You have been taken off the Queue and moved to PURPLE!");
-                        team.addPurple(team.removePurpleQueue());
-                    }
-                }
-                else {
-                    player.sendMessage("The BLUE team is full! You have been added to the switch queue.");
-                }
-            }
-        }
-    }
+    
 }
 

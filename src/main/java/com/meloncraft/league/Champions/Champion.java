@@ -13,22 +13,26 @@ import net.minecraft.server.v1_7_R4.WorldServer;
 import net.minecraft.util.com.mojang.authlib.GameProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
+import org.bukkit.entity.Player;
 
 /**
  *
  * @author Gary
  */
-public class Champion extends EntityPlayer{
-    public int health, armor, AD, AP, speed, mana, energy, level;
-    public double healthRegen, manaRegen;
+public class Champion {
+    public int health, armor, AD, AP, speed, mana, energy, level, kills, deaths, assists;
+    public double healthRegen, manaRegen, damage, incomingDamage;
     public boolean team; //TRUE = Blue FALSE = purple
+    public Player player;
+    public String champion;
     
     
     static MinecraftServer server = ((CraftServer)Bukkit.getServer()).getHandle().getServer();
     //adds Bonus stats above basic based on the champion.
     //public Champion(World world) {
-    public Champion(WorldServer world, GameProfile s, PlayerInteractManager itemInWorldManager) {
-        super(server , world, s, itemInWorldManager);
+    //public Champion(Player play, WorldServer world, GameProfile s, PlayerInteractManager itemInWorldManager) {
+    public Champion(Player play, String champ) {
+        champion = champ;
         health = 80;
         armor = 0;
         AD = 6;
@@ -38,6 +42,8 @@ public class Champion extends EntityPlayer{
         healthRegen = 5;
         manaRegen = 1;
         level = 1;
+        
+        player = play;
     }
     
     public void addLevel() {
@@ -59,7 +65,20 @@ public class Champion extends EntityPlayer{
         return team;
     }
     
+    public double getDamage() {
+        return damage;
+    }
+    
+    public Player getPlayer() {
+        return player;
+    }
+    
     public void hit(double damage) {
-        
+        incomingDamage = (double) damage * (1 / (1 + (armor / 100)));
+        health -= damage;
+    }
+    
+    public void refresh() {
+        player.setHealth(health);
     }
 }
