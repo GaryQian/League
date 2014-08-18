@@ -39,8 +39,8 @@ public class GeneralListeners implements Listener {
         team = tea;
         FileConfiguration config = plugin.getConfig();
         world = plugin.mainWorld;
-        blueSwitcher = new Location(world, plugin.getConfig().getInt("blue-switcher.x"), plugin.getConfig().getInt("blue-switcher.y"), plugin.getConfig().getInt("blue-switcher.z"));
-        purpleSwitcher = new Location(world, plugin.getConfig().getInt("purple-switcher.x"), plugin.getConfig().getInt("purple-switcher.y"), plugin.getConfig().getInt("purple-switcher.z"));
+        blueSwitcher = new Location(world,  plugin.getConfig().getDouble("blue-switcher.x") - 1,  plugin.getConfig().getDouble("blue-switcher.y"),  plugin.getConfig().getDouble("blue-switcher.z")- 1);
+        purpleSwitcher = new Location(world,  plugin.getConfig().getDouble("purple-switcher.x") - 1,  plugin.getConfig().getDouble("purple-switcher.y"),   plugin.getConfig().getDouble("purple-switcher.z") - 1);
     }
     
     
@@ -72,8 +72,7 @@ public class GeneralListeners implements Listener {
         
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
         //BLUE switcher clicked
-            plugin.getLogger().info("" + event.getClickedBlock().getLocation().getX());
-            if (event.getClickedBlock().getLocation().equals(blueSwitcher)) {
+            if (event.getClickedBlock().getLocation().getX() == blueSwitcher.getX() && event.getClickedBlock().getLocation().getY() == blueSwitcher.getY() && event.getClickedBlock().getLocation().getZ() == blueSwitcher.getZ()) {
                 if (team.getPurpleQueue().contains(player)) {
                     team.removePurpleQueue(player);
                     player.sendMessage("You are no longer on the Join-Purple Queue!");
@@ -94,7 +93,7 @@ public class GeneralListeners implements Listener {
             }
 
             //purple switcher clicked
-            if (event.getClickedBlock().getLocation().equals(purpleSwitcher)) {
+            if (event.getClickedBlock().getLocation().getX() == purpleSwitcher.getX() && event.getClickedBlock().getLocation().getY() == purpleSwitcher.getY() && event.getClickedBlock().getLocation().getZ() == purpleSwitcher.getZ()) {
                 if (team.getPurpleQueue().contains(player)) {
                     team.removePurpleQueue(player);
                     player.sendMessage("You are no longer on the Join-Purple Queue!");

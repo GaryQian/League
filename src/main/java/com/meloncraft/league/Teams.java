@@ -7,6 +7,7 @@
 package com.meloncraft.league;
 
 import com.meloncraft.league.Champions.Champion;
+import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -31,14 +32,15 @@ public class Teams {
     League plugin;
     
     public Teams(League plug) {
-        //blueTeam  = new Player[4];
-        //purpleTeam  = new Player[4];
+        blueTeam = new ArrayList<Player>();
+        purpleTeam  = new ArrayList<Player>();
+        blueQueue = new ArrayList<Player>();
+        purpleQueue  = new ArrayList<Player>();
         blueChampions = new Champion[4];
         purpleChampions = new Champion[4];
         int count = 0;
-        emptySlot = 0;
         plugin = plug;
-        setLobby(plugin.getConfig().getInt("blue-lobby.x"), plugin.getConfig().getInt("blue-lobby.y"), plugin.getConfig().getInt("blue-lobby.z"), plugin.getConfig().getInt("purple-lobby.x"), plugin.getConfig().getInt("purple-lobby.y"), plugin.getConfig().getInt("purple-lobby.z"), mainWorld);
+        setLobby(plugin.getConfig().getDouble("blue-lobby.x"), plugin.getConfig().getDouble("blue-lobby.y"), plugin.getConfig().getDouble("blue-lobby.z"), plugin.getConfig().getDouble("purple-lobby.x"), plugin.getConfig().getDouble("purple-lobby.y"), plugin.getConfig().getDouble("purple-lobby.z"), mainWorld);
     }
     
     public static void setLobby(double x1, double y1, double z1, double x2, double y2, double z2, World world) {
@@ -46,7 +48,7 @@ public class Teams {
         purpleLobby = new Location(world, x2, y2, z2);
     }
     
-    public static String getSmallerTeam() {
+    public String getSmallerTeam() {
         if (getTeamSize("blue") <= getTeamSize("purple")) {
             return "blue";
         }
@@ -55,23 +57,21 @@ public class Teams {
         }
     }
     
-    public static int getTeamSize(String team) {
-        count = 0;
-        emptySlot = 0;
+    public int getTeamSize(String team) {
         if (team.equalsIgnoreCase("blue")) {
             return blueTeam.size();
 
         }
         else {
-            
             return purpleTeam.size();
         }
     }
     
-    public static boolean addBlue(Player player) {
+    public boolean addBlue(Player player) {
         if (getTeamSize("blue") < 5) {
             blueTeam.add(player);
             player.sendMessage("You have joined the Blue Team!");
+            plugin.getLogger().info(player.getName() + " has Joined the Blue Team");
             player.teleport(blueLobby);
             return true;
         }
@@ -81,10 +81,11 @@ public class Teams {
         
     }
     
-    public static boolean addPurple(Player player) {
+    public boolean addPurple(Player player) {
         if (getTeamSize("purple") < 5) {
             purpleTeam.add(player);
             player.sendMessage("You have joined the Purple Team!");
+            plugin.getLogger().info(player.getName() + " has Joined the Purple Team");
             player.teleport(purpleLobby);
             return true;
         }
@@ -94,23 +95,23 @@ public class Teams {
         
     }
     
-    public static int getBlueSize() {
+    public int getBlueSize() {
         return blueTeam.size();
     }
     
-    public static int getPurpleSize() {
+    public int getPurpleSize() {
         return purpleTeam.size();
     }
     
-    public static List<Player> getBlueTeam() {
+    public List<Player> getBlueTeam() {
         return blueTeam;
     }
     
-    public static List<Player> getPurpleTeam() {
+    public List<Player> getPurpleTeam() {
         return purpleTeam;
     }
     
-    public static boolean removePlayer(Player player) {
+    public boolean removePlayer(Player player) {
         if (blueTeam.contains(player)) {
             blueTeam.remove(player);
             return true;
@@ -124,7 +125,7 @@ public class Teams {
         }
     }
     
-    public static String getTeam(Player player) {
+    public String getTeam(Player player) {
         if (blueTeam.contains(player)) {
             return "blue";
         }
@@ -188,7 +189,7 @@ public class Teams {
     
     //----------------------------
     //Champion storage
-    public static void setChampion(Player player, String champion) {
+    public void setChampion(Player player, String champion) {
         if (getTeam(player).equals("blue")) {
             blueChampions[blueTeam.lastIndexOf(player)] = new Champion(player, champion, "blue");
         }
@@ -196,7 +197,7 @@ public class Teams {
             purpleChampions[purpleTeam.lastIndexOf(player)] = new Champion(player, champion, "purple");
         }
     }
-    public static Champion getChampion(Player player) {
+    public Champion getChampion(Player player) {
         if (getTeam(player).equals("blue")) {
             return blueChampions[blueTeam.lastIndexOf(player)];
         }
