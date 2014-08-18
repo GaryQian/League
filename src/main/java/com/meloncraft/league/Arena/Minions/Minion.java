@@ -18,7 +18,7 @@ import net.minecraft.server.v1_7_R4.World;
  */
 public class Minion extends EntitySkeleton{
     World world;
-    public boolean team; //TRUE = blue FALSE = purple
+    public String team;
     //sets up the health and other stats of minions
     public Minion(World world) {
         super(world);
@@ -29,7 +29,7 @@ public class Minion extends EntitySkeleton{
         return
     }*/
     
-    public boolean getTeam() {
+    public String getTeam() {
         return team;
     }
     

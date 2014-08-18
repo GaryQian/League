@@ -190,10 +190,10 @@ public class Teams {
     //Champion storage
     public static void setChampion(Player player, String champion) {
         if (getTeam(player).equals("blue")) {
-            blueChampions[blueTeam.lastIndexOf(player)] = new Champion(player, champion);
+            blueChampions[blueTeam.lastIndexOf(player)] = new Champion(player, champion, "blue");
         }
         else {
-            purpleChampions[purpleTeam.lastIndexOf(player)] = new Champion(player, champion);
+            purpleChampions[purpleTeam.lastIndexOf(player)] = new Champion(player, champion, "purple");
         }
     }
     public static Champion getChampion(Player player) {

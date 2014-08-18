@@ -6,11 +6,8 @@
 
 package com.meloncraft.league.Champions;
 
-import net.minecraft.server.v1_7_R4.EntityPlayer;
+import com.meloncraft.league.Teams;
 import net.minecraft.server.v1_7_R4.MinecraftServer;
-import net.minecraft.server.v1_7_R4.PlayerInteractManager;
-import net.minecraft.server.v1_7_R4.WorldServer;
-import net.minecraft.util.com.mojang.authlib.GameProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
 import org.bukkit.entity.Player;
@@ -22,7 +19,7 @@ import org.bukkit.entity.Player;
 public class Champion {
     public int health, armor, AD, AP, speed, mana, energy, level, kills, deaths, assists;
     public double healthRegen, manaRegen, damage, incomingDamage;
-    public boolean team; //TRUE = Blue FALSE = purple
+    public String team; //TRUE = Blue FALSE = purple
     public Player player;
     public String champion;
     
@@ -31,7 +28,7 @@ public class Champion {
     //adds Bonus stats above basic based on the champion.
     //public Champion(World world) {
     //public Champion(Player play, WorldServer world, GameProfile s, PlayerInteractManager itemInWorldManager) {
-    public Champion(Player play, String champ) {
+    public Champion(Player play, String champ, String tea) {
         champion = champ;
         health = 80;
         armor = 0;
@@ -44,6 +41,8 @@ public class Champion {
         level = 1;
         
         player = play;
+        
+        team = tea;
     }
     
     public void addLevel() {
@@ -61,7 +60,7 @@ public class Champion {
         //why not just make this an interface??
     }
     
-    public boolean getTeam() {
+    public String getTeam() {
         return team;
     }
     

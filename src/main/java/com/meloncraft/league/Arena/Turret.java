@@ -9,10 +9,12 @@ package com.meloncraft.league.Arena;
 import com.meloncraft.league.Arena.Minions.Minion;
 import com.meloncraft.league.Champions.Champion;
 import com.meloncraft.league.League;
+import com.meloncraft.league.Teams;
 import java.util.Collection;
 import java.util.List;
 import net.minecraft.server.v1_7_R4.AxisAlignedBB;
 import net.minecraft.server.v1_7_R4.Entity;
+import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.World;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -25,27 +27,31 @@ public class Turret {
     League plugin;
     public Location center, temp;
     public World world;
-    public boolean team; //TRUE = blue FALSE = purple
+    public String team;
+    public Teams teams;
     public List<Location> turretBody;
     public int timesHit, health;
     public double damage, damageBase, incomingDamage;
     public static int reward;
     public Entity target, lastHit;
-    public Champion targetChampion;
     public Minion targetMinion;
     public Class<Minion> minionClass;
-    public Class<Champion> championClass;
+    public Class<EntityPlayer> playerClass;
     public Collection<Entity> allEntities;
     public boolean championAttacked;
     
     private double distance, distance2;
     private boolean isMinionInRange;
-    private Player targetChampionPlayer;
+    private EntityPlayer targetPlayer;
     private Minion minion;
     private Champion champion;
+    private Player targetBukkitPlayer;
     
     
-    public Turret(Location cent, boolean tea) {
+    public Turret(Location cent, String tea, Teams te) {
+        
+        team = tea;
+        teams = te;
         health = 200;
         damageBase = 20;
         reward = 150;
@@ -114,59 +120,62 @@ public class Turret {
         }
     }
     
+    
+    //returns the targeted Craftbukkit entity (NOT BUKKIT ENTITY!)
     public Entity findTarget() {
         
         //allEntities = center.getWorld().getEntitiesByClasses(championClass, minionClass);
         //gets a list of all entities, and checks if they are within range. If they are, minions get priority, unless champion is being attacked.
         allEntities = world.a(minionClass, AxisAlignedBB.a(-80, 30, -80, 80, 10, 80));
-        allEntities.addAll(world.a(minionClass, AxisAlignedBB.a(-80, 30, -80, 80, 10, 80)));
+        allEntities.addAll(world.a(playerClass, AxisAlignedBB.a(-80, 30, -80, 80, 10, 80)));
         
         distance2 = 10;
         isMinionInRange = false;
         target = null;
-        targetChampion = null;
+        targetPlayer = null;
         
         for (Entity entity : allEntities) {
             distance = entity.getBukkitEntity().getLocation().distance(center);
             if (distance < 8) {
-            
+                if (entity instanceof EntityPlayer) {
+                    champion = teams.getChampion((Player) entity.getBukkitEntity());
+                    if (!champion.getTeam().equals(team)) {
+                        targetPlayer = (EntityPlayer) entity;
+                    }
+                }
                 if (distance < distance2) {
                     if (entity instanceof Minion) {
-                        minion = (Minion) entity;
-                        if (minion.getTeam() != team) {
+                        
+                        if (!minion.getTeam().equals(team)) {
                             isMinionInRange = true;
-                            target = entity;
+                            targetMinion = (Minion) entity;
                             distance2 = distance;
                         }
                     }
-                    else if (entity instanceof Champion) {
-                        if (!isMinionInRange) {
-                            champion = (Champion) entity;
-                            if (champion.getTeam() != team) {
-                                isMinionInRange = true;
-                                targetChampion = (Champion) entity;
-                                distance2 = distance;
-                            }
-                        }
-                    }
+                    
                 }
             }
         }
         
         if (championAttacked) {
-            if (targetChampion != null) {
+            if (targetPlayer != null) {
                 isMinionInRange = false;
             }
         }
         
-        if (!isMinionInRange) {
-            return target;
+        if (isMinionInRange) {
+            target = targetMinion;
+            return targetMinion;
+        }
+        
+        else if (targetPlayer != null) {
+            
+            targetPlayer.getBukkitEntity().sendMessage("WARNING: You have been targeted by the tower!");
+            target = targetPlayer;
+            return targetPlayer;
         }
         else {
-            targetChampionPlayer = (Player) targetChampion.getBukkitEntity();
-            targetChampionPlayer.sendMessage("WARNING: You have been targeted by the tower!");
-            target = targetChampion;
-            return target;
+            return null;
         }
     }
     
@@ -189,11 +198,11 @@ public class Turret {
             timesHit = 1;
             damage = damageBase;
         }
-        if (target instanceof Player) {
-            targetChampionPlayer = (Player) target.getBukkitEntity();
-            targetChampionPlayer.sendMessage("You have been hit by the tower!");
-            targetChampion = (Champion) target;
-            targetChampion.hit(damage);
+        if (target instanceof EntityPlayer) {
+            targetBukkitPlayer = (Player) target.getBukkitEntity();
+            targetBukkitPlayer.sendMessage("You have been hit by the tower!");
+            champion = teams.getChampion(targetBukkitPlayer);
+            champion.hit(damage);
             
         }
         else {

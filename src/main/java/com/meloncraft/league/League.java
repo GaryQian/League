@@ -20,16 +20,16 @@ public final class League extends JavaPlugin {
     public World mainWorld;
     
     public ArenaHandler arena;
-    public static Teams team;
+    public static Teams teams;
     
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
         this.getConfig();
-        team = new Teams(this);
-        arena = new ArenaHandler(this);
-        new GeneralListeners(this, arena, team);
-        new JoinTeam(this, team);
+        teams = new Teams(this);
+        arena = new ArenaHandler(this, teams);
+        new GeneralListeners(this, arena, teams);
+        new JoinTeam(this, teams);
 
         
         //new Teams();
