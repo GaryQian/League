@@ -112,8 +112,8 @@ public class Turret {
     
     
     //checks if the location is part of the turret
-    public boolean isTurretBody(Location loc) {
-        if (turretBody.contains(loc)) {
+    public boolean isTurretBody(double x, double y, double z) {
+        if (turretBody.contains(new Location(plugin.mainWorld, x, y, z))) {
             return true;
         }
         else {
