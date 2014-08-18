@@ -8,8 +8,10 @@ package com.meloncraft.league;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ItemSpawnEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 
 /**
  *
@@ -28,11 +30,17 @@ public class GeneralListeners implements Listener {
     
     
     //Prevent Items from dropping
+    @EventHandler
     public void onItemDrop(ItemSpawnEvent event) {
         
-        if (event.getEntityType() == EntityType.DROPPED_ITEM) {
+        //if (event.getEntityType() == EntityType.DROPPED_ITEM) {
             event.setCancelled(true);
-        }
+        //}
         
+    }
+    
+    @EventHandler
+    public void onPickupItem(PlayerPickupItemEvent event) {
+        event.setCancelled(true);
     }
 }
