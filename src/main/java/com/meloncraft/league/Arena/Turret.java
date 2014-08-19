@@ -210,13 +210,21 @@ public class Turret {
             targetBukkitPlayer.sendMessage("You have been hit by the tower!");
             champion = teams.getChampion(targetBukkitPlayer);
             champion.hit(damage);
+            lastHit = target;
             
         }
         else {
             targetMinion = (Minion) target;
             targetMinion.hit(damage);
+            lastHit = target;
         }
         
+    }
+    
+    public void attackSequence() {
+        findTarget();
+        attack();
+        findTarget();
     }
     
     public void hit(double damage) {
