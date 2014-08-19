@@ -7,6 +7,7 @@
 package com.meloncraft.league;
 
 import com.meloncraft.league.Arena.Turret;
+import com.meloncraft.league.Champions.Champion;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,6 +31,7 @@ public class GeneralListeners implements Listener {
     Player player;
     League plugin;
     ArenaHandler arena;
+    private Champion tempChampion;
     
     
     public GeneralListeners(League plug, ArenaHandler are, Teams tea) {
@@ -79,11 +81,34 @@ public class GeneralListeners implements Listener {
                 }
                 else {
                     if (team.getTeamSize("purple") < 5) {
-                        team.removePlayer(player);
-                        team.addPurple(player);
+                        if (team.blueChampions[team.blueTeam.lastIndexOf(player)] != null) {
+                                tempChampion = team.getChampion(player);
+                                team.removeChampion(player);
+                                team.removePlayer(player);
+                                team.addPurple(player);
+                                team.setChampion(player, tempChampion);
+                            }
+                            //dont't set champion because no champ selected
+                            else {
+                                team.removePlayer(player);
+                                team.addPurple(player);
+                            }
+                            
                         if (!team.getBlueQueue().isEmpty()) {
-                            team.getBlueQueue(0).sendMessage("You have been taken off the Queue and moved to BLUE!");
-                            team.addBlue(team.removeBlueQueue());
+                            //set champions
+                            if (team.purpleChampions[team.purpleTeam.lastIndexOf(team.getBlueQueue(0))] != null) {
+                                tempChampion = team.getChampion(team.getBlueQueue(0));
+                                team.removeChampion(team.getBlueQueue(0));
+                                team.getBlueQueue(0).sendMessage("You have been taken off the Queue and moved to BLUE!");
+                                team.addBlue(team.removeBlueQueue());
+                                team.setChampion(team.getBlueQueue(0), tempChampion);
+                            }
+                            //dont't set champion because no champ selected
+                            else {
+                                team.getBlueQueue(0).sendMessage("You have been taken off the Queue and moved to BLUE!");
+                                team.addBlue(team.removeBlueQueue());
+                            }
+                            
                         }
                     }
                     else {
@@ -100,11 +125,33 @@ public class GeneralListeners implements Listener {
                 }
                 else {
                     if (team.getTeamSize("blue") < 5) {
-                        team.removePlayer(player);
-                        team.addBlue(player);
+                        if (team.purpleChampions[team.purpleTeam.lastIndexOf(player)] != null) {
+                                tempChampion = team.getChampion(player);
+                                team.removeChampion(player);
+                                team.removePlayer(player);
+                                team.addBlue(player);
+                                team.setChampion(player, tempChampion);
+                            }
+                            //dont't set champion because no champ selected
+                            else {
+                                team.removePlayer(player);
+                                team.addBlue(player);
+                            }
+                            
                         if (!team.getPurpleQueue().isEmpty()) {
-                            team.getPurpleQueue(0).sendMessage("You have been taken off the Queue and moved to PURPLE!");
-                            team.addPurple(team.removePurpleQueue());
+                            //set champions
+                            if (team.blueChampions[team.blueTeam.lastIndexOf(team.getPurpleQueue(0))] != null) {
+                                tempChampion = team.getChampion(team.getPurpleQueue(0));
+                                team.removeChampion(team.getPurpleQueue(0));
+                                team.getPurpleQueue(0).sendMessage("You have been taken off the Queue and moved to PURPLE!");
+                                team.addPurple(team.removePurpleQueue());
+                                team.setChampion(team.getPurpleQueue(0), tempChampion);
+                            }
+                            //dont't set champion because no champ selected
+                            else {
+                                team.getPurpleQueue(0).sendMessage("You have been taken off the Queue and moved to BLUE!");
+                                team.addPurple(team.removePurpleQueue());
+                            }
                         }
                     }
                     else {
@@ -123,6 +170,12 @@ public class GeneralListeners implements Listener {
             Turret turret;
             if (team.getTeam(player).equals("blue")) {
                 turret = arena.isBlueTurret(event.getClickedBlock().getLocation());
+                if (turret != null) {
+                    turret.hit(team.getChampion(player).getDamage());
+                }
+            }
+            else {
+                turret = arena.isPurpleTurret(event.getClickedBlock().getLocation());
                 if (turret != null) {
                     turret.hit(team.getChampion(player).getDamage());
                 }

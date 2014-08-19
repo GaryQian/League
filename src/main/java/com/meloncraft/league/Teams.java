@@ -18,10 +18,10 @@ import org.bukkit.entity.Player;
  * @author Gary
  */
 public class Teams {
-    private static List<Player> blueTeam;
-    private static List<Player> purpleTeam;
-    private static Champion[] blueChampions;
-    private static Champion[] purpleChampions;
+    public static List<Player> blueTeam;
+    public static List<Player> purpleTeam;
+    public static Champion[] blueChampions;
+    public static Champion[] purpleChampions;
     private static List<Player> blueQueue, purpleQueue;
     private static int count;
     private static int emptySlot, emptySlot2;
@@ -195,6 +195,24 @@ public class Teams {
         }
         else {
             purpleChampions[purpleTeam.lastIndexOf(player)] = new Champion(player, champion, "purple");
+        }
+    }
+    
+    public void setChampion(Player player, Champion champion) {
+        if (getTeam(player).equals("blue")) {
+            blueChampions[blueTeam.lastIndexOf(player)] = champion;
+        }
+        else {
+            purpleChampions[purpleTeam.lastIndexOf(player)] = champion;
+        }
+    }
+    
+    public void removeChampion(Player player) {
+        if (getTeam(player).equals("blue")) {
+            blueChampions[blueTeam.lastIndexOf(player)] = null;
+        }
+        else {
+            purpleChampions[purpleTeam.lastIndexOf(player)] = null;
         }
     }
     public Champion getChampion(Player player) {

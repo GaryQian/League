@@ -48,7 +48,7 @@ public class Turret {
     private Player targetBukkitPlayer;
     
     
-    public Turret(Location cent, String tea, Teams te, League plug) {
+    public Turret(double x, double y, double z, String tea, Teams te, League plug) {
         plugin = plug;
         team = tea;
         teams = te;
@@ -57,43 +57,43 @@ public class Turret {
         reward = 150;
         championAttacked = false;
         height = plugin.getConfig().getInt("turret-height");
+        center = new Location(plugin.mainWorld, x - 1, y, z - 1);
         
+        addColumnToBody(center);
         
-        addColumnToBody(cent);
-        
-        temp = cent;
-        temp.setX(temp.getBlockX() - 1);
+        temp = center;
+        temp.setX(temp.getX() - 1);
         addColumnToBody(temp);
         
-        temp = cent;
-        temp.setX(temp.getBlockX() + 1);
+        temp = center;
+        temp.setX(temp.getX() + 1);
         addColumnToBody(temp);
         
-        temp.setZ(temp.getBlockZ() - 1);
+        temp.setZ(temp.getZ() - 1);
         addColumnToBody(temp);
         
-        temp = cent;
-        temp.setZ(temp.getBlockZ() + 1);
+        temp = center;
+        temp.setZ(temp.getZ() + 1);
         addColumnToBody(temp);
         
-        temp = cent;
-        temp.setX(temp.getBlockX() - 1);
-        temp.setZ(temp.getBlockZ() - 1);
+        temp = center;
+        temp.setX(temp.getX() - 1);
+        temp.setZ(temp.getZ() - 1);
         addColumnToBody(temp);
         
-        temp = cent;
-        temp.setX(temp.getBlockX() + 1);
-        temp.setZ(temp.getBlockZ() + 1);
+        temp = center;
+        temp.setX(temp.getX() + 1);
+        temp.setZ(temp.getZ() + 1);
         addColumnToBody(temp);
         
-        temp = cent;
-        temp.setX(temp.getBlockX() + 1);
-        temp.setZ(temp.getBlockZ() - 1);
+        temp = center;
+        temp.setX(temp.getX() + 1);
+        temp.setZ(temp.getZ() - 1);
         addColumnToBody(temp);
         
-        temp = cent;
-        temp.setX(temp.getBlockX() - 1);
-        temp.setZ(temp.getBlockZ() + 1);
+        temp = center;
+        temp.setX(temp.getX() - 1);
+        temp.setZ(temp.getZ() + 1);
         addColumnToBody(temp);
     }
     
@@ -101,7 +101,7 @@ public class Turret {
         //The number counted to is the height
         for (int count = 0; count < height; count++) {
             temp = loc;
-            temp.setY(loc.getBlockY() - count);
+            temp.setY(loc.getY() - count);
             turretBody.add(temp);
         }
     }
