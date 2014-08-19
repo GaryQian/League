@@ -3,10 +3,20 @@ main: com.meloncraft.league.League
 version: 1.0
 commands:
    l:
-      description: Spawns zombies around players.
+      description: general command
       usage: /l
-      permission: league.version
-      permission-message: You don't have league.version
+      permission: 
+      permission-message: Test permission message
+   forcestart:
+      description: Forcestarts the game
+      usage: /l
+      permission: 
+      permission-message: Test permission message
+   team:
+      description: Checks your team
+      usage: /team
+      permission: 
+      permission-message: Test permission message
    #team:
       #description: Adds friend to your team.
       #usage: /team

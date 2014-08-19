@@ -18,15 +18,13 @@ import org.bukkit.entity.Player;
  * @author Gary
  */
 public class Teams {
-    public static List<Player> blueTeam;
-    public static List<Player> purpleTeam;
-    public static Champion[] blueChampions;
-    public static Champion[] purpleChampions;
+    public List<Player> blueTeam;
+    public List<Player> purpleTeam;
+    public Champion[] blueChampions;
+    public Champion[] purpleChampions;
     private static List<Player> blueQueue, purpleQueue;
-    private static int count;
-    private static int emptySlot, emptySlot2;
     private static double x, y, z;
-    private static Location blueLobby, purpleLobby;
+    public static Location blueLobby, purpleLobby;
     public List<World> worlds;
     public World mainWorld;
     League plugin;
@@ -111,6 +109,14 @@ public class Teams {
         return purpleTeam;
     }
     
+    public Player getBlueTeam(int num) {
+        return blueTeam.get(num);
+    }
+    
+    public Player getPurpleTeam(int num) {
+        return purpleTeam.get(num);
+    }
+    
     public boolean removePlayer(Player player) {
         if (blueTeam.contains(player)) {
             blueTeam.remove(player);
@@ -129,8 +135,11 @@ public class Teams {
         if (blueTeam.contains(player)) {
             return "blue";
         }
-        else {
+        else if (purpleTeam.contains(player)){
             return "purple";
+        }
+        else {
+            return "none";
         }
     }
     
@@ -223,11 +232,11 @@ public class Teams {
             return purpleChampions[purpleTeam.lastIndexOf(player)];
         }
     }
-    public static Champion[] getBlueChampions() {
+    public Champion[] getBlueChampions() {
         return blueChampions;
     }
     
-    public static Champion[] getPurpleChampions() {
+    public Champion[] getPurpleChampions() {
         return purpleChampions;
     }
 }

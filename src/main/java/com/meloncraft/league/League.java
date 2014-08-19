@@ -43,7 +43,7 @@ public final class League extends JavaPlugin {
         //new Teams();
         
         worlds = this.getServer().getWorlds();
-        mainWorld = worlds.get(0);
+        mainWorld = this.getServer().getWorld("world");
         
         //Set Lobby Location
         Teams.setLobby(getConfig().getInt("blue-lobby.x"), 
@@ -77,15 +77,26 @@ public final class League extends JavaPlugin {
                 }
                 
                 else if(args[0].equalsIgnoreCase("default")) {
-                    
+                    return true;
                 }
                 else if(args[0].equalsIgnoreCase("joinblue")) {
                     JoinTeam.team.addBlue(sender.getServer().getPlayer(sender.getName()));
+                    return true;
                 }
                 else if(args[0].equalsIgnoreCase("joinpurple")) {
                     JoinTeam.team.addPurple(sender.getServer().getPlayer(sender.getName()));
+                    return true;
                 }
 	}
+        if (cmd.getName().equalsIgnoreCase("forcestart")) {
+            sender.getServer().getPlayer(sender.getName()).sendMessage("FORCE STARTING GAME!");
+            arena.startGame();
+            return true;
+        }
+        if (cmd.getName().equalsIgnoreCase("team")) {
+            sender.getServer().getPlayer(sender.getName()).sendMessage(teams.getTeam(sender.getServer().getPlayer(sender.getName())));
+            return true;
+        }
 	return false;
     }
     
