@@ -25,6 +25,7 @@ public class MinionPopulation {
     }
     
     public int getPopulation() {
+        allMinions.clear();
         for (Minion min : blueMidMinions) {
             allMinions.add(min);
         }
