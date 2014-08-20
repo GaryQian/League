@@ -8,6 +8,7 @@ package com.meloncraft.league;
 
 import com.meloncraft.league.Arena.Minions.MinionPopulation;
 import java.util.List;
+import java.util.Random;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -99,6 +100,11 @@ public final class League extends JavaPlugin {
         }
         if (cmd.getName().equalsIgnoreCase("team")) {
             sender.getServer().getPlayer(sender.getName()).sendMessage(teams.getTeam(sender.getServer().getPlayer(sender.getName())));
+            return true;
+        }
+        if (cmd.getName().equalsIgnoreCase("randomchampion")) {
+            teams.setRandomChampion(sender.getServer().getPlayer(sender.getName()));
+            sender.getServer().getPlayer(sender.getName()).sendMessage("You are:" + sender.getServer().getPlayer(sender.getName()).getName());
             return true;
         }
 	return false;

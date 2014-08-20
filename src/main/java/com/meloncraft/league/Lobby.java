@@ -21,7 +21,6 @@ public class Lobby {
         plugin = plug;
         teams = team;
         blueLobby = teams.blueLobby;
-        purpleLobby = teams.purpleLobby;
-                
+        purpleLobby = teams.purpleLobby;   
     }
 }

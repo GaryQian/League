@@ -186,6 +186,20 @@ public class ArenaHandler {
     public void startGame() {
         if (!started) {
             started = true;
+            
+            //randomly select champions
+            for (Player player : teams.getBlueTeam()) {
+                if (teams.getChampion(player) == null) {
+                    teams.setRandomChampion(player);
+                }
+            }
+            for (Player player : teams.getPurpleTeam()) {
+                if (teams.getChampion(player) == null) {
+                    teams.setRandomChampion(player);
+                }
+            }
+            
+            //teleport to the respective spawns
             for (Player player : plugin.getServer().getOnlinePlayers()) {
                 blueSpawn.setWorld(player.getWorld());
                 purpleSpawn.setWorld(player.getWorld());

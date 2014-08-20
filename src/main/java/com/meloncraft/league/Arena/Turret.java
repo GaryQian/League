@@ -66,6 +66,7 @@ public class Turret {
         
         z1 = z - 1;
         z2 = z + 1;
+
         center = new Location(plugin.mainWorld, x, y, z);
         
         allEntities = new ArrayList<Entity>();
@@ -107,6 +108,9 @@ public class Turret {
         temp.setX(temp.getX() - 1);
         temp.setZ(temp.getZ() + 1);
         addColumnToBody(temp);
+        center.setY(y);
+        center.setX(x);
+        center.setZ(z);
     }
     
     public void addColumnToBody(Location loc) {
@@ -170,11 +174,12 @@ public class Turret {
         for (Entity entity : world.getEntities()) {
             distance = entity.getLocation().distance(center);
             plugin.getLogger().info("DISTANCE###" + distance);
-            if (distance < 80) {
+            plugin.getLogger().info(entity.getLocation().toString() + center.toString());
+            if (distance < 10) {
                 plugin.getLogger().info("TESTING5");
                 if (entity instanceof CraftPlayer) {
                     champion = teams.getChampion((Player) entity);
-                    if (!champion.getTeam().equals(team)) {
+                    if (!teams.getTeam((Player) entity).equals(team)) {
                         plugin.getLogger().info("TESTING6");
                         targetPlayer = (Player) entity;
                     }

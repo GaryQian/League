@@ -9,6 +9,7 @@ package com.meloncraft.league;
 import com.meloncraft.league.Champions.Champion;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -200,12 +201,28 @@ public class Teams {
     
     //----------------------------
     //Champion storage
+    public void setRandomChampion(Player player) {
+        String champ;
+            Random gen = new Random();
+            
+            switch (gen.nextInt(2)) {
+                case 0: champ = "Ashe";
+                    break;
+                case 1: champ = "Master_Yi";
+                    break;
+            }
+            
+            setChampion(player, "champ");
+    }
+    
     public void setChampion(Player player, String champion) {
         if (getTeam(player).equals("blue")) {
             blueChampions[blueTeam.lastIndexOf(player)] = new Champion(player, champion, "blue");
+            player.sendMessage("You have selected " + champion);
         }
         else {
             purpleChampions[purpleTeam.lastIndexOf(player)] = new Champion(player, champion, "purple");
+            player.sendMessage("You have selected " + champion);
         }
     }
     
@@ -228,11 +245,16 @@ public class Teams {
     }
     public Champion getChampion(Player player) {
         if (getTeam(player).equals("blue")) {
-            return blueChampions[blueTeam.lastIndexOf(player)];
+            if (blueTeam.lastIndexOf(player) != -1) {
+                return blueChampions[blueTeam.lastIndexOf(player)];
+            }
         }
         else {
-            return purpleChampions[purpleTeam.lastIndexOf(player)];
+            if (purpleTeam.lastIndexOf(player) != -1) {
+                return purpleChampions[purpleTeam.lastIndexOf(player)];
+            }
         }
+        return null;
     }
     public Champion[] getBlueChampions() {
         return blueChampions;

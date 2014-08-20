@@ -30,7 +30,8 @@ public class Champion {
     //public Champion(Player play, WorldServer world, GameProfile s, PlayerInteractManager itemInWorldManager) {
     public Champion(Player play, String champ, String tea) {
         champion = champ;
-        health = 80;
+        maxHealth = 550;
+        health = 550;
         armor = 0;
         AD = 6;
         AP = 6;
@@ -43,6 +44,7 @@ public class Champion {
         player = play;
         player.setHealthScale(40);
         player.setMaxHealth(maxHealth);
+        player.setHealth(health);
         team = tea;
     }
     
@@ -71,6 +73,10 @@ public class Champion {
     
     public Player getPlayer() {
         return player;
+    }
+    
+    public String getName() {
+        return champion;
     }
     
     public void hit(double damage) {
