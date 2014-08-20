@@ -18,6 +18,7 @@ import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.World;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.entity.Player;
 
 /**
@@ -59,6 +60,7 @@ public class Turret {
         reward = 150;
         championAttacked = false;
         turretBody = new ArrayList<Location>();
+        world = ((CraftWorld)plugin.mainWorld).getHandle();
         height = plugin.getConfig().getInt("turret-height");
         x1 = x - 1;
         x2 = x + 1;
