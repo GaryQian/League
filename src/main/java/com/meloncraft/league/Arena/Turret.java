@@ -16,6 +16,7 @@ import java.util.List;
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -168,9 +169,10 @@ public class Turret {
         }
         for (Entity entity : world.getEntities()) {
             distance = entity.getLocation().distance(center);
-            if (distance < 8) {
+            plugin.getLogger().info("DISTANCE###" + distance);
+            if (distance < 80) {
                 plugin.getLogger().info("TESTING5");
-                if (entity.getType() == EntityType.PLAYER) {
+                if (entity instanceof CraftPlayer) {
                     champion = teams.getChampion((Player) entity);
                     if (!champion.getTeam().equals(team)) {
                         plugin.getLogger().info("TESTING6");
