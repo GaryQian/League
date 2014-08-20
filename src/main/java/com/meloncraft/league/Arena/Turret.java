@@ -10,6 +10,7 @@ import com.meloncraft.league.Arena.Minions.Minion;
 import com.meloncraft.league.Champions.Champion;
 import com.meloncraft.league.League;
 import com.meloncraft.league.Teams;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import net.minecraft.server.v1_7_R4.AxisAlignedBB;
@@ -39,6 +40,7 @@ public class Turret {
     public Class<EntityPlayer> playerClass;
     public Collection<Entity> allEntities;
     public boolean championAttacked;
+    public double x1, x2, z1, z2;
     
     private double distance, distance2;
     private boolean isMinionInRange;
@@ -56,8 +58,14 @@ public class Turret {
         damageBase = 20;
         reward = 150;
         championAttacked = false;
+        turretBody = new ArrayList<Location>();
         height = plugin.getConfig().getInt("turret-height");
-        center = new Location(plugin.mainWorld, x - 1, y, z - 1);
+        x1 = x - 1;
+        x2 = x + 1;
+        
+        z1 = z - 1;
+        z2 = z + 1;
+        center = new Location(plugin.mainWorld, x, y, z);
         
         addColumnToBody(center);
         
@@ -113,18 +121,26 @@ public class Turret {
     
     //checks if the location is part of the turret
     public boolean isTurretBody(Location location) {
-        for (Location loc : turretBody) {
-            if (loc.getBlock().getLocation().equals(location)) {
+        if (location.getX() >= x1 && location.getX() <= x2) {
+            if (location.getZ() >= z1 && location.getZ() <= z2) {
                 return true;
+            }
+        }
+        return false;
+        /*for (Location loc : turretBody) {
+            if (loc.getBlock().getLocation().getX()== location.getX()) {
+                if (loc.getBlock().getLocation().getZ()== location.getZ()) {
+                    return true;
+                }
             }
             else {
                 return false;
             }
         }
-        return false;
+        return false;*/
         
         //Location loc = new Location(plugin.mainWorld, x, y, z);
-        //return turretBody.contains(loc);
+        //return turretBody.contains(loc.getBlock().getLocation());
     }
     
     

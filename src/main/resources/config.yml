@@ -4,11 +4,21 @@
 #         DBeck43 (Daniel Beck)
 
 
-
+#############################
 #DO NOT TOUCH CONFIG VERSION!
 config-version: 1
+#############################
 
+
+
+
+#############################
+#Basic Options
 maintain-day: true
+
+
+#############################
+#LOBBY SETTINGS
 
 #Lobby location to select teams and choose champions
 blue-lobby:
@@ -20,7 +30,7 @@ purple-lobby:
     y:
     z:
  
-#Spawn location to select teams and choose champions
+#Spawn/recall location
 blue-spawn:
     x:
     y:
@@ -53,7 +63,109 @@ purple-nexus:
     z:
 
 
-turret-height:
 
+#################################################################################
+#Height of the turret (will include this many bocks below the center as the turret Body)
+turret-height:
+    
 #TURRET CENTERS
-#These are the coordinates of the top center block of the turret.
+#These are the coordinates of the top center block of the turret.    
+#Blue MID
+blueMid1:
+    x:
+    y:
+    z:
+blueMid2:
+    x:
+    y:
+    z:
+blueMid3:
+    x:
+    y:
+    z:
+#Blue TOP        
+blueTop1:
+    x:
+    y:
+    z:
+blueTop2:
+    x:
+    y:
+    z:
+blueTop3:
+    x:
+    y:
+    z:
+#Blue BOT      
+blueBot1:
+    x:
+    y:
+    z:
+blueBot2:
+    x:
+    y:
+    z:
+blueBot3:
+    x:
+    y:
+    z:
+        
+blueNexus1:
+    x:
+    y:
+    z:
+blueNexus2:
+    x:
+    y:
+    z:
+
+
+#PURPLE TURRETS
+#Purple Mid
+purpleMid1:
+    x:
+    y:
+    z:
+purpleMid2:
+    x:
+    y:
+    z:
+purpleMid3:
+    x:
+    y:
+    z:
+#Purple TOP        
+purpleTop1:
+    x:
+    y:
+    z:
+purpleTop2:
+    x:
+    y:
+    z:
+purpleTop3:
+    x:
+    y:
+    z:
+#Purple BOT      
+purpleBot1:
+    x:
+    y:
+    z:
+purpleBot2:
+    x:
+    y:
+    z:
+purpleBot3:
+    x:
+    y:
+    z:
+        
+purpleNexus1:
+    x:
+    y:
+    z:
+purpleNexus2:
+    x:
+    y:
+    z:

@@ -67,6 +67,7 @@ public class Teams {
     
     public boolean addBlue(Player player) {
         if (getTeamSize("blue") < 5) {
+            blueLobby.setWorld(player.getWorld());
             blueTeam.add(player);
             player.sendMessage("You have joined the Blue Team!");
             plugin.getLogger().info(player.getName() + " has Joined the Blue Team");
@@ -81,6 +82,7 @@ public class Teams {
     
     public boolean addPurple(Player player) {
         if (getTeamSize("purple") < 5) {
+            purpleLobby.setWorld(player.getWorld());
             purpleTeam.add(player);
             player.sendMessage("You have joined the Purple Team!");
             plugin.getLogger().info(player.getName() + " has Joined the Purple Team");

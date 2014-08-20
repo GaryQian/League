@@ -41,8 +41,8 @@ public class GeneralListeners implements Listener {
         team = tea;
         FileConfiguration config = plugin.getConfig();
         world = plugin.mainWorld;
-        blueSwitcher = new Location(world,  plugin.getConfig().getDouble("blue-switcher.x") - 1,  plugin.getConfig().getDouble("blue-switcher.y"),  plugin.getConfig().getDouble("blue-switcher.z")- 1);
-        purpleSwitcher = new Location(world,  plugin.getConfig().getDouble("purple-switcher.x") - 1,  plugin.getConfig().getDouble("purple-switcher.y"),   plugin.getConfig().getDouble("purple-switcher.z") - 1);
+        blueSwitcher = new Location(world,  plugin.getConfig().getDouble("blue-switcher.x"),  plugin.getConfig().getDouble("blue-switcher.y"),  plugin.getConfig().getDouble("blue-switcher.z"));
+        purpleSwitcher = new Location(world,  plugin.getConfig().getDouble("purple-switcher.x"),  plugin.getConfig().getDouble("purple-switcher.y"),   plugin.getConfig().getDouble("purple-switcher.z"));
     }
     
     
@@ -167,18 +167,29 @@ public class GeneralListeners implements Listener {
         //LEFT CLICK ACTIONS
         
         else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            Turret turret;
+            Turret turret = null;
             if (team.getTeam(player).equals("blue")) {
-                turret = arena.isBlueTurret(event.getClickedBlock().getLocation());
+                plugin.getLogger().info("TEST2");
+                turret = arena.isPurpleTurret(event.getClickedBlock().getLocation());
+                plugin.getLogger().info("TEST6");
                 if (turret != null) {
+                    plugin.getLogger().info("TEST4");
                     turret.hit(team.getChampion(player).getDamage());
+                    player.sendMessage("YOU HIT THE TURRET");
+                }
+            }
+            else if (team.getTeam(player).equals("purple")) {
+                plugin.getLogger().info("TEST3");
+                turret = arena.isBlueTurret(event.getClickedBlock().getLocation());
+                plugin.getLogger().info("TEST7");
+                if (turret != null) {
+                    plugin.getLogger().info("TEST5");
+                    turret.hit(team.getChampion(player).getDamage());
+                    player.sendMessage("YOU HIT THE TURRET");
                 }
             }
             else {
-                turret = arena.isPurpleTurret(event.getClickedBlock().getLocation());
-                if (turret != null) {
-                    turret.hit(team.getChampion(player).getDamage());
-                }
+                
             }
         }
         

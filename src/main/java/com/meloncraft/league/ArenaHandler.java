@@ -209,4 +209,5 @@ public class ArenaHandler {
     public void maintainDay() {
         BukkitTask task = new DayTask(plugin).runTaskTimer(plugin, 100, 1500);
     }
+    
 }
