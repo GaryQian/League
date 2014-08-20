@@ -82,6 +82,7 @@ public class Champion {
     public void hit(double damage) {
         incomingDamage = (double) damage * (1 / (1 + (armor / 100)));
         health -= damage;
+        refresh();
     }
     
     public void refresh() {

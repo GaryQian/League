@@ -162,7 +162,7 @@ public class Turret {
         //allEntities = world.getEntities();        
         //allEntities.addAll(world.getEntities());
 
-        distance2 = 10;
+        distance2 = 13;
         isMinionInRange = false;
         target = null;
         targetPlayer = null;
@@ -175,7 +175,7 @@ public class Turret {
             distance = entity.getLocation().distance(center);
             plugin.getLogger().info("DISTANCE###" + distance);
             plugin.getLogger().info(entity.getLocation().toString() + center.toString());
-            if (distance < 10) {
+            if (distance < 12) {
                 plugin.getLogger().info("TESTING5");
                 if (entity instanceof CraftPlayer) {
                     champion = teams.getChampion((Player) entity);
@@ -217,7 +217,7 @@ public class Turret {
         
         else if (targetPlayer != null) {
             plugin.getLogger().info("TESTING9");
-            targetPlayer.sendMessage("WARNING: You have been targeted by the tower!");
+            //targetPlayer.sendMessage("WARNING: You have been targeted by the tower!");
             target = targetPlayer;
             if (target != null) {
             plugin.getLogger().info("TARGET NAME" + target.toString());
@@ -274,10 +274,17 @@ public class Turret {
     }
     
     public void attackSequence() {
-        findTarget();
-        if (attack()) {
-            findTarget();
+        Entity tempTarget = findTarget();
+        CraftPlayer tempPlayer;
+        if (tempTarget instanceof CraftPlayer) {
+            tempPlayer = (CraftPlayer) tempTarget;
+            tempPlayer.sendMessage("&4&lWARNING: You have been targeted by the tower!");
         }
+        attack();
+
+        /*if (attack()) {
+            findTarget();
+        }*/
         
     }
     
