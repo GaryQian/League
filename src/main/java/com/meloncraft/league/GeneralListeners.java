@@ -168,28 +168,41 @@ public class GeneralListeners implements Listener {
         
         else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
             Turret turret = null;
+            //boolean hitTurret = false;
+            
+            //--------------
+            //check if tower is clicked
             if (team.getTeam(player).equals("blue")) {
-                plugin.getLogger().info("TEST2");
                 turret = arena.isPurpleTurret(event.getClickedBlock().getLocation());
-                plugin.getLogger().info("TEST6");
                 if (turret != null) {
-                    plugin.getLogger().info("TEST4");
-                    turret.hit(team.getChampion(player).getDamage());
+                    if (team.getChampion(player) != null) {
+                        turret.hit(team.getChampion(player).getDamage());
+                        //hitTurret = true;
+                    }
                     player.sendMessage("YOU HIT THE TURRET");
                 }
+                if (arena.isBlueTurret(event.getClickedBlock().getLocation()) != null) {
+                    player.sendMessage("That is a friendly tower! Attack &5PURPLE &r towers!");
+                }
             }
+            
             else if (team.getTeam(player).equals("purple")) {
-                plugin.getLogger().info("TEST3");
                 turret = arena.isBlueTurret(event.getClickedBlock().getLocation());
-                plugin.getLogger().info("TEST7");
                 if (turret != null) {
-                    plugin.getLogger().info("TEST5");
-                    turret.hit(team.getChampion(player).getDamage());
+                    if (team.getChampion(player) != null) {
+                        turret.hit(team.getChampion(player).getDamage());
+                        //hitTurret = true;
+                    }
                     player.sendMessage("YOU HIT THE TURRET");
                 }
+                if (arena.isPurpleTurret(event.getClickedBlock().getLocation()) != null) {
+                    player.sendMessage("That is a friendly tower! Attack &5BLUE &r towers!");
+                }
             }
+            
+            //---------------
             else {
-                
+                //regular attack
             }
         }
         

@@ -8,6 +8,7 @@ package com.meloncraft.league;
 
 import com.meloncraft.league.Arena.Minions.MinionSpawnWaveTask;
 import com.meloncraft.league.Arena.Turret;
+import com.meloncraft.league.Arena.TurretAttackTask;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -198,9 +199,47 @@ public class ArenaHandler {
             else {
                 //assign random champ
             }
-        }  
+        }
+        //start turret attacking
+        BukkitTask turretAttack = new TurretAttackTask(plugin, teams, this).runTaskTimer(plugin, 15 * 20, 40);
         //spawnMinionWave();
     }
+    
+    public void turretsAttack() {
+        blueMid1.attackSequence();
+        blueMid2.attackSequence();
+        blueMid3.attackSequence();
+        
+        blueBot1.attackSequence();
+        blueBot2.attackSequence();
+        blueBot3.attackSequence();
+        
+        blueTop1.attackSequence();
+        blueTop2.attackSequence();
+        blueTop3.attackSequence();
+        
+        blueNexus1.attackSequence();
+        blueNexus2.attackSequence();
+        
+        
+        
+        
+        purpleMid1.attackSequence();
+        purpleMid2.attackSequence();
+        purpleMid3.attackSequence();
+        
+        purpleBot1.attackSequence();
+        purpleBot2.attackSequence();
+        purpleBot3.attackSequence();
+        
+        purpleTop1.attackSequence();
+        purpleTop2.attackSequence();
+        purpleTop3.attackSequence();
+        
+        purpleNexus1.attackSequence();
+        purpleNexus2.attackSequence();
+    }
+    
     //spawns a waves of minions
     public void spawnMinionWave() {
         BukkitTask spawnWaves = new MinionSpawnWaveTask(plugin).runTaskTimer(plugin, 800, 600);

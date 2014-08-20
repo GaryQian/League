@@ -54,7 +54,7 @@ public class Turret {
         plugin = plug;
         team = tea;
         teams = te;
-        health = 200;
+        health = 2550;
         damageBase = 20;
         reward = 150;
         championAttacked = false;
@@ -66,6 +66,8 @@ public class Turret {
         z1 = z - 1;
         z2 = z + 1;
         center = new Location(plugin.mainWorld, x, y, z);
+        
+        allEntities = new ArrayList<Entity>();
         
         addColumnToBody(center);
         
@@ -148,9 +150,12 @@ public class Turret {
     public Entity findTarget() {
         
         //allEntities = center.getWorld().getEntitiesByClasses(championClass, minionClass);
+        AxisAlignedBB aabb = AxisAlignedBB.a(-80.0, 30.0, -80.0, 80.0, 10.0, 80.0);
         //gets a list of all entities, and checks if they are within range. If they are, minions get priority, unless champion is being attacked.
-        allEntities = world.a(minionClass, AxisAlignedBB.a(-80, 30, -80, 80, 10, 80));
-        allEntities.addAll(world.a(playerClass, AxisAlignedBB.a(-80, 30, -80, 80, 10, 80)));
+        allEntities.addAll(world.a(minionClass, aabb));
+        allEntities.addAll(world.a(playerClass, aabb));
+        
+        //allEntities = world.getEntities()
         
         distance2 = 10;
         isMinionInRange = false;
@@ -198,6 +203,7 @@ public class Turret {
             return targetPlayer;
         }
         else {
+            target = null;
             return null;
         }
     }
@@ -211,36 +217,45 @@ public class Turret {
     }
     
     //attack target, calculates damage
-    public void attack() {
-        if (target.equals(lastHit)) {
-            
-            damage = damageBase + (damageBase * Math.pow(1.25, timesHit));
-            timesHit++;
+    public boolean attack() {
+        if (target != null) {
+            if (target.equals(lastHit)) {
+                damage = damageBase + (damageBase * Math.pow(1.375, timesHit));
+                if (damage > damageBase * 2.0) {
+                    damage = damageBase * 2;
+                }
+                timesHit++;
+            }
+            else {
+                timesHit = 1;
+                damage = damageBase;
+            }
+            if (target instanceof EntityPlayer) {
+                targetBukkitPlayer = (Player) target.getBukkitEntity();
+                targetBukkitPlayer.sendMessage("You have been hit by the tower!");
+                champion = teams.getChampion(targetBukkitPlayer);
+                champion.hit(damage);
+                lastHit = target;
+                return true;
+
+            }
+            else {
+                targetMinion = (Minion) target;
+                targetMinion.hit(damage);
+                lastHit = target;
+                return true;
+            }
         }
-        else {
-            timesHit = 1;
-            damage = damageBase;
-        }
-        if (target instanceof EntityPlayer) {
-            targetBukkitPlayer = (Player) target.getBukkitEntity();
-            targetBukkitPlayer.sendMessage("You have been hit by the tower!");
-            champion = teams.getChampion(targetBukkitPlayer);
-            champion.hit(damage);
-            lastHit = target;
-            
-        }
-        else {
-            targetMinion = (Minion) target;
-            targetMinion.hit(damage);
-            lastHit = target;
-        }
+        return false;
         
     }
     
     public void attackSequence() {
         findTarget();
-        attack();
-        findTarget();
+        if (attack()) {
+            findTarget();
+        }
+        
     }
     
     public void hit(double damage) {
