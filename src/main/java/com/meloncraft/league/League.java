@@ -28,6 +28,8 @@ public final class League extends JavaPlugin {
     public void onEnable() {
         this.saveDefaultConfig();
         this.getConfig();
+        worlds = this.getServer().getWorlds();
+        mainWorld = this.getServer().getWorld("world");
         teams = new Teams(this);
         arena = new ArenaHandler(this, teams);
         new GeneralListeners(this, arena, teams);
@@ -44,8 +46,7 @@ public final class League extends JavaPlugin {
         
         //new Teams();
         
-        worlds = this.getServer().getWorlds();
-        mainWorld = this.getServer().getWorld("world");
+        
         this.getLogger().info(mainWorld.getName());
         
         //Set Lobby Location

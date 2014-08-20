@@ -154,7 +154,7 @@ public class Turret {
         //AxisAlignedBB aabb = AxisAlignedBB.a(-80.0, 30.0, -80.0, 80.0, 10.0, 80.0);
         //gets a list of all entities, and checks if they are within range. If they are, minions get priority, unless champion is being attacked.
         //allEntities.addAll(world.getHandle().a(minionClass, aabb));
-        allEntities = world.getEntities();        
+        //allEntities = world.getEntities();        
         //allEntities.addAll(world.getEntities());
 
         distance2 = 10;
