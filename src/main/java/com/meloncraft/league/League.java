@@ -6,12 +6,12 @@
 
 package com.meloncraft.league;
 
+import com.meloncraft.league.Arena.Minions.MinionPopulation;
 import java.util.List;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 /**
  *
  * @author Gary
@@ -22,6 +22,7 @@ public final class League extends JavaPlugin {
     
     public ArenaHandler arena;
     public static Teams teams;
+    public MinionPopulation minionPopulation;
     
     @Override
     public void onEnable() {
@@ -31,6 +32,7 @@ public final class League extends JavaPlugin {
         arena = new ArenaHandler(this, teams);
         new GeneralListeners(this, arena, teams);
         new JoinTeam(this, teams);
+        minionPopulation = new MinionPopulation(this);
         
         
         //keep time day
@@ -44,6 +46,7 @@ public final class League extends JavaPlugin {
         
         worlds = this.getServer().getWorlds();
         mainWorld = this.getServer().getWorld("world");
+        this.getLogger().info(mainWorld.getName());
         
         //Set Lobby Location
         Teams.setLobby(getConfig().getInt("blue-lobby.x"), 

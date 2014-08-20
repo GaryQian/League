@@ -9,6 +9,7 @@ package com.meloncraft.league.Arena.Minions;
 import com.meloncraft.league.League;
 import java.util.List;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
 /**
@@ -18,7 +19,7 @@ import org.bukkit.entity.EntityType;
 public class MinionPopulation {
     static League plugin;
     //List<Minion> blueMinions, purpleMinions;
-    public static List<Minion> blueMidMinions, purpleMidMinions, blueTopMinions, purpleTopMinions, blueBotMinions, purpleBotMinions, allMinions;
+    public static List<Entity> blueMidMinions, purpleMidMinions, blueTopMinions, purpleTopMinions, blueBotMinions, purpleBotMinions, allMinions;
     
     public MinionPopulation(League plug) {
         plugin = plug;
@@ -26,50 +27,62 @@ public class MinionPopulation {
     
     public int getPopulation() {
         allMinions.clear();
-        for (Minion min : blueMidMinions) {
+        for (Entity min : blueMidMinions) {
             allMinions.add(min);
         }
-        for (Minion min : blueTopMinions) {
+        for (Entity min : blueTopMinions) {
             allMinions.add(min);
         }
-        for (Minion min : blueBotMinions) {
+        for (Entity min : blueBotMinions) {
             allMinions.add(min);
         }
-        for (Minion min : purpleMidMinions) {
+        for (Entity min : purpleMidMinions) {
             allMinions.add(min);
         }
-        for (Minion min : purpleTopMinions) {
+        for (Entity min : purpleTopMinions) {
             allMinions.add(min);
         }
-        for (Minion min : purpleBotMinions) {
+        for (Entity min : purpleBotMinions) {
             allMinions.add(min);
         }
         return allMinions.size();
     }
     
-    public List<Minion> getAllMinions() {
+    public List<Entity> getAllMinions() {
         getPopulation();
         return allMinions;
         
     }
     
     public static void addBlueMidMinion() {
-        blueMidMinions.add((Minion) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y"), plugin.getConfig().getDouble("blue-nexus.z")) , EntityType.ZOMBIE));
+        blueMidMinions.add(plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y"), plugin.getConfig().getDouble("blue-nexus.z")) , EntityType.ZOMBIE));
     }
     public static void addBlueTopMinion() {
-        blueTopMinions.add((Minion) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y"), plugin.getConfig().getDouble("blue-nexus.z")) , EntityType.ZOMBIE));
+        blueTopMinions.add(plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y"), plugin.getConfig().getDouble("blue-nexus.z")) , EntityType.ZOMBIE));
     }
     public static void addBlueBotMinion() {
-        blueBotMinions.add((Minion) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y"), plugin.getConfig().getDouble("blue-nexus.z")) , EntityType.ZOMBIE));
+        blueBotMinions.add(plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y"), plugin.getConfig().getDouble("blue-nexus.z")) , EntityType.ZOMBIE));
     }
     
     public static void addPurpleMidMinion() {
-        purpleMidMinions.add((Minion) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("purple-nexus.x"), plugin.getConfig().getDouble("purple-nexus.y"), plugin.getConfig().getDouble("purple-nexus.z")) , EntityType.ZOMBIE));
+        purpleMidMinions.add(plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("purple-nexus.x"), plugin.getConfig().getDouble("purple-nexus.y"), plugin.getConfig().getDouble("purple-nexus.z")) , EntityType.ZOMBIE));
     }
     public static void addPurpleTopMinion() {
-        purpleTopMinions.add((Minion) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("purple-nexus.x"), plugin.getConfig().getDouble("purple-nexus.y"), plugin.getConfig().getDouble("purple-nexus.z")) , EntityType.ZOMBIE));
+        purpleTopMinions.add(plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("purple-nexus.x"), plugin.getConfig().getDouble("purple-nexus.y"), plugin.getConfig().getDouble("purple-nexus.z")) , EntityType.ZOMBIE));
     }
     public static void addPurpleBotMinion() {
-        purpleBotMinions.add((Minion) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("purple-nexus.x"), plugin.getConfig().getDouble("purple-nexus.y"), plugin.getConfig().getDouble("purple-nexus.z")) , EntityType.ZOMBIE));
+        purpleBotMinions.add(plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("purple-nexus.x"), plugin.getConfig().getDouble("purple-nexus.y"), plugin.getConfig().getDouble("purple-nexus.z")) , EntityType.ZOMBIE));
+    }
+    
+    public String getTeam(Entity ent) {
+        if (blueMidMinions.contains(ent) || blueTopMinions.contains(ent) || blueBotMinions.contains(ent)) {
+            return "blue";
+        }
+        if (purpleMidMinions.contains(ent) || purpleTopMinions.contains(ent) || purpleBotMinions.contains(ent)) {
+            return "purple";
+        }
+        else {
+            return null;
+        }
     }
 }

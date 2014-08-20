@@ -172,37 +172,39 @@ public class GeneralListeners implements Listener {
             
             //--------------
             //check if tower is clicked
-            if (team.getTeam(player).equals("blue")) {
-                turret = arena.isPurpleTurret(event.getClickedBlock().getLocation());
-                if (turret != null) {
-                    if (team.getChampion(player) != null) {
-                        turret.hit(team.getChampion(player).getDamage());
-                        //hitTurret = true;
+            if (arena.started) {
+                if (team.getTeam(player).equals("blue")) {
+                    turret = arena.isPurpleTurret(event.getClickedBlock().getLocation());
+                    if (turret != null) {
+                        if (team.getChampion(player) != null) {
+                            turret.hit(team.getChampion(player).getDamage());
+                            //hitTurret = true;
+                        }
+                        player.sendMessage("YOU HIT THE TURRET");
                     }
-                    player.sendMessage("YOU HIT THE TURRET");
-                }
-                if (arena.isBlueTurret(event.getClickedBlock().getLocation()) != null) {
-                    player.sendMessage("That is a friendly tower! Attack &5PURPLE &r towers!");
-                }
-            }
-            
-            else if (team.getTeam(player).equals("purple")) {
-                turret = arena.isBlueTurret(event.getClickedBlock().getLocation());
-                if (turret != null) {
-                    if (team.getChampion(player) != null) {
-                        turret.hit(team.getChampion(player).getDamage());
-                        //hitTurret = true;
+                    if (arena.isBlueTurret(event.getClickedBlock().getLocation()) != null) {
+                        player.sendMessage("That is a friendly tower! Attack &5PURPLE &r towers!");
                     }
-                    player.sendMessage("YOU HIT THE TURRET");
                 }
-                if (arena.isPurpleTurret(event.getClickedBlock().getLocation()) != null) {
-                    player.sendMessage("That is a friendly tower! Attack &5BLUE &r towers!");
+
+                else if (team.getTeam(player).equals("purple")) {
+                    turret = arena.isBlueTurret(event.getClickedBlock().getLocation());
+                    if (turret != null) {
+                        if (team.getChampion(player) != null) {
+                            turret.hit(team.getChampion(player).getDamage());
+                            //hitTurret = true;
+                        }
+                        player.sendMessage("YOU HIT THE TURRET");
+                    }
+                    if (arena.isPurpleTurret(event.getClickedBlock().getLocation()) != null) {
+                        player.sendMessage("That is a friendly tower! Attack &5BLUE &r towers!");
+                    }
                 }
-            }
-            
-            //---------------
-            else {
-                //regular attack
+
+                //---------------
+                else {
+                    //regular attack
+                }
             }
         }
         

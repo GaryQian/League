@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
  * @author Gary
  */
 public class Champion {
-    public int health, maxHealth, armor, AD, AP, speed, mana, energy, level, kills, deaths, assists, range;
+    public int health, maxHealth, armor, AD, AP, speed, mana, energy, level, kills, deaths, assists, range, gold;
     public double healthRegen, manaRegen, damage, incomingDamage;
     public String team; //TRUE = Blue FALSE = purple
     public Player player;

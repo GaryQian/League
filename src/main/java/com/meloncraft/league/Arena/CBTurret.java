@@ -13,21 +13,21 @@ import com.meloncraft.league.Teams;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import net.minecraft.server.v1_7_R4.AxisAlignedBB;
+import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.entity.Player;
 
 /**
  *
  * @author Gary
  */
-public class Turret {
+public class CBTurret {
     League plugin;
     public Location center, temp;
-    public World world;
+    public CraftWorld world;
     public String team;
     public Teams teams;
     public List<Location> turretBody;
@@ -35,7 +35,7 @@ public class Turret {
     public double damage, damageBase, incomingDamage;
     public static int reward;
     public Entity target, lastHit;
-    public Entity targetMinion;
+    public Minion targetMinion;
     public Class<Minion> minionClass;
     public Class<EntityPlayer> playerClass;
     public Collection<Entity> allEntities;
@@ -44,12 +44,13 @@ public class Turret {
     
     private double distance, distance2;
     private boolean isMinionInRange;
-    private Player targetPlayer;
+    private EntityPlayer targetPlayer;
     private Minion minion;
     private Champion champion;
+    private Player targetBukkitPlayer;
     
     
-    public Turret(double x, double y, double z, String tea, Teams te, League plug) {
+    public CBTurret(double x, double y, double z, String tea, Teams te, League plug) {
         plugin = plug;
         team = tea;
         teams = te;
@@ -58,7 +59,7 @@ public class Turret {
         reward = 150;
         championAttacked = false;
         turretBody = new ArrayList<Location>();
-        world = plugin.mainWorld;
+        world = ((CraftWorld)plugin.getServer().getWorlds().get(0))/*.getHandle()*/;
         height = plugin.getConfig().getInt("turret-height");
         x1 = x - 1;
         x2 = x + 1;
@@ -67,7 +68,7 @@ public class Turret {
         z2 = z + 1;
         center = new Location(plugin.mainWorld, x, y, z);
         
-        allEntities = new ArrayList<Entity>();
+        //allEntities = new ArrayList<Entity>();
         //playerClass = new Class<"EntityPlayer">();
         
         addColumnToBody(center);
@@ -151,40 +152,39 @@ public class Turret {
     public Entity findTarget() {
         plugin.getLogger().info("TESTING1");
         //allEntities = center.getWorld().getEntitiesByClasses(championClass, minionClass);
-        //AxisAlignedBB aabb = AxisAlignedBB.a(-80.0, 30.0, -80.0, 80.0, 10.0, 80.0);
+        AxisAlignedBB aabb = AxisAlignedBB.a(-80.0, 30.0, -80.0, 80.0, 10.0, 80.0);
         //gets a list of all entities, and checks if they are within range. If they are, minions get priority, unless champion is being attacked.
         //allEntities.addAll(world.getHandle().a(minionClass, aabb));
-        allEntities = world.getEntities();        
+        //allEntities.addAll(world.getHandle().a(, aabb);        
         //allEntities.addAll(world.getEntities());
 
         distance2 = 10;
         isMinionInRange = false;
         target = null;
         targetPlayer = null;
-        targetMinion = null;
         plugin.getLogger().info("TESTING2");
-        for (Entity entity : world.getEntities()) {
-            plugin.getLogger().info(entity.toString());
+        for (Entity entity : allEntities) {
+            plugin.getLogger().info(entity.getName());
         }
-        for (Entity entity : world.getEntities()) {
-            distance = entity.getLocation().distance(center);
+        for (Entity entity : allEntities) {
+            distance = entity.getBukkitEntity().getLocation().distance(center);
             if (distance < 8) {
                 plugin.getLogger().info("TESTING5");
-                if (entity.getType() == EntityType.PLAYER) {
-                    champion = teams.getChampion((Player) entity);
+                if (entity instanceof EntityPlayer) {
+                    champion = teams.getChampion((Player) entity.getBukkitEntity());
                     if (!champion.getTeam().equals(team)) {
                         plugin.getLogger().info("TESTING6");
-                        targetPlayer = (Player) entity;
+                        targetPlayer = (EntityPlayer) entity;
                     }
                 }
                 if (distance < distance2) {
                     plugin.getLogger().info("TESTING7");
-                    if (entity.getType() == EntityType.SKELETON) {
+                    if (entity instanceof Minion) {
                         plugin.getLogger().info("TESTING8");
-                        if (!plugin.minionPopulation.getTeam(entity).equals(team)) {
+                        if (!minion.getTeam().equals(team)) {
                             plugin.getLogger().info("TESTING9");
                             isMinionInRange = true;
-                            targetMinion = entity;
+                            targetMinion = (Minion) entity;
                             distance2 = distance;
                         }
                     }
@@ -203,17 +203,17 @@ public class Turret {
         if (isMinionInRange) {
             target = targetMinion;
             if (target != null) {
-            plugin.getLogger().info("TARGET NAME" + target.toString());
+            plugin.getLogger().info("TARGET NAME" + target.getName());
             }
             return targetMinion;
         }
         
         else if (targetPlayer != null) {
             plugin.getLogger().info("TESTING9");
-            targetPlayer.sendMessage("WARNING: You have been targeted by the tower!");
+            targetPlayer.getBukkitEntity().sendMessage("WARNING: You have been targeted by the tower!");
             target = targetPlayer;
             if (target != null) {
-            plugin.getLogger().info("TARGET NAME" + target.toString());
+            plugin.getLogger().info("TARGET NAME" + target.getName());
             }
             return targetPlayer;
         }
@@ -246,18 +246,18 @@ public class Turret {
                 timesHit = 1;
                 damage = damageBase;
             }
-            if (target.getType() == EntityType.PLAYER) {
-                
-                targetPlayer.sendMessage("You have been hit by the tower!");
-                champion = teams.getChampion(targetPlayer);
+            if (target instanceof EntityPlayer) {
+                targetBukkitPlayer = (Player) target.getBukkitEntity();
+                targetBukkitPlayer.sendMessage("You have been hit by the tower!");
+                champion = teams.getChampion(targetBukkitPlayer);
                 champion.hit(damage);
                 lastHit = target;
                 return true;
 
             }
             else {
-                targetMinion = target;
-                //targetMinion.hit(damage);
+                targetMinion = (Minion) target;
+                targetMinion.hit(damage);
                 lastHit = target;
                 return true;
             }

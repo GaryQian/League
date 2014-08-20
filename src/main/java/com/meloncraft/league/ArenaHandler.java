@@ -184,25 +184,28 @@ public class ArenaHandler {
     }
     
     public void startGame() {
-        started = true;
-        for (Player player : plugin.getServer().getOnlinePlayers()) {
-            blueSpawn.setWorld(player.getWorld());
-            purpleSpawn.setWorld(player.getWorld());
-            if (teams.getTeam(player).equals("blue")) {
-                //player.sendMessage("GAME FORCE-STARTED");
-                player.teleport(blueSpawn);
+        if (!started) {
+            started = true;
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
+                blueSpawn.setWorld(player.getWorld());
+                purpleSpawn.setWorld(player.getWorld());
+                if (teams.getTeam(player).equals("blue")) {
+                    //player.sendMessage("GAME FORCE-STARTED");
+                    player.teleport(blueSpawn);
+                }
+                else if (teams.getTeam(player).equals("purple")){
+                    //player.sendMessage("GAME FORCE-STARTED");
+                    player.teleport(purpleSpawn);
+                }
+                else {
+                    //assign random champ
+                }
             }
-            else if (teams.getTeam(player).equals("purple")){
-                //player.sendMessage("GAME FORCE-STARTED");
-                player.teleport(purpleSpawn);
-            }
-            else {
-                //assign random champ
-            }
+            //start turret attacking
+            plugin.getLogger().info("STARTING TURRET ATTACKIN!");
+            BukkitTask turretAttack = new TurretAttackTask(plugin, teams, this).runTaskTimer(plugin, 10 * 20, 40);
+            //spawnMinionWave();
         }
-        //start turret attacking
-        BukkitTask turretAttack = new TurretAttackTask(plugin, teams, this).runTaskTimer(plugin, 15 * 20, 40);
-        //spawnMinionWave();
     }
     
     public void turretsAttack() {
