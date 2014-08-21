@@ -6,10 +6,10 @@
 
 package com.meloncraft.league.Champions;
 
-import com.meloncraft.league.Teams;
 import net.minecraft.server.v1_7_R4.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 /**
@@ -22,6 +22,7 @@ public class Champion {
     public String team; //TRUE = Blue FALSE = purple
     public Player player;
     public String champion;
+    public boolean recalling;
     
     
     static MinecraftServer server = ((CraftServer)Bukkit.getServer()).getHandle().getServer();
@@ -29,6 +30,7 @@ public class Champion {
     //public Champion(World world) {
     //public Champion(Player play, WorldServer world, GameProfile s, PlayerInteractManager itemInWorldManager) {
     public Champion(Player play, String champ, String tea) {
+        recalling = false;
         champion = champ;
         maxHealth = 550;
         health = 550;
@@ -96,12 +98,30 @@ public class Champion {
         respawnTime = time;
     }
     
+    public boolean attack(double damage, Entity target) {
+        
+        if (recalling) {
+            recalling = false;
+            player.sendMessage("Recalling interrupted");
+        }
+        return false;
+    }
+            
     public void hit(double damage) {
         incomingDamage = (double) damage * (1 / (1 + (armor / 100)));
         health -= incomingDamage;
         player.sendMessage("" + incomingDamage);
         player.damage(incomingDamage);
+        recalling = false;
         refresh();
+    }
+    
+    public void setRecalling(boolean rec) {
+        recalling = rec;
+    }
+    
+    public boolean getRecalling() {
+        return recalling;
     }
     
     public void refresh() {

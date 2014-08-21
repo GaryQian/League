@@ -34,6 +34,20 @@ public class ClockTask extends BukkitRunnable{
         for (Player player : teams.getPurpleTeam()) {
             teams.getChampion(player).respawnTimeTick();
         }
+        arena.blueMid3.heal(15);
+        arena.purpleMid3.heal(15);
+        
+        arena.blueTop3.heal(15);
+        arena.purpleTop3.heal(15);
+        
+        arena.blueBot3.heal(15);
+        arena.purpleBot3.heal(15);
+        
+        arena.blueNexus1.heal(15);
+        arena.purpleNexus1.heal(15);
+        
+        arena.blueNexus2.heal(15);
+        arena.purpleNexus2.heal(15);
     }
     
 }

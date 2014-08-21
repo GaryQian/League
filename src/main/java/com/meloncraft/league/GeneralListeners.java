@@ -38,12 +38,14 @@ public class GeneralListeners implements Listener {
     ArenaHandler arena;
     private Champion tempChampion;
     Location tempLoc;
+    private int count;
     
     public GeneralListeners(League plug, ArenaHandler are, Teams tea) {
         plugin = plug;
         arena = are;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         teams = tea;
+        count = 0;
         
         FileConfiguration config = plugin.getConfig();
         world = plugin.mainWorld;
@@ -89,29 +91,42 @@ public class GeneralListeners implements Listener {
         if (arena.started) {
             //check if champion is respawning and prevent them from leaving spawn.
             if (teams.getChampion(event.getPlayer()).getRespawnTime() > 0) {
+                
                 if (teams.getTeam(event.getPlayer()).equals("blue")) {
                     if (event.getTo().distance(arena.blueSpawn) > plugin.getConfig().getDouble("spawn-radius")) {
-                        event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[DEAD] " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + teams.getChampion(event.getPlayer()).getRespawnTime() + ChatColor.GOLD + " to exit Spawn! Go buy items!");
-                        event.setTo(event.getFrom());
+                        if (count % 2 != 1) {
+                            event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[DEAD] " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + teams.getChampion(event.getPlayer()).getRespawnTime() + ChatColor.GOLD + " to exit Spawn! Go buy items!");
+                            event.setTo(event.getFrom());
+                            count++;
+                        }
                     }
                 }
                 if (teams.getTeam(event.getPlayer()).equals("purple")) {
                     if (event.getTo().distance(arena.purpleSpawn) > plugin.getConfig().getDouble("spawn-radius")) {
-                        event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[DEAD] " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + teams.getChampion(event.getPlayer()).getRespawnTime() + ChatColor.GOLD + " to exit Spawn! Go buy items!");
-                        event.setTo(event.getFrom());
+                        if (count % 2 != 1) {
+                            event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[DEAD] " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + teams.getChampion(event.getPlayer()).getRespawnTime() + ChatColor.GOLD + " to exit Spawn! Go buy items!");
+                            event.setTo(event.getFrom());
+                        }
                     }
                 }
+            }
+            
+            if (teams.getChampion(event.getPlayer()).getRecalling()) {
+                teams.getChampion(event.getPlayer()).setRecalling(false);
+                event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[WARNING]: " + ChatColor.GOLD + " Recalling Interrupted!");
             }
         }
     }
     
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
-        if (teams.getTeam(event.getPlayer()).equals("blue")) {
-            event.setRespawnLocation(arena.blueSpawn);
-        }
-        else if (teams.getTeam(event.getPlayer()).equals("purple")) {
-            event.setRespawnLocation(arena.purpleSpawn);
+        if (arena.started) {
+            if (teams.getTeam(event.getPlayer()).equals("blue")) {
+                event.setRespawnLocation(arena.blueSpawn);
+            }
+            else if (teams.getTeam(event.getPlayer()).equals("purple")) {
+                event.setRespawnLocation(arena.purpleSpawn);
+            }
         }
     }
     
@@ -255,7 +270,7 @@ public class GeneralListeners implements Listener {
                         player.sendMessage("YOU HIT THE TURRET");
                     }
                     if (arena.isPurpleTurret(event.getClickedBlock().getLocation()) != null) {
-                        player.sendMessage(ChatColor.GOLD + "That is a friendly tower! Attack " + ChatColor.LIGHT_PURPLE + "PURPLE " + ChatColor.GOLD + "towers!");
+                        player.sendMessage(ChatColor.GOLD + "That is a friendly tower! Attack " + ChatColor.BLUE + "BLUE " + ChatColor.GOLD + "towers!");
                     }
                 }
 

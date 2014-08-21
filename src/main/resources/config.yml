@@ -22,14 +22,17 @@ maintain-day: true
 
 #Lobby location to select teams and choose champions
 blue-lobby:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
+    pitch: 
+    yaw: 
 purple-lobby:
-    x:
-    y:
-    z:
- 
+    x: 
+    y: 
+    z: 
+    pitch: 
+    yaw: 
  
 ##############################
 #Spawn Settings
@@ -39,41 +42,45 @@ spawn-radius: 5.5
 
 #Spawn/recall location
 blue-spawn:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
+    pitch: 
+    yaw: 
 purple-spawn:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
+    pitch: 
+    yaw: 
 
 
 #Coordinates of the Team switcher blocks
 blue-switcher:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 purple-switcher:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
         
         
 #Coordinates of the Nexuses
 blue-nexus:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 purple-nexus:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 
 
 
 #################################################################################
 #Height of the turret (will include this many bocks below the center as the turret Body)
-turret-height:
+turret-height: 
     
 turret-range: 11.2
     
@@ -81,100 +88,100 @@ turret-range: 11.2
 #These are the coordinates of the top center block of the turret.    
 #Blue MID
 blueMid1:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 blueMid2:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 blueMid3:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 #Blue TOP        
 blueTop1:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 blueTop2:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 blueTop3:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 #Blue BOT      
 blueBot1:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 blueBot2:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 blueBot3:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
         
 blueNexus1:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 blueNexus2:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 
 
 #PURPLE TURRETS
 #Purple Mid
 purpleMid1:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 purpleMid2:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 purpleMid3:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 #Purple TOP        
 purpleTop1:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 purpleTop2:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 purpleTop3:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 #Purple BOT      
 purpleBot1:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 purpleBot2:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 purpleBot3:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
         
 purpleNexus1:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 
 purpleNexus2:
-    x:
-    y:
-    z:
+    x: 
+    y: 
+    z: 

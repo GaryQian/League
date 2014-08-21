@@ -62,6 +62,7 @@ public class JoinTeam implements Listener {
         assignTeam(event.getPlayer());
         event.getPlayer().setHealthScale(40);
         event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
+        event.getPlayer().getInventory().clear();
     }
     
     @EventHandler

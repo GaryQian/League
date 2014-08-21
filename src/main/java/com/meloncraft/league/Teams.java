@@ -28,7 +28,7 @@ public class Teams {
     private static double x, y, z;
     public static Location blueLobby, purpleLobby;
     public List<World> worlds;
-    public World mainWorld;
+    public World world;
     League plugin;
     
     public Teams(League plug) {
@@ -42,12 +42,13 @@ public class Teams {
         purpleRespawnTime = new int[4];
         int count = 0;
         plugin = plug;
-        setLobby(plugin.getConfig().getDouble("blue-lobby.x"), plugin.getConfig().getDouble("blue-lobby.y"), plugin.getConfig().getDouble("blue-lobby.z"), plugin.getConfig().getDouble("purple-lobby.x"), plugin.getConfig().getDouble("purple-lobby.y"), plugin.getConfig().getDouble("purple-lobby.z"), mainWorld);
+        world = plugin.mainWorld;
+        setLobby(plugin.getConfig().getDouble("blue-lobby.x"), plugin.getConfig().getDouble("blue-lobby.y"), plugin.getConfig().getDouble("blue-lobby.z"), plugin.getConfig().getDouble("purple-lobby.x"), plugin.getConfig().getDouble("purple-lobby.y"), plugin.getConfig().getDouble("purple-lobby.z"), plugin.getConfig().getDouble("blue-lobby.pitch"), plugin.getConfig().getDouble("blue-lobby.yaw"), plugin.getConfig().getDouble("purple-lobby.pitch"), plugin.getConfig().getDouble("purple-lobby.yaw"), world);
     }
     
-    public static void setLobby(double x1, double y1, double z1, double x2, double y2, double z2, World world) {
-        blueLobby = new Location(world, x1, y1, z1);
-        purpleLobby = new Location(world, x2, y2, z2);
+    public static void setLobby(double x1, double y1, double z1, double x2, double y2, double z2, double pitch1, double yaw1, double pitch2, double yaw2, World world) {
+        blueLobby = new Location(world, x1, y1, z1, (float) pitch1, (float) yaw1);
+        purpleLobby = new Location(world, x2, y2, z2, (float) pitch2, (float) yaw2);
     }
     
     public String getSmallerTeam() {

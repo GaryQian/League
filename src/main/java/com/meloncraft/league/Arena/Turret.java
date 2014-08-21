@@ -135,6 +135,10 @@ public class Turret {
         return turretBody;
     }
     
+    public void heal(int num) {
+        health += num;
+    }
+    
     
     //checks if the location is part of the turret
     public boolean isTurretBody(Location location) {

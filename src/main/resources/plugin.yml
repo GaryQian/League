@@ -27,6 +27,11 @@ commands:
       usage: /setclock <seconds>
       permission: 
       permission-message: Test permission message
+   recall:
+      description: Recalls to the spawn pool
+      usage: /recall
+      permission: 
+      permission-message: Test permission message
    #team:
       #description: Adds friend to your team.
       #usage: /team

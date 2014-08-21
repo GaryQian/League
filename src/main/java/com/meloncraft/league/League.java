@@ -52,13 +52,13 @@ public final class League extends JavaPlugin {
         this.getLogger().info(mainWorld.getName());
         
         //Set Lobby Location
-        Teams.setLobby(getConfig().getInt("blue-lobby.x"), 
+        /*Teams.setLobby(getConfig().getInt("blue-lobby.x"), 
                 getConfig().getInt("blue-lobby.y"),
                 getConfig().getInt("blue-lobby.z"),
                 getConfig().getInt("purple-lobby.x"),
                 getConfig().getInt("purple-lobby.y"),
                 getConfig().getInt("purple-lobby.z"),
-                mainWorld);
+                mainWorld);*/
         
         
     }
@@ -124,6 +124,11 @@ public final class League extends JavaPlugin {
             else if (args[0].length() == 5) {
                 arena.setClock((int) 10000 * args[0].charAt(0) + 1000 * args[0].charAt(1) + 100 * args[0].charAt(2) + 10 * args[0].charAt(3) + args[0].charAt(4));
             }
+        }
+        
+        if (cmd.getName().equalsIgnoreCase("recall")) {
+            arena.recall(sender.getServer().getPlayer(sender.getName()));
+            return true;
         }
 	return false;
     }

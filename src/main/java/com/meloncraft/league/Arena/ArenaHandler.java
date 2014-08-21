@@ -7,11 +7,11 @@
 package com.meloncraft.league.Arena;
 
 import com.meloncraft.league.Arena.Minions.MinionSpawnWaveTask;
-import com.meloncraft.league.Arena.Turret;
-import com.meloncraft.league.Arena.TurretAttackTask;
+import com.meloncraft.league.Champions.RecallTask;
 import com.meloncraft.league.DayTask;
 import com.meloncraft.league.League;
 import com.meloncraft.league.Teams;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -43,7 +43,7 @@ public class ArenaHandler {
         config = plugin.getConfig();
         started = false;
         
-        setSpawns(plugin.getConfig().getDouble("blue-spawn.x"), plugin.getConfig().getDouble("blue-spawn.y"), plugin.getConfig().getDouble("blue-spawn.z"), plugin.getConfig().getDouble("purple-spawn.x"), plugin.getConfig().getDouble("purple-spawn.y"), plugin.getConfig().getDouble("purple-spawn.z"), world);
+        setSpawns(plugin.getConfig().getDouble("blue-spawn.x"), plugin.getConfig().getDouble("blue-spawn.y"), plugin.getConfig().getDouble("blue-spawn.z"), plugin.getConfig().getDouble("purple-spawn.x"), plugin.getConfig().getDouble("purple-spawn.y"), plugin.getConfig().getDouble("purple-spawn.z"), plugin.getConfig().getDouble("blue-spawn.pitch"), plugin.getConfig().getDouble("blue-spawn.yaw"), plugin.getConfig().getDouble("purple-spawn.pitch"), plugin.getConfig().getDouble("purple-spawn.yaw"), world);
         //blueSpawn = new Location(plugin.mainWorld, config.getDouble("blue-spawn.x"), config.getDouble("blue-spawn.y"), config.getDouble("blue-spawn.z"));
         //purpleSpawn = new Location(plugin.mainWorld, config.getDouble("purple-spawn.x"), config.getDouble("purple-spawn.y"), config.getDouble("purple-spawn.z"));
         
@@ -179,9 +179,9 @@ public class ArenaHandler {
     }
     
     
-    public void setSpawns(double x1, double y1, double z1, double x2, double y2, double z2, World world) {
-        blueSpawn = new Location(world, x1, y1, z1);
-        purpleSpawn = new Location(world, x2, y2, z2);
+    public void setSpawns(double x1, double y1, double z1, double x2, double y2, double z2, double pitch1, double yaw1, double pitch2, double yaw2, World world) {
+        blueSpawn = new Location(world, x1, y1, z1, (float) pitch1, (float) yaw1);
+        purpleSpawn = new Location(world, x2, y2, z2, (float) pitch2, (float) yaw2);
     }
     
     public boolean getStarted() {
@@ -221,7 +221,7 @@ public class ArenaHandler {
                 }
             }
             //start turret attacking
-            plugin.getLogger().info("STARTING TURRET ATTACKIN!");
+            plugin.getLogger().info("STARTING TURRET ATTACKS!");
             BukkitTask turretAttack = new TurretAttackTask(plugin, teams, this).runTaskTimer(plugin, 10 * 20, 40);
             //make teh clock tick
             BukkitTask clockTask = new ClockTask(plugin, this, teams).runTaskTimer(plugin, 0, 20);
@@ -235,6 +235,15 @@ public class ArenaHandler {
     
     public void setClock(int time) {
         clock = time;
+    }
+    
+    public void recall(Player player) {
+        if (started) {
+            teams.getChampion(player).setRecalling(true);
+            player.sendMessage(ChatColor.GREEN + "Recalling. Hold still for 8 seconds!");
+            
+            BukkitTask championRecall = new RecallTask(plugin, teams, player).runTaskLater(this.plugin, 8 * 20);
+        }
     }
     
     public void turretsAttack() {
