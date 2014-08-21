@@ -47,8 +47,8 @@ public class Teams {
     }
     
     public static void setLobby(double x1, double y1, double z1, double x2, double y2, double z2, double pitch1, double yaw1, double pitch2, double yaw2, World world) {
-        blueLobby = new Location(world, x1, y1, z1, (float) pitch1, (float) yaw1);
-        purpleLobby = new Location(world, x2, y2, z2, (float) pitch2, (float) yaw2);
+        blueLobby = new Location(world, x1, y1, z1, (float) yaw1, (float) pitch1);
+        purpleLobby = new Location(world, x2, y2, z2, (float) yaw2, (float) pitch2);
     }
     
     public String getSmallerTeam() {

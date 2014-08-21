@@ -16,7 +16,10 @@ import java.util.List;
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -33,6 +36,7 @@ public class Turret {
     public String team;
     public Teams teams;
     public List<Location> turretBody;
+    public List<BlockState> turretBodyBlockState;
     public int timesHit, health, height;
     public double damage, damageBase, incomingDamage;
     public static int reward;
@@ -41,7 +45,7 @@ public class Turret {
     public Class<Minion> minionClass;
     public Class<EntityPlayer> playerClass;
     public Collection<Entity> allEntities;
-    public boolean championAttacked;
+    public boolean championAttacked, isDead;
     public double x1, x2, z1, z2, x, y, z;
     
     private double distance, distance2, range;
@@ -60,7 +64,9 @@ public class Turret {
         damageBase = 152;
         reward = 150;
         championAttacked = false;
+        isDead = false;
         turretBody = new ArrayList<Location>();
+        turretBodyBlockState = new ArrayList<BlockState>();
         world = plugin.mainWorld;
         height = plugin.getConfig().getInt("turret-height");
         x1 = x - 1;
@@ -121,7 +127,7 @@ public class Turret {
     
     public void addColumnToBody(Location loc) {
         //The number counted to is the height
-        for (int count = 0; count < height; count++) {
+        for (int count = 0; count < height - 3; count++) {
             temp = loc;
             temp.setY(loc.getY() - count);
             turretBody.add(temp);
@@ -281,13 +287,15 @@ public class Turret {
     }
     
     public void attackSequence() {
-        Entity tempTarget = findTarget();
-        CraftPlayer tempPlayer;
-        if (tempTarget instanceof CraftPlayer) {
-            tempPlayer = (CraftPlayer) tempTarget;
-            tempPlayer.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[WARNING]:" + ChatColor.GOLD + " You have been targeted by the turret!");
+        if (!isDead) {
+            Entity tempTarget = findTarget();
+            CraftPlayer tempPlayer;
+            if (tempTarget instanceof CraftPlayer) {
+                tempPlayer = (CraftPlayer) tempTarget;
+                tempPlayer.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[WARNING]:" + ChatColor.GOLD + " You have been targeted by the turret!");
+            }
+            attack();
         }
-        attack();
 
         /*if (attack()) {
             findTarget();
@@ -296,12 +304,25 @@ public class Turret {
     }
     
     public void hit(double damage) {
-        incomingDamage = damage * 0.6;
+        incomingDamage = damage * (1 / (1 + (.6)));
         health -= damage;
         refresh();
     }
     
     public void refresh() {
-        
+        if (health < 0) {
+            isDead = true;
+            plugin.getServer().broadcastMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "[- MATCH STATUS -]: " + ChatColor.BLUE + team + ChatColor.GOLD + " team has destroyed a Turret!");
+            for (Location loc : turretBody) {
+                turretBodyBlockState.add(loc.getBlock().getState());
+                loc.getBlock().setType(Material.AIR);
+            }
+        }
+    }
+    
+    public void fixTurret() {
+        for (BlockState block : turretBodyBlockState) {
+            block.update(true);
+        }
     }
 }

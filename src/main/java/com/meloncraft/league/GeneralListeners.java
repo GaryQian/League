@@ -112,8 +112,11 @@ public class GeneralListeners implements Listener {
             }
             
             if (teams.getChampion(event.getPlayer()).getRecalling()) {
-                teams.getChampion(event.getPlayer()).setRecalling(false);
-                event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[WARNING]: " + ChatColor.GOLD + " Recalling Interrupted!");
+                if (event.getFrom().getX() != event.getTo().getX() || event.getFrom().getY() != event.getTo().getY() || event.getFrom().getZ() != event.getTo().getZ()) {
+                    teams.getChampion(event.getPlayer()).setRecalling(false);
+                    event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[WARNING]: " + ChatColor.GOLD + " Recalling Interrupted!");
+                }
+                
             }
         }
     }

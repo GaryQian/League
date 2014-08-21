@@ -16,6 +16,8 @@ config-version: 1
 #Basic Options
 maintain-day: true
 
+main-world-generator: CleanroomGenerator:1,bedrock,10,stone,1,dirt,1,grass
+
 
 #############################
 #LOBBY SETTINGS

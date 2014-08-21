@@ -84,104 +84,141 @@ public class ArenaHandler {
     }
     
     public Turret isBlueTurret(Location loc) {
-        if (blueMid1.isTurretBody(loc)) {
-            return blueMid1;
+        if (!blueMid1.isDead) {
+            if (blueMid1.isTurretBody(loc)) {
+                return blueMid1;
+            }
         }
-        else if (blueMid2.isTurretBody(loc)) {
-            return blueMid2;
+        if (!blueMid2.isDead) {
+            if (blueMid2.isTurretBody(loc)) {
+                return blueMid2;
+            }
         }
-        else if (blueMid3.isTurretBody(loc)) {
-            return blueMid3;
+        if (!blueMid3.isDead) {
+            if (blueMid3.isTurretBody(loc)) {
+                return blueMid3;
+            }
         }
         
         //---------
-        else if (blueBot1.isTurretBody(loc)) {
-            return blueBot1;
+        if (!blueBot1.isDead) {
+            if (blueBot1.isTurretBody(loc)) {
+                return blueBot1;
+            }
         }
-        else if (blueBot2.isTurretBody(loc)) {
-            return blueBot2;
+        if (!blueBot2.isDead) {
+            if (blueBot2.isTurretBody(loc)) {
+                return blueBot2;
+            }
         }
-        else if (blueBot3.isTurretBody(loc)) {
-            return blueBot3;
+        if (!blueBot3.isDead) {
+            if (blueBot3.isTurretBody(loc)) {
+                return blueBot3;
+            }
         }
         
         //-------
-        else if (blueTop1.isTurretBody(loc)) {
-            return blueTop1;
+        if (!blueTop1.isDead) {
+            if (blueTop1.isTurretBody(loc)) {
+                return blueTop1;
+            }
         }
-        else if (blueTop2.isTurretBody(loc)) {
-            return blueTop2;
+        if (!blueTop2.isDead) {
+            if (blueTop2.isTurretBody(loc)) {
+                return blueTop2;
+            }
         }
-        else if (blueTop3.isTurretBody(loc)) {
-            return blueTop3;
+        if (!blueTop3.isDead) {
+            if (blueTop3.isTurretBody(loc)) {
+                return blueTop3;
+            }
         }
         
         //--------
-        else if (blueNexus1.isTurretBody(loc)) {
-            return blueNexus1;
+        if (!blueNexus1.isDead) {
+            if (blueNexus1.isTurretBody(loc)) {
+                return blueNexus1;
+            }
         }
-        else if (blueNexus2.isTurretBody(loc)) {
-            return blueNexus2;
+        if (!blueNexus2.isDead) {
+            if (blueNexus2.isTurretBody(loc)) {
+                return blueNexus2;
+            }
         }
-        
-        else {
-            return null;
-        }
+        return null;
         
     }
     
     
     public Turret isPurpleTurret(Location loc) {
-        //--------
-        if (purpleMid1.isTurretBody(loc)) {
-            return purpleMid1;
+        if (!purpleMid1.isDead) {
+            if (purpleMid1.isTurretBody(loc)) {
+                return purpleMid1;
+            }
         }
-        else if (purpleMid2.isTurretBody(loc)) {
-            return purpleMid2;
+        if (!purpleMid2.isDead) {
+            if (purpleMid2.isTurretBody(loc)) {
+                return purpleMid2;
+            }
         }
-        else if (purpleMid3.isTurretBody(loc)) {
-            return purpleMid3;
+        if (!purpleMid3.isDead) {
+            if (purpleMid3.isTurretBody(loc)) {
+                return purpleMid3;
+            }
         }
         
         //---------
-        else if (purpleBot1.isTurretBody(loc)) {
-            return purpleBot1;
+        if (!purpleBot1.isDead) {
+            if (purpleBot1.isTurretBody(loc)) {
+                return purpleBot1;
+            }
         }
-        else if (purpleBot2.isTurretBody(loc)) {
-            return purpleBot2;
+        if (!purpleBot2.isDead) {
+            if (purpleBot2.isTurretBody(loc)) {
+                return purpleBot2;
+            }
         }
-        else if (purpleBot3.isTurretBody(loc)) {
-            return purpleBot3;
+        if (!purpleBot3.isDead) {
+            if (purpleBot3.isTurretBody(loc)) {
+                return purpleBot3;
+            }
         }
         
         //-------
-        else if (purpleTop1.isTurretBody(loc)) {
-            return purpleTop1;
+        if (!purpleTop1.isDead) {
+            if (purpleTop1.isTurretBody(loc)) {
+                return purpleTop1;
+            }
         }
-        else if (purpleTop2.isTurretBody(loc)) {
-            return purpleTop2;
+        if (!purpleTop2.isDead) {
+            if (purpleTop2.isTurretBody(loc)) {
+                return purpleTop2;
+            }
         }
-        else if (purpleTop3.isTurretBody(loc)) {
-            return purpleTop3;
+        if (!purpleTop3.isDead) {
+            if (purpleTop3.isTurretBody(loc)) {
+                return purpleTop3;
+            }
         }
         
         //--------
-        else if (purpleNexus1.isTurretBody(loc)) {
-            return purpleNexus1;
+        if (!purpleNexus1.isDead) {
+            if (purpleNexus1.isTurretBody(loc)) {
+                return purpleNexus1;
+            }
         }
-        else if (purpleNexus2.isTurretBody(loc)) {
-            return purpleNexus2;
+        if (!purpleNexus2.isDead) {
+            if (purpleNexus2.isTurretBody(loc)) {
+                return purpleNexus2;
+            }
         }
-        
-        else {
-            return null;
-        }
+        return null;
     }
     
     
     public void setSpawns(double x1, double y1, double z1, double x2, double y2, double z2, double pitch1, double yaw1, double pitch2, double yaw2, World world) {
-        blueSpawn = new Location(world, x1, y1, z1, (float) pitch1, (float) yaw1);
-        purpleSpawn = new Location(world, x2, y2, z2, (float) pitch2, (float) yaw2);
+        blueSpawn = new Location(world, x1, y1, z1, (float) yaw1, (float) pitch1);
+        purpleSpawn = new Location(world, x2, y2, z2, (float) yaw2, (float) pitch2);
     }
     
     public boolean getStarted() {

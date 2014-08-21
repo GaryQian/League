@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
@@ -63,6 +64,13 @@ public class JoinTeam implements Listener {
         event.getPlayer().setHealthScale(40);
         event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
         event.getPlayer().getInventory().clear();
+    }
+    
+    @EventHandler
+    public void onLogin(PlayerLoginEvent event) {
+        if (plugin.arena.started) {
+            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "Game in progress");
+        }
     }
     
     @EventHandler

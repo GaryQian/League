@@ -9,8 +9,9 @@ package com.meloncraft.league;
 import com.meloncraft.league.Arena.ArenaHandler;
 import com.meloncraft.league.Arena.Minions.MinionPopulation;
 import java.util.List;
-import java.util.Random;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,8 +21,8 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public final class League extends JavaPlugin {
     public List<World> worlds;
-    public World mainWorld;
-    
+    public World mainWorld, tempWorld;
+    private WorldCreator creator;
     public ArenaHandler arena;
     public static Teams teams;
     public MinionPopulation minionPopulation;
@@ -30,8 +31,13 @@ public final class League extends JavaPlugin {
     public void onEnable() {
         this.saveDefaultConfig();
         this.getConfig();
+        creator = new WorldCreator("world");
+        creator.generator(this.getConfig().getString("main-world-generator"));
+        mainWorld = this.getServer().createWorld(creator);
         worlds = this.getServer().getWorlds();
+        this.getServer().createWorld(creator);
         mainWorld = this.getServer().getWorld("world");
+        mainWorld.setAutoSave(false);
         teams = new Teams(this);
         arena = new ArenaHandler(this, teams);
         new GeneralListeners(this, arena, teams);
@@ -65,7 +71,40 @@ public final class League extends JavaPlugin {
     
     @Override
     public void onDisable() {
+        arena.blueMid1.fixTurret();
+        arena.blueMid2.fixTurret();
+        arena.blueMid3.fixTurret();
         
+        arena.blueBot1.fixTurret();
+        arena.blueBot2.fixTurret();
+        arena.blueBot3.fixTurret();
+        
+        arena.blueTop1.fixTurret();
+        arena.blueTop2.fixTurret();
+        arena.blueTop3.fixTurret();
+        
+        arena.blueNexus1.fixTurret();
+        arena.blueNexus2.fixTurret();
+        
+        
+        
+        
+        arena.purpleMid1.fixTurret();
+        arena.purpleMid2.fixTurret();
+        arena.purpleMid3.fixTurret();
+        
+        arena.purpleBot1.fixTurret();
+        arena.purpleBot2.fixTurret();
+        arena.purpleBot3.fixTurret();
+        
+        arena.purpleTop1.fixTurret();
+        arena.purpleTop2.fixTurret();
+        arena.purpleTop3.fixTurret();
+        
+        arena.purpleNexus1.fixTurret();
+        arena.purpleNexus2.fixTurret();
+        
+        rollback("world");
     }
     
     String version = "1.0.0";
@@ -130,7 +169,61 @@ public final class League extends JavaPlugin {
             arena.recall(sender.getServer().getPlayer(sender.getName()));
             return true;
         }
+        if (cmd.getName().equalsIgnoreCase("fixTurrets")) {
+            arena.blueMid1.fixTurret();
+            arena.blueMid2.fixTurret();
+            arena.blueMid3.fixTurret();
+
+            arena.blueBot1.fixTurret();
+            arena.blueBot2.fixTurret();
+            arena.blueBot3.fixTurret();
+
+            arena.blueTop1.fixTurret();
+            arena.blueTop2.fixTurret();
+            arena.blueTop3.fixTurret();
+
+            arena.blueNexus1.fixTurret();
+            arena.blueNexus2.fixTurret();
+
+
+
+
+            arena.purpleMid1.fixTurret();
+            arena.purpleMid2.fixTurret();
+            arena.purpleMid3.fixTurret();
+
+            arena.purpleBot1.fixTurret();
+            arena.purpleBot2.fixTurret();
+            arena.purpleBot3.fixTurret();
+
+            arena.purpleTop1.fixTurret();
+            arena.purpleTop2.fixTurret();
+            arena.purpleTop3.fixTurret();
+
+            arena.purpleNexus1.fixTurret();
+            arena.purpleNexus2.fixTurret();
+            return true;
+        }
 	return false;
     }
     
+    
+    //Unloading maps, to rollback maps. Will delete all player builds until last server save
+    public void unloadMap(String mapname){
+        if(Bukkit.getServer().unloadWorld(Bukkit.getServer().getWorld(mapname), false)){
+            this.getLogger().info("Successfully unloaded " + mapname);
+        }else{
+            this.getLogger().severe("COULD NOT UNLOAD " + mapname);
+        }
+    }
+    //Loading maps (MUST BE CALLED AFTER UNLOAD MAPS TO FINISH THE ROLLBACK PROCESS)
+    public void loadMap(String mapname){
+        Bukkit.getServer().createWorld(new WorldCreator(mapname));
+    }
+ 
+    //Maprollback method, because were too lazy to type 2 lines
+    public void rollback(String mapname){
+        unloadMap(mapname);
+        loadMap(mapname);
+    }
 }

@@ -32,6 +32,11 @@ commands:
       usage: /recall
       permission: 
       permission-message: Test permission message
+   fixturrets:
+      description: Fixes turrets
+      usage: /fixturrets
+      permission: 
+      permission-message: Test permission message
    #team:
       #description: Adds friend to your team.
       #usage: /team
