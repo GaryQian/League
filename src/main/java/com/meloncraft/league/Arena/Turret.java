@@ -216,9 +216,6 @@ public class Turret {
             if (target != null) {
             plugin.getLogger().info("TARGET NAME" + target.toString());
             }
-            //if (!target.equals(lastHit)) {
-             //   lastHit = target;
-            //}
             return targetMinion;
         }
         
@@ -231,6 +228,7 @@ public class Turret {
             return targetPlayer;
         }
         else {
+            lastHit = null;
             target = null;
             return null;
         }
