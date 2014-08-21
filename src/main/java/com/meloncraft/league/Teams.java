@@ -23,6 +23,7 @@ public class Teams {
     public List<Player> purpleTeam;
     public Champion[] blueChampions;
     public Champion[] purpleChampions;
+    public int[] purpleRespawnTime, blueRespawnTime;
     private static List<Player> blueQueue, purpleQueue;
     private static double x, y, z;
     public static Location blueLobby, purpleLobby;
@@ -37,6 +38,8 @@ public class Teams {
         purpleQueue  = new ArrayList<Player>();
         blueChampions = new Champion[4];
         purpleChampions = new Champion[4];
+        blueRespawnTime = new int[4];
+        purpleRespawnTime = new int[4];
         int count = 0;
         plugin = plug;
         setLobby(plugin.getConfig().getDouble("blue-lobby.x"), plugin.getConfig().getDouble("blue-lobby.y"), plugin.getConfig().getDouble("blue-lobby.z"), plugin.getConfig().getDouble("purple-lobby.x"), plugin.getConfig().getDouble("purple-lobby.y"), plugin.getConfig().getDouble("purple-lobby.z"), mainWorld);
@@ -202,7 +205,7 @@ public class Teams {
     //----------------------------
     //Champion storage
     public void setRandomChampion(Player player) {
-        String champ;
+        String champ = "";
             Random gen = new Random();
             
             switch (gen.nextInt(2)) {
@@ -212,7 +215,7 @@ public class Teams {
                     break;
             }
             
-            setChampion(player, "champ");
+            setChampion(player, champ);
     }
     
     public void setChampion(Player player, String champion) {

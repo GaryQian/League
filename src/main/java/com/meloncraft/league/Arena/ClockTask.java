@@ -8,25 +8,32 @@ package com.meloncraft.league.Arena;
 
 import com.meloncraft.league.League;
 import com.meloncraft.league.Teams;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  *
  * @author Gary
  */
-public class TurretAttackTask extends BukkitRunnable{
+public class ClockTask extends BukkitRunnable{
     League plugin;
-    Teams teams;
     ArenaHandler arena;
+    Teams teams;
     
-    public TurretAttackTask(League plug, Teams team, ArenaHandler aren) {
+    public ClockTask(League plug, ArenaHandler aren, Teams team) {
         plugin = plug;
-        teams = team;
         arena = aren;
+        teams = team;
     }
     
     public void run() {
-        arena.turretsAttack();
+        arena.clockTick();
+        for (Player player : teams.getBlueTeam()) {
+            teams.getChampion(player).respawnTimeTick();
+        }
+        for (Player player : teams.getPurpleTeam()) {
+            teams.getChampion(player).respawnTimeTick();
+        }
     }
     
 }

@@ -4,11 +4,14 @@
  * and open the template in the editor.
  */
 
-package com.meloncraft.league;
+package com.meloncraft.league.Arena;
 
 import com.meloncraft.league.Arena.Minions.MinionSpawnWaveTask;
 import com.meloncraft.league.Arena.Turret;
 import com.meloncraft.league.Arena.TurretAttackTask;
+import com.meloncraft.league.DayTask;
+import com.meloncraft.league.League;
+import com.meloncraft.league.Teams;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -26,12 +29,14 @@ public class ArenaHandler {
     public Teams teams;
     public World world;
     public boolean started;
+    public int clock;
     //public Player player;
     public FileConfiguration config;
     public Location blueSpawn, purpleSpawn;
     public Turret blueMid1, blueMid2, blueMid3, blueTop1, blueTop2, blueTop3, blueBot1, blueBot2, blueBot3, blueNexus1, blueNexus2, purpleMid1, purpleMid2, purpleMid3, purpleTop1, purpleTop2, purpleTop3, purpleBot1, purpleBot2, purpleBot3, purpleNexus1, purpleNexus2;
     
     public ArenaHandler(League plug, Teams tea) {
+        clock = 0;
         teams = tea;
         plugin = plug;
         //world = plugin.mainWorld;
@@ -218,8 +223,18 @@ public class ArenaHandler {
             //start turret attacking
             plugin.getLogger().info("STARTING TURRET ATTACKIN!");
             BukkitTask turretAttack = new TurretAttackTask(plugin, teams, this).runTaskTimer(plugin, 10 * 20, 40);
+            //make teh clock tick
+            BukkitTask clockTask = new ClockTask(plugin, this, teams).runTaskTimer(plugin, 0, 20);
             //spawnMinionWave();
         }
+    }
+    
+    public void clockTick() {
+        clock++;
+    }
+    
+    public void setClock(int time) {
+        clock = time;
     }
     
     public void turretsAttack() {

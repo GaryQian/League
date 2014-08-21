@@ -6,6 +6,7 @@
 
 package com.meloncraft.league;
 
+import com.meloncraft.league.Arena.ArenaHandler;
 import com.meloncraft.league.Arena.Minions.MinionPopulation;
 import java.util.List;
 import java.util.Random;
@@ -106,6 +107,23 @@ public final class League extends JavaPlugin {
             teams.setRandomChampion(sender.getServer().getPlayer(sender.getName()));
             sender.getServer().getPlayer(sender.getName()).sendMessage("You are:" + sender.getServer().getPlayer(sender.getName()).getName());
             return true;
+        }
+        if (cmd.getName().equalsIgnoreCase("setclock")) {
+            if (args[0].length() == 1) {
+                arena.setClock((int) args[0].charAt(0));
+            }
+            else if (args[0].length() == 2) {
+                arena.setClock((int) 10 * args[0].charAt(0) + args[0].charAt(1));
+            }
+            else if (args[0].length() == 3) {
+                arena.setClock((int) 100 * args[0].charAt(0) + 10 * args[0].charAt(1) + args[0].charAt(2));
+            }
+            else if (args[0].length() == 4) {
+                arena.setClock((int) 1000 * args[0].charAt(0) + 100 * args[0].charAt(1) + 10 * args[0].charAt(2) + args[0].charAt(3));
+            }
+            else if (args[0].length() == 5) {
+                arena.setClock((int) 10000 * args[0].charAt(0) + 1000 * args[0].charAt(1) + 100 * args[0].charAt(2) + 10 * args[0].charAt(3) + args[0].charAt(4));
+            }
         }
 	return false;
     }

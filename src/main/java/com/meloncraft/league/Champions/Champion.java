@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
  * @author Gary
  */
 public class Champion {
-    public int health, maxHealth, armor, AD, AP, speed, mana, energy, level, kills, deaths, assists, range, gold;
+    public int health, maxHealth, armor, AD, AP, speed, mana, energy, level, kills, deaths, assists, range, gold, respawnTime;
     public double healthRegen, manaRegen, damage, incomingDamage;
     public String team; //TRUE = Blue FALSE = purple
     public Player player;
@@ -40,6 +40,7 @@ public class Champion {
         healthRegen = 5;
         manaRegen = 1;
         level = 1;
+        respawnTime = 0;
         
         player = play;
         player.setHealthScale(40);
@@ -79,13 +80,31 @@ public class Champion {
         return champion;
     }
     
+    public int getLevel() {
+        return level;
+    }
+    
+    public int getRespawnTime() {
+        return respawnTime;
+    }
+    
+    public void respawnTimeTick() {
+        respawnTime--;
+    }
+    
+    public void setRespawnTime(int time) {
+        respawnTime = time;
+    }
+    
     public void hit(double damage) {
         incomingDamage = (double) damage * (1 / (1 + (armor / 100)));
-        health -= damage;
+        health -= incomingDamage;
+        player.sendMessage("" + incomingDamage);
+        player.damage(incomingDamage);
         refresh();
     }
     
     public void refresh() {
-        player.setHealth(health);
+        //player.setHealth(health);
     }
 }

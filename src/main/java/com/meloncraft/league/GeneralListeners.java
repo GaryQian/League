@@ -6,8 +6,10 @@
 
 package com.meloncraft.league;
 
+import com.meloncraft.league.Arena.ArenaHandler;
 import com.meloncraft.league.Arena.Turret;
 import com.meloncraft.league.Champions.Champion;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,15 +18,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.ItemSpawnEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 /**
  *
  * @author Gary
  */
 public class GeneralListeners implements Listener {
-    public static Teams team;
+    public static Teams teams;
     //League plugin;
     public Location blueSwitcher, purpleSwitcher;
     public World world;
@@ -32,13 +37,14 @@ public class GeneralListeners implements Listener {
     League plugin;
     ArenaHandler arena;
     private Champion tempChampion;
-    
+    Location tempLoc;
     
     public GeneralListeners(League plug, ArenaHandler are, Teams tea) {
         plugin = plug;
         arena = are;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        team = tea;
+        teams = tea;
+        
         FileConfiguration config = plugin.getConfig();
         world = plugin.mainWorld;
         blueSwitcher = new Location(world,  plugin.getConfig().getDouble("blue-switcher.x"),  plugin.getConfig().getDouble("blue-switcher.y"),  plugin.getConfig().getDouble("blue-switcher.z"));
@@ -62,6 +68,54 @@ public class GeneralListeners implements Listener {
     }
     
     @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        double respawnTime = 5;
+        int totalRespawnTime = 5;
+        respawnTime += teams.getChampion(event.getEntity()).getLevel() * 2.5;
+        if (arena.clock > 20 * 60) {
+            respawnTime = respawnTime + ((respawnTime / 50) * ((arena.clock / 60) - 20));
+            totalRespawnTime = (int) respawnTime;
+        }
+        else {
+            totalRespawnTime = (int) respawnTime;
+        }
+        
+        teams.getChampion(event.getEntity()).setRespawnTime(totalRespawnTime);
+        //begin respawn timer
+    }
+    
+    @EventHandler
+    public void onMove(PlayerMoveEvent event) {
+        if (arena.started) {
+            //check if champion is respawning and prevent them from leaving spawn.
+            if (teams.getChampion(event.getPlayer()).getRespawnTime() > 0) {
+                if (teams.getTeam(event.getPlayer()).equals("blue")) {
+                    if (event.getTo().distance(arena.blueSpawn) > plugin.getConfig().getDouble("spawn-radius")) {
+                        event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[DEAD] " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + teams.getChampion(event.getPlayer()).getRespawnTime() + ChatColor.GOLD + " to exit Spawn! Go buy items!");
+                        event.setTo(event.getFrom());
+                    }
+                }
+                if (teams.getTeam(event.getPlayer()).equals("purple")) {
+                    if (event.getTo().distance(arena.purpleSpawn) > plugin.getConfig().getDouble("spawn-radius")) {
+                        event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[DEAD] " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + teams.getChampion(event.getPlayer()).getRespawnTime() + ChatColor.GOLD + " to exit Spawn! Go buy items!");
+                        event.setTo(event.getFrom());
+                    }
+                }
+            }
+        }
+    }
+    
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        if (teams.getTeam(event.getPlayer()).equals("blue")) {
+            event.setRespawnLocation(arena.blueSpawn);
+        }
+        else if (teams.getTeam(event.getPlayer()).equals("purple")) {
+            event.setRespawnLocation(arena.purpleSpawn);
+        }
+    }
+    
+    @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         
         player = event.getPlayer();
@@ -75,38 +129,38 @@ public class GeneralListeners implements Listener {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
         //BLUE switcher clicked
             if (event.getClickedBlock().getLocation().getX() == blueSwitcher.getX() && event.getClickedBlock().getLocation().getY() == blueSwitcher.getY() && event.getClickedBlock().getLocation().getZ() == blueSwitcher.getZ()) {
-                if (team.getPurpleQueue().contains(player)) {
-                    team.removePurpleQueue(player);
+                if (teams.getPurpleQueue().contains(player)) {
+                    teams.removePurpleQueue(player);
                     player.sendMessage("You are no longer on the Join-Purple Queue!");
                 }
                 else {
-                    if (team.getTeamSize("purple") < 5) {
-                        if (team.blueChampions[team.blueTeam.lastIndexOf(player)] != null) {
-                                tempChampion = team.getChampion(player);
-                                team.removeChampion(player);
-                                team.removePlayer(player);
-                                team.addPurple(player);
-                                team.setChampion(player, tempChampion);
+                    if (teams.getTeamSize("purple") < 5) {
+                        if (teams.blueChampions[teams.blueTeam.lastIndexOf(player)] != null) {
+                                tempChampion = teams.getChampion(player);
+                                teams.removeChampion(player);
+                                teams.removePlayer(player);
+                                teams.addPurple(player);
+                                teams.setChampion(player, tempChampion);
                             }
                             //dont't set champion because no champ selected
                             else {
-                                team.removePlayer(player);
-                                team.addPurple(player);
+                                teams.removePlayer(player);
+                                teams.addPurple(player);
                             }
                             
-                        if (!team.getBlueQueue().isEmpty()) {
+                        if (!teams.getBlueQueue().isEmpty()) {
                             //set champions
-                            if (team.purpleChampions[team.purpleTeam.lastIndexOf(team.getBlueQueue(0))] != null) {
-                                tempChampion = team.getChampion(team.getBlueQueue(0));
-                                team.removeChampion(team.getBlueQueue(0));
-                                team.getBlueQueue(0).sendMessage("You have been taken off the Queue and moved to BLUE!");
-                                team.addBlue(team.removeBlueQueue());
-                                team.setChampion(team.getBlueQueue(0), tempChampion);
+                            if (teams.purpleChampions[teams.purpleTeam.lastIndexOf(teams.getBlueQueue(0))] != null) {
+                                tempChampion = teams.getChampion(teams.getBlueQueue(0));
+                                teams.removeChampion(teams.getBlueQueue(0));
+                                teams.getBlueQueue(0).sendMessage("You have been taken off the Queue and moved to BLUE!");
+                                teams.addBlue(teams.removeBlueQueue());
+                                teams.setChampion(teams.getBlueQueue(0), tempChampion);
                             }
                             //dont't set champion because no champ selected
                             else {
-                                team.getBlueQueue(0).sendMessage("You have been taken off the Queue and moved to BLUE!");
-                                team.addBlue(team.removeBlueQueue());
+                                teams.getBlueQueue(0).sendMessage("You have been taken off the Queue and moved to BLUE!");
+                                teams.addBlue(teams.removeBlueQueue());
                             }
                             
                         }
@@ -119,38 +173,38 @@ public class GeneralListeners implements Listener {
 
             //purple switcher clicked
             if (event.getClickedBlock().getLocation().getX() == purpleSwitcher.getX() && event.getClickedBlock().getLocation().getY() == purpleSwitcher.getY() && event.getClickedBlock().getLocation().getZ() == purpleSwitcher.getZ()) {
-                if (team.getPurpleQueue().contains(player)) {
-                    team.removePurpleQueue(player);
+                if (teams.getPurpleQueue().contains(player)) {
+                    teams.removePurpleQueue(player);
                     player.sendMessage("You are no longer on the Join-Purple Queue!");
                 }
                 else {
-                    if (team.getTeamSize("blue") < 5) {
-                        if (team.purpleChampions[team.purpleTeam.lastIndexOf(player)] != null) {
-                                tempChampion = team.getChampion(player);
-                                team.removeChampion(player);
-                                team.removePlayer(player);
-                                team.addBlue(player);
-                                team.setChampion(player, tempChampion);
+                    if (teams.getTeamSize("blue") < 5) {
+                        if (teams.purpleChampions[teams.purpleTeam.lastIndexOf(player)] != null) {
+                                tempChampion = teams.getChampion(player);
+                                teams.removeChampion(player);
+                                teams.removePlayer(player);
+                                teams.addBlue(player);
+                                teams.setChampion(player, tempChampion);
                             }
                             //dont't set champion because no champ selected
                             else {
-                                team.removePlayer(player);
-                                team.addBlue(player);
+                                teams.removePlayer(player);
+                                teams.addBlue(player);
                             }
                             
-                        if (!team.getPurpleQueue().isEmpty()) {
+                        if (!teams.getPurpleQueue().isEmpty()) {
                             //set champions
-                            if (team.blueChampions[team.blueTeam.lastIndexOf(team.getPurpleQueue(0))] != null) {
-                                tempChampion = team.getChampion(team.getPurpleQueue(0));
-                                team.removeChampion(team.getPurpleQueue(0));
-                                team.getPurpleQueue(0).sendMessage("You have been taken off the Queue and moved to PURPLE!");
-                                team.addPurple(team.removePurpleQueue());
-                                team.setChampion(team.getPurpleQueue(0), tempChampion);
+                            if (teams.blueChampions[teams.blueTeam.lastIndexOf(teams.getPurpleQueue(0))] != null) {
+                                tempChampion = teams.getChampion(teams.getPurpleQueue(0));
+                                teams.removeChampion(teams.getPurpleQueue(0));
+                                teams.getPurpleQueue(0).sendMessage("You have been taken off the Queue and moved to PURPLE!");
+                                teams.addPurple(teams.removePurpleQueue());
+                                teams.setChampion(teams.getPurpleQueue(0), tempChampion);
                             }
                             //dont't set champion because no champ selected
                             else {
-                                team.getPurpleQueue(0).sendMessage("You have been taken off the Queue and moved to BLUE!");
-                                team.addPurple(team.removePurpleQueue());
+                                teams.getPurpleQueue(0).sendMessage("You have been taken off the Queue and moved to BLUE!");
+                                teams.addPurple(teams.removePurpleQueue());
                             }
                         }
                     }
@@ -173,31 +227,35 @@ public class GeneralListeners implements Listener {
             //--------------
             //check if tower is clicked
             if (arena.started) {
-                if (team.getTeam(player).equals("blue")) {
+                if (teams.getTeam(player).equals("blue")) {
                     turret = arena.isPurpleTurret(event.getClickedBlock().getLocation());
                     if (turret != null) {
-                        if (team.getChampion(player) != null) {
-                            turret.hit(team.getChampion(player).getDamage());
+                        if (teams.getChampion(player) != null) {
+                            turret.hit(teams.getChampion(player).getDamage());
+                            tempLoc = event.getClickedBlock().getLocation().add(.5, 0, .5);
+                            plugin.mainWorld.createExplosion(tempLoc, (float) 0.01, false);
                             //hitTurret = true;
                         }
                         player.sendMessage("YOU HIT THE TURRET");
                     }
                     if (arena.isBlueTurret(event.getClickedBlock().getLocation()) != null) {
-                        player.sendMessage("That is a friendly tower! Attack &5PURPLE &r towers!");
+                        player.sendMessage(ChatColor.GOLD + "That is a friendly tower! Attack " + ChatColor.LIGHT_PURPLE + "PURPLE " + ChatColor.GOLD + "towers!");
                     }
                 }
 
-                else if (team.getTeam(player).equals("purple")) {
+                else if (teams.getTeam(player).equals("purple")) {
                     turret = arena.isBlueTurret(event.getClickedBlock().getLocation());
                     if (turret != null) {
-                        if (team.getChampion(player) != null) {
-                            turret.hit(team.getChampion(player).getDamage());
+                        if (teams.getChampion(player) != null) {
+                            turret.hit(teams.getChampion(player).getDamage());
+                            tempLoc = event.getClickedBlock().getLocation().add(.5, 0, .5);
+                            plugin.mainWorld.createExplosion(tempLoc, (float) 0.01, false);
                             //hitTurret = true;
                         }
                         player.sendMessage("YOU HIT THE TURRET");
                     }
                     if (arena.isPurpleTurret(event.getClickedBlock().getLocation()) != null) {
-                        player.sendMessage("That is a friendly tower! Attack &5BLUE &r towers!");
+                        player.sendMessage(ChatColor.GOLD + "That is a friendly tower! Attack " + ChatColor.LIGHT_PURPLE + "PURPLE " + ChatColor.GOLD + "towers!");
                     }
                 }
 

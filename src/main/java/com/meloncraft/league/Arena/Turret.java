@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import net.minecraft.server.v1_7_R4.EntityPlayer;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
@@ -41,9 +42,9 @@ public class Turret {
     public Class<EntityPlayer> playerClass;
     public Collection<Entity> allEntities;
     public boolean championAttacked;
-    public double x1, x2, z1, z2;
+    public double x1, x2, z1, z2, x, y, z;
     
-    private double distance, distance2;
+    private double distance, distance2, range;
     private boolean isMinionInRange;
     private Player targetPlayer;
     private Minion minion;
@@ -55,7 +56,8 @@ public class Turret {
         team = tea;
         teams = te;
         health = 2550;
-        damageBase = 120;
+        range = plugin.getConfig().getDouble("turret-range");
+        damageBase = 152;
         reward = 150;
         championAttacked = false;
         turretBody = new ArrayList<Location>();
@@ -66,6 +68,10 @@ public class Turret {
         
         z1 = z - 1;
         z2 = z + 1;
+        
+        this.x = x;
+        this.y = y;
+        this.z = z;
 
         center = new Location(plugin.mainWorld, x, y, z);
         
@@ -109,8 +115,8 @@ public class Turret {
         temp.setZ(temp.getZ() + 1);
         addColumnToBody(temp);
         center.setY(y);
-        center.setX(x);
-        center.setZ(z);
+        center.setX(x + .5);
+        center.setZ(z + .5);
     }
     
     public void addColumnToBody(Location loc) {
@@ -120,6 +126,9 @@ public class Turret {
             temp.setY(loc.getY() - count);
             turretBody.add(temp);
         }
+        center.setY(y);
+        center.setX(x);
+        center.setZ(z);
     }
     
     public List<Location> getTurretBody() {
@@ -154,42 +163,37 @@ public class Turret {
     
     //returns the targeted Craftbukkit entity (NOT BUKKIT ENTITY!)
     public Entity findTarget() {
-        plugin.getLogger().info("TESTING1");
+        //plugin.getLogger().info("TESTING1");
         //allEntities = center.getWorld().getEntitiesByClasses(championClass, minionClass);
         //AxisAlignedBB aabb = AxisAlignedBB.a(-80.0, 30.0, -80.0, 80.0, 10.0, 80.0);
         //gets a list of all entities, and checks if they are within range. If they are, minions get priority, unless champion is being attacked.
-        //allEntities.addAll(world.getHandle().a(minionClass, aabb));
-        //allEntities = world.getEntities();        
-        //allEntities.addAll(world.getEntities());
 
         distance2 = 13;
         isMinionInRange = false;
         target = null;
         targetPlayer = null;
         targetMinion = null;
-        plugin.getLogger().info("TESTING2");
-        for (Entity entity : world.getEntities()) {
+        /*for (Entity entity : world.getEntities()) {
             plugin.getLogger().info(entity.toString());
         }
+        */
         for (Entity entity : world.getEntities()) {
             distance = entity.getLocation().distance(center);
-            plugin.getLogger().info("DISTANCE###" + distance);
-            plugin.getLogger().info(entity.getLocation().toString() + center.toString());
-            if (distance < 12) {
-                plugin.getLogger().info("TESTING5");
+            if (distance < range) {
+                //plugin.getLogger().info("TESTING5");
                 if (entity instanceof CraftPlayer) {
                     champion = teams.getChampion((Player) entity);
                     if (!teams.getTeam((Player) entity).equals(team)) {
-                        plugin.getLogger().info("TESTING6");
+                        //plugin.getLogger().info("TESTING6");
                         targetPlayer = (Player) entity;
                     }
                 }
                 if (distance < distance2) {
-                    plugin.getLogger().info("TESTING7");
+                    //plugin.getLogger().info("TESTING7");
                     if (entity.getType() == EntityType.SKELETON) {
-                        plugin.getLogger().info("TESTING8");
+                        //plugin.getLogger().info("TESTING8");
                         if (!plugin.minionPopulation.getTeam(entity).equals(team)) {
-                            plugin.getLogger().info("TESTING9");
+                            //plugin.getLogger().info("TESTING9");
                             isMinionInRange = true;
                             targetMinion = entity;
                             distance2 = distance;
@@ -199,7 +203,7 @@ public class Turret {
                 }
             }
         }
-        plugin.getLogger().info("TESTING3");
+        //plugin.getLogger().info("TESTING3");
         if (championAttacked) {
             if (targetPlayer != null) {
                 isMinionInRange = false;
@@ -212,11 +216,13 @@ public class Turret {
             if (target != null) {
             plugin.getLogger().info("TARGET NAME" + target.toString());
             }
+            //if (!target.equals(lastHit)) {
+             //   lastHit = target;
+            //}
             return targetMinion;
         }
         
         else if (targetPlayer != null) {
-            plugin.getLogger().info("TESTING9");
             //targetPlayer.sendMessage("WARNING: You have been targeted by the tower!");
             target = targetPlayer;
             if (target != null) {
@@ -240,10 +246,9 @@ public class Turret {
     
     //attack target, calculates damage
     public boolean attack() {
-        plugin.getLogger().info("TESTING4");
         if (target != null) {
             if (target.equals(lastHit)) {
-                damage = damageBase + (damageBase * Math.pow(1.375, timesHit));
+                damage = damageBase * Math.pow(1.375, timesHit);
                 if (damage > damageBase * 2.0) {
                     damage = damageBase * 2;
                 }
@@ -255,10 +260,10 @@ public class Turret {
             }
             if (target.getType() == EntityType.PLAYER) {
                 
-                targetPlayer.sendMessage("You have been hit by the tower!");
+                targetPlayer.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "You have been hit by the tower!");
                 champion = teams.getChampion(targetPlayer);
                 champion.hit(damage);
-                lastHit = target;
+                lastHit = targetPlayer;
                 return true;
 
             }
@@ -278,7 +283,7 @@ public class Turret {
         CraftPlayer tempPlayer;
         if (tempTarget instanceof CraftPlayer) {
             tempPlayer = (CraftPlayer) tempTarget;
-            tempPlayer.sendMessage("&4&lWARNING: You have been targeted by the tower!");
+            tempPlayer.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[WARNING]:" + ChatColor.GOLD + " You have been targeted by the turret!");
         }
         attack();
 

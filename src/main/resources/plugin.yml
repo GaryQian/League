@@ -17,6 +17,16 @@ commands:
       usage: /team
       permission: 
       permission-message: Test permission message
+   randomchampion:
+      description: sets you to a random champion
+      usage: /randomchampion
+      permission: 
+      permission-message: Test permission message
+   setclock:
+      description: sets clock to given time (sec)
+      usage: /setclock <seconds>
+      permission: 
+      permission-message: Test permission message
    #team:
       #description: Adds friend to your team.
       #usage: /team

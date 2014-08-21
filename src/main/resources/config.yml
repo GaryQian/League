@@ -30,6 +30,13 @@ purple-lobby:
     y:
     z:
  
+ 
+##############################
+#Spawn Settings
+
+#distance from spawn players are able to move on death.
+spawn-radius: 5.5
+
 #Spawn/recall location
 blue-spawn:
     x:
@@ -67,6 +74,8 @@ purple-nexus:
 #################################################################################
 #Height of the turret (will include this many bocks below the center as the turret Body)
 turret-height:
+    
+turret-range: 11.2
     
 #TURRET CENTERS
 #These are the coordinates of the top center block of the turret.    
