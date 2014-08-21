@@ -14,6 +14,7 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 /**
  *
@@ -104,6 +105,10 @@ public final class League extends JavaPlugin {
         arena.purpleNexus1.fixTurret();
         arena.purpleNexus2.fixTurret();
         
+        for (Player player : this.getServer().getOnlinePlayers()) {
+            player.kickPlayer("Thanks for playing!");
+        }
+        
         rollback("world");
     }
     
@@ -169,6 +174,10 @@ public final class League extends JavaPlugin {
             arena.recall(sender.getServer().getPlayer(sender.getName()));
             return true;
         }
+        if (cmd.getName().equalsIgnoreCase("shutdown")) {
+            this.getServer().shutdown();
+            return true;
+        }
         if (cmd.getName().equalsIgnoreCase("fixTurrets")) {
             arena.blueMid1.fixTurret();
             arena.blueMid2.fixTurret();
@@ -206,6 +215,7 @@ public final class League extends JavaPlugin {
         }
 	return false;
     }
+    
     
     
     //Unloading maps, to rollback maps. Will delete all player builds until last server save

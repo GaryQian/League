@@ -87,7 +87,7 @@ public class Teams {
     
     public boolean addPurple(Player player) {
         if (getTeamSize("purple") < 5) {
-            purpleLobby.setWorld(player.getWorld());
+            purpleLobby.setWorld(plugin.mainWorld);
             purpleTeam.add(player);
             player.sendMessage("You have joined the Purple Team!");
             plugin.getLogger().info(player.getName() + " has Joined the Purple Team");
@@ -221,11 +221,11 @@ public class Teams {
     
     public void setChampion(Player player, String champion) {
         if (getTeam(player).equals("blue")) {
-            blueChampions[blueTeam.lastIndexOf(player)] = new Champion(player, champion, "blue");
+            blueChampions[blueTeam.lastIndexOf(player)] = new Champion(player, champion, "blue", plugin);
             player.sendMessage("You have selected " + champion);
         }
         else {
-            purpleChampions[purpleTeam.lastIndexOf(player)] = new Champion(player, champion, "purple");
+            purpleChampions[purpleTeam.lastIndexOf(player)] = new Champion(player, champion, "purple", plugin);
             player.sendMessage("You have selected " + champion);
         }
     }

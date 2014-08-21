@@ -11,6 +11,9 @@ import com.meloncraft.league.Champions.RecallTask;
 import com.meloncraft.league.DayTask;
 import com.meloncraft.league.League;
 import com.meloncraft.league.Teams;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -30,6 +33,7 @@ public class ArenaHandler {
     public World world;
     public boolean started;
     public int clock;
+    public List<UUID> disconnectedPlayers;
     //public Player player;
     public FileConfiguration config;
     public Location blueSpawn, purpleSpawn;
@@ -42,6 +46,8 @@ public class ArenaHandler {
         //world = plugin.mainWorld;
         config = plugin.getConfig();
         started = false;
+        
+        disconnectedPlayers = new ArrayList<UUID>();
         
         setSpawns(plugin.getConfig().getDouble("blue-spawn.x"), plugin.getConfig().getDouble("blue-spawn.y"), plugin.getConfig().getDouble("blue-spawn.z"), plugin.getConfig().getDouble("purple-spawn.x"), plugin.getConfig().getDouble("purple-spawn.y"), plugin.getConfig().getDouble("purple-spawn.z"), plugin.getConfig().getDouble("blue-spawn.pitch"), plugin.getConfig().getDouble("blue-spawn.yaw"), plugin.getConfig().getDouble("purple-spawn.pitch"), plugin.getConfig().getDouble("purple-spawn.yaw"), world);
         //blueSpawn = new Location(plugin.mainWorld, config.getDouble("blue-spawn.x"), config.getDouble("blue-spawn.y"), config.getDouble("blue-spawn.z"));
@@ -233,11 +239,13 @@ public class ArenaHandler {
             for (Player player : teams.getBlueTeam()) {
                 if (teams.getChampion(player) == null) {
                     teams.setRandomChampion(player);
+                    disconnectedPlayers.add(player.getUniqueId());
                 }
             }
             for (Player player : teams.getPurpleTeam()) {
                 if (teams.getChampion(player) == null) {
                     teams.setRandomChampion(player);
+                    disconnectedPlayers.add(player.getUniqueId());
                 }
             }
             
@@ -277,9 +285,9 @@ public class ArenaHandler {
     public void recall(Player player) {
         if (started) {
             teams.getChampion(player).setRecalling(true);
-            player.sendMessage(ChatColor.GREEN + "Recalling. Hold still for 8 seconds!");
+            player.sendMessage(ChatColor.GREEN + "Recalling. Hold still for 8 seconds! Don't move a muscle!");
             
-            BukkitTask championRecall = new RecallTask(plugin, teams, player).runTaskLater(this.plugin, 8 * 20);
+            BukkitTask championRecall = new RecallTask(plugin, teams, player).runTaskLater(plugin, 8 * 20);
         }
     }
     

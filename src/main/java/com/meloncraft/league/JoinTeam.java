@@ -6,6 +6,9 @@
 
 package com.meloncraft.league;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -25,6 +28,7 @@ public class JoinTeam implements Listener {
     public World world;
     Player player;
     League plugin;
+    
     
     public JoinTeam(League plug, Teams tea) {
         plugin = plug;
@@ -60,6 +64,7 @@ public class JoinTeam implements Listener {
     
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        event.getPlayer().teleport(new Location(plugin.mainWorld, 0, 15, 0));
         assignTeam(event.getPlayer());
         event.getPlayer().setHealthScale(40);
         event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
@@ -69,14 +74,18 @@ public class JoinTeam implements Listener {
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
         if (plugin.arena.started) {
-            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "Game in progress");
+            if (!plugin.arena.disconnectedPlayers.contains(player.getUniqueId())) {
+                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "Game in progress");
+            }
         }
     }
     
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        player = event.getPlayer();
-        team.removePlayer(player);
+        if (!plugin.arena.started) {
+            player = event.getPlayer();
+            team.removePlayer(player);
+        }
     }
     
     

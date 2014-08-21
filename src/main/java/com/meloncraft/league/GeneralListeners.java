@@ -9,6 +9,8 @@ package com.meloncraft.league;
 import com.meloncraft.league.Arena.ArenaHandler;
 import com.meloncraft.league.Arena.Turret;
 import com.meloncraft.league.Champions.Champion;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -40,12 +42,15 @@ public class GeneralListeners implements Listener {
     Location tempLoc;
     private int count;
     
+    
     public GeneralListeners(League plug, ArenaHandler are, Teams tea) {
         plugin = plug;
         arena = are;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         teams = tea;
         count = 0;
+        
+        
         
         FileConfiguration config = plugin.getConfig();
         world = plugin.mainWorld;
@@ -89,6 +94,11 @@ public class GeneralListeners implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         if (arena.started) {
+            //prevent sprinting
+            if (event.getPlayer().isSprinting()) {
+                event.getPlayer().setSprinting(false);
+            }
+            
             //check if champion is respawning and prevent them from leaving spawn.
             if (teams.getChampion(event.getPlayer()).getRespawnTime() > 0) {
                 
@@ -111,10 +121,12 @@ public class GeneralListeners implements Listener {
                 }
             }
             
+            
+            //prevent motion while recalling
             if (teams.getChampion(event.getPlayer()).getRecalling()) {
                 if (event.getFrom().getX() != event.getTo().getX() || event.getFrom().getY() != event.getTo().getY() || event.getFrom().getZ() != event.getTo().getZ()) {
                     teams.getChampion(event.getPlayer()).setRecalling(false);
-                    event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[WARNING]: " + ChatColor.GOLD + " Recalling Interrupted!");
+                    //event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[WARNING]: " + ChatColor.GOLD + " Recalling Interrupted! Don't move at all to successfully recall");
                 }
                 
             }
@@ -249,7 +261,7 @@ public class GeneralListeners implements Listener {
                     turret = arena.isPurpleTurret(event.getClickedBlock().getLocation());
                     if (turret != null) {
                         if (teams.getChampion(player) != null) {
-                            turret.hit(teams.getChampion(player).getDamage());
+                            turret.hit(teams.getChampion(player).basicAttack());
                             tempLoc = event.getClickedBlock().getLocation().add(.5, 0, .5);
                             plugin.mainWorld.createExplosion(tempLoc, (float) 0.01, false);
                             //hitTurret = true;
@@ -265,7 +277,7 @@ public class GeneralListeners implements Listener {
                     turret = arena.isBlueTurret(event.getClickedBlock().getLocation());
                     if (turret != null) {
                         if (teams.getChampion(player) != null) {
-                            turret.hit(teams.getChampion(player).getDamage());
+                            turret.hit(teams.getChampion(player).basicAttack());
                             tempLoc = event.getClickedBlock().getLocation().add(.5, 0, .5);
                             plugin.mainWorld.createExplosion(tempLoc, (float) 0.01, false);
                             //hitTurret = true;

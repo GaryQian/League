@@ -37,9 +37,9 @@ public class RecallTask extends BukkitRunnable{
                     player.teleport(plugin.arena.purpleSpawn);
                 }
             }
-            else {
-                player.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "RECALL INTERRUPTED!");
-            }
+            //else {
+                //player.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "RECALL INTERRUPTED!");
+            //}
             teams.getChampion(player).setRecalling(false);
         }
     }

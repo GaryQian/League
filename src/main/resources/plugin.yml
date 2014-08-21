@@ -37,6 +37,11 @@ commands:
       usage: /fixturrets
       permission: 
       permission-message: Test permission message
+   shutdown:
+      description: shuts down the server without saving map
+      usage: /shutdown
+      permission: 
+      permission-message: Test permission message
    #team:
       #description: Adds friend to your team.
       #usage: /team

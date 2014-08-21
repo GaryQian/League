@@ -312,8 +312,14 @@ public class Turret {
     public void refresh() {
         if (health < 0) {
             isDead = true;
-            plugin.getServer().broadcastMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "[- MATCH STATUS -]: " + ChatColor.BLUE + team + ChatColor.GOLD + " team has destroyed a Turret!");
+            if (team.equals("blue")) {
+                plugin.getServer().broadcastMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "[- MATCH STATUS -]: " + ChatColor.LIGHT_PURPLE + "PURPLE" + ChatColor.GOLD + " team has destroyed a Turret!");
+            }
+            else if (team.equals("purple")) {
+                plugin.getServer().broadcastMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "[- MATCH STATUS -]: " + ChatColor.BLUE + "BLUE" + ChatColor.GOLD + " team has destroyed a Turret!");
+            }
             for (Location loc : turretBody) {
+                plugin.getLogger().info(loc.toString());
                 turretBodyBlockState.add(loc.getBlock().getState());
                 loc.getBlock().setType(Material.AIR);
             }
