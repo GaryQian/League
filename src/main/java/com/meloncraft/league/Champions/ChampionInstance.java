@@ -15,6 +15,8 @@ import org.bukkit.inventory.ItemStack;
 public interface ChampionInstance {
     public ItemStack[] kit = new ItemStack[9];
     
+    public ItemStack[] getKit();
+    
     public void qSpell();
     
     public void wSpell();

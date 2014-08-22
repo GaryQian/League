@@ -6,6 +6,7 @@
 
 package com.meloncraft.league;
 
+import static com.meloncraft.league.GeneralListeners.teams;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Location;
@@ -70,6 +71,14 @@ public class JoinTeam implements Listener {
             event.getPlayer().setHealthScale(40);
             event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
             event.getPlayer().getInventory().clear();
+        }
+        else {
+            if (teams.getTeam(event.getPlayer()).equals("blue")) {
+                event.getPlayer().teleport(plugin.arena.blueSpawn);
+            }
+            else if (teams.getTeam(event.getPlayer()).equals("purple")) {
+                event.getPlayer().teleport(plugin.arena.purpleSpawn);
+            }
         }
     }
     

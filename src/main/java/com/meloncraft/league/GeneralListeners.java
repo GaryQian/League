@@ -42,7 +42,7 @@ public class GeneralListeners implements Listener {
     ArenaHandler arena;
     private Champion tempChampion;
     Location tempLoc;
-    private int count;
+    //private int count;
     
     
     public GeneralListeners(League plug, ArenaHandler are, Teams tea) {
@@ -50,7 +50,6 @@ public class GeneralListeners implements Listener {
         arena = are;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         teams = tea;
-        count = 0;
         
         
         
@@ -80,6 +79,8 @@ public class GeneralListeners implements Listener {
     public void onDeath(PlayerDeathEvent event) {
         double respawnTime = 5;
         int totalRespawnTime = 5;
+        teams.getChampion(player).storeInventory();
+        event.setKeepLevel(true);
         respawnTime += teams.getChampion(event.getEntity()).getLevel() * 2.5;
         if (arena.clock > 20 * 60) {
             respawnTime = respawnTime + ((respawnTime / 50) * ((arena.clock / 60) - 20));
@@ -106,19 +107,14 @@ public class GeneralListeners implements Listener {
                 
                 if (teams.getTeam(event.getPlayer()).equals("blue")) {
                     if (event.getTo().distance(arena.blueSpawn) > plugin.getConfig().getDouble("spawn-radius")) {
-                        if (count % 2 != 1) {
                             event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[DEAD] " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + teams.getChampion(event.getPlayer()).getRespawnTime() + ChatColor.GOLD + " to exit Spawn! Go buy items!");
                             event.setTo(event.getFrom());
-                            count++;
-                        }
                     }
                 }
                 if (teams.getTeam(event.getPlayer()).equals("purple")) {
                     if (event.getTo().distance(arena.purpleSpawn) > plugin.getConfig().getDouble("spawn-radius")) {
-                        if (count % 2 != 1) {
                             event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[DEAD] " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + teams.getChampion(event.getPlayer()).getRespawnTime() + ChatColor.GOLD + " to exit Spawn! Go buy items!");
                             event.setTo(event.getFrom());
-                        }
                     }
                 }
             }
@@ -126,8 +122,14 @@ public class GeneralListeners implements Listener {
             
             //prevent motion while recalling
             if (teams.getChampion(event.getPlayer()).getRecalling()) {
-                if (event.getFrom().getX() != event.getTo().getX() || event.getFrom().getY() != event.getTo().getY() || event.getFrom().getZ() != event.getTo().getZ()) {
-                    teams.getChampion(event.getPlayer()).setRecalling(false);
+                if (event.getFrom().distance(event.getTo()) > 2) {
+                //if ((event.getFrom().getX() - event.getTo().getX()) || event.getFrom().getY() != event.getTo().getY() || event.getFrom().getZ() != event.getTo().getZ()) {
+                    teams.getChampion(event.getPlayer()).setRecalling(false, false);
+                    //event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[WARNING]: " + ChatColor.GOLD + " Recalling Interrupted! Don't move at all to successfully recall");
+                }
+                else if (event.getFrom().distance(event.getTo()) > .02) {
+                //if ((event.getFrom().getX() - event.getTo().getX()) || event.getFrom().getY() != event.getTo().getY() || event.getFrom().getZ() != event.getTo().getZ()) {
+                    teams.getChampion(event.getPlayer()).setRecalling(false, true);
                     //event.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[WARNING]: " + ChatColor.GOLD + " Recalling Interrupted! Don't move at all to successfully recall");
                 }
                 
@@ -144,7 +146,17 @@ public class GeneralListeners implements Listener {
             else if (teams.getTeam(event.getPlayer()).equals("purple")) {
                 event.setRespawnLocation(arena.purpleSpawn);
             }
+            teams.getChampion(event.getPlayer()).returnInventory();
         }
+        else {
+            if (teams.getTeam(event.getPlayer()).equals("blue")) {
+                event.setRespawnLocation(teams.blueLobby);
+            }
+            else if (teams.getTeam(event.getPlayer()).equals("purple")) {
+                event.setRespawnLocation(teams.purpleLobby);
+            }
+        }
+        
     }
     //########################################
     //METHODS USED IN onInteract()
@@ -213,12 +225,7 @@ public class GeneralListeners implements Listener {
                     
                     break;
                 case 8: //recall
-                    if (arena.started) {
-                        teams.getChampion(player).setRecalling(true);
-                        player.sendMessage(ChatColor.GREEN + "Recalling. Hold still for 8 seconds! Don't move a muscle!");
-
-                        BukkitTask championRecall = new RecallTask(plugin, teams, player).runTaskLater(plugin, 8 * 20);
-                    }
+                    arena.recall(champ.player);
                     break;
             }
     }

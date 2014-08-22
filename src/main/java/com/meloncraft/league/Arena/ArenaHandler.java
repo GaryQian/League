@@ -284,8 +284,9 @@ public class ArenaHandler {
     
     public void recall(Player player) {
         if (started) {
-            teams.getChampion(player).setRecalling(true);
+            teams.getChampion(player).setRecalling(true, false);
             player.sendMessage(ChatColor.GREEN + "Recalling. Hold still for 8 seconds! Don't move a muscle!");
+            
             
             BukkitTask championRecall = new RecallTask(plugin, teams, player).runTaskLater(plugin, 8 * 20);
         }

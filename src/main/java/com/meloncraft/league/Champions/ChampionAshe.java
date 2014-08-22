@@ -52,20 +52,28 @@ public class ChampionAshe implements ChampionInstance {
         
     }
     
+    public ItemStack[] getKit() {
+        return kit;
+    }
+    
     public void qSpell() {
         champion.sendMessage("Q");
+        champion.setQCooldown(2);
     }
     
     public void wSpell() {
         champion.sendMessage("W");
+        champion.setWCooldown(20);
     }
     
     public void eSpell() {
         champion.sendMessage("E");
+        champion.setECooldown(20);
     }
     
     public void rSpell() {
         champion.sendMessage("R");
+        champion.setRCooldown(90);
     }
     
 }

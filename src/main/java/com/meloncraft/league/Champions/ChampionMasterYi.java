@@ -51,20 +51,28 @@ public class ChampionMasterYi implements ChampionInstance {
         
     }
     
+    public ItemStack[] getKit() {
+        return kit;
+    }
+    
     public void qSpell() {
         champion.sendMessage("Q");
+        champion.setQCooldown(10);
     }
     
     public void wSpell() {
         champion.sendMessage("W");
+        champion.setWCooldown(30);
     }
     
     public void eSpell() {
         champion.sendMessage("E");
+        champion.setECooldown(15);
     }
     
     public void rSpell() {
         champion.sendMessage("R");
+        champion.setRCooldown(60);
     }
     
 }

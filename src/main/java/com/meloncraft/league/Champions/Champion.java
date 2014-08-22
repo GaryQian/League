@@ -7,8 +7,6 @@
 package com.meloncraft.league.Champions;
 
 import com.meloncraft.league.League;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.server.v1_7_R4.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -24,14 +23,14 @@ import org.bukkit.scheduler.BukkitTask;
  * @author Gary
  */
 public class Champion {
-    public int level, kills, deaths, assists, gold, respawnTime, qCooldown, wCooldown, eCooldown, rCooldown, dCooldown, fCooldown, qLevel, wLevel, eLevel, rLevel, points;
+    public int level, kills, deaths, assists, gold, respawnTime, qCooldown, wCooldown, eCooldown, rCooldown, dCooldown, fCooldown, recallCooldown, qLevel, wLevel, eLevel, rLevel, points;
     public double range, speed, incomingDamage;
     public double health, damage, mana, AP, armor, magicResist, healthRegen, manaRegen, lifesteal, attackSpeed;
     public double maxHealth, maxMana;
     public double baseHealth, baseDamage, baseMana;
     public double bonusHealth, bonusDamage, bonusMana, bonusHealthRegen, bonusManaRegen;
     public double healthScale, damageScale, manaScale;
-    public ItemStack[] kit;
+    public ItemStack[] kit, inv;
     public String team;
     public Player player;
     public String champion;
@@ -51,6 +50,7 @@ public class Champion {
         plugin = plug;
         player = play;
         recalling = false;
+        recallCooldown = 0;
         basicAttack = true;
         level = 1;
         respawnTime = 0;
@@ -75,6 +75,8 @@ public class Champion {
         eLevel = 0;
         rLevel = 0;
         kit = new ItemStack[9];
+        respawnTime = 0;
+        inv = new ItemStack[103];
         
         setChampion(champion);
         
@@ -111,11 +113,11 @@ public class Champion {
     
     public void setChampion(String champ) {
         switch (champ) {
-            case "Ashe": championInstance = (ChampionAshe) new ChampionAshe(this);
-                        kit = championInstance.kit;
+            case "Ashe": championInstance = new ChampionAshe(this);
+                        kit = championInstance.getKit();
                 break;
-            case "Master Yi": championInstance = (ChampionMasterYi) new ChampionMasterYi(this);
-                        kit = championInstance.kit;
+            case "Master Yi": championInstance = new ChampionMasterYi(this);
+                        kit = championInstance.getKit();
                 break;
         }
         kit[8] = new ItemStack(Material.PORTAL);
@@ -144,31 +146,47 @@ public class Champion {
             player.getInventory().setItem(8, kit[8]);//recall
         }
         
-        
-        
-        
-        
-        
-        
+    }
+    
+    public void storeInventory() {
+        inv = player.getInventory().getContents();
+    }
+    
+    public void returnInventory() {
+        player.getInventory().setContents(inv);
     }
     
     public void qSpell(){
-        
+        championInstance.qSpell();
     }
     public void wSpell(){
-        
+        championInstance.wSpell();
     }
     public void eSpell(){
-        
+        championInstance.eSpell();
     }
     public void rSpell(){
-        
+        championInstance.rSpell();
     }
     public void dSpell(){
         
     }
     public void fSpell(){
         
+    }
+    
+    
+    public void setQCooldown(int i) {
+        qCooldown = i;
+    }
+    public void setWCooldown(int i) {
+        wCooldown = i;
+    }
+    public void setECooldown(int i) {
+        eCooldown = i;
+    }
+    public void setRCooldown(int i) {
+        rCooldown = i;
     }
     
     public double getDamage() {
@@ -202,7 +220,7 @@ public class Champion {
     public double basicAttack() {
         if (plugin.arena.started && basicAttack) {
             if (recalling) {
-                setRecalling(false);
+                setRecalling(false, true);
             }
             if (lifesteal > 0) {
                 health += damage * (lifesteal / 100);
@@ -224,10 +242,18 @@ public class Champion {
         refresh();
     }
     
-    public void setRecalling(boolean rec) {
-        if (!rec) {
+    public void setRecalling(boolean rec, boolean message) {
+        if (!rec && message) {
             player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "[WARNING]: " + ChatColor.GOLD + " Recalling Interrupted! Don't move at all to successfully recall");
         }
+        
+        if (rec) {
+            recallCooldown = 8;
+        }
+        else {
+            recallCooldown = 0;
+        }
+        
         recalling = rec;
     }
     
@@ -241,57 +267,71 @@ public class Champion {
     
     public void spellCooldownTick() {
         qCooldown--;
-        if (qCooldown > 1) {
-            player.getInventory().getItem(1).setAmount(qCooldown);
+        if (qCooldown >= 1 && player.getInventory().getItem(0) != null) {
+            player.getInventory().getItem(0).setAmount(qCooldown);
+            player.getInventory().getItem(0).removeEnchantment(Enchantment.ARROW_DAMAGE);
         }
-        else {
-            player.getInventory().getItem(1).setAmount(1);
-            player.getInventory().getItem(1).addUnsafeEnchantment(Enchantment.DAMAGE_ALL, qLevel);
+        else if (player.getInventory().getItem(0) != null) {
+            player.getInventory().getItem(0).setAmount(1);
+            player.getInventory().getItem(0).addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, qLevel);
         }
         
         wCooldown--;
-        if (wCooldown > 1) {
+        if (wCooldown >= 1 && player.getInventory().getItem(1) != null) {
             player.getInventory().getItem(1).setAmount(wCooldown);
+            player.getInventory().getItem(1).removeEnchantment(Enchantment.ARROW_DAMAGE);
         }
-        else {
+        else if (player.getInventory().getItem(1) != null) {
             player.getInventory().getItem(1).setAmount(1);
-            player.getInventory().getItem(1).addUnsafeEnchantment(Enchantment.DAMAGE_ALL, wLevel);
+            player.getInventory().getItem(1).addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, wLevel);
         }
         
         eCooldown--;
-        if (eCooldown > 1) {
-            player.getInventory().getItem(1).setAmount(eCooldown);
+        if (eCooldown >= 1 && player.getInventory().getItem(2) != null) {
+            player.getInventory().getItem(2).setAmount(eCooldown);
+            player.getInventory().getItem(2).removeEnchantment(Enchantment.ARROW_DAMAGE);
         }
-        else {
-            player.getInventory().getItem(1).setAmount(1);
-            player.getInventory().getItem(1).addUnsafeEnchantment(Enchantment.DAMAGE_ALL, eLevel);
+        else if (player.getInventory().getItem(2) != null) {
+            player.getInventory().getItem(2).setAmount(1);
+            player.getInventory().getItem(2).addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, eLevel);
         }
         
         rCooldown--;
-        if (rCooldown > 1) {
-            player.getInventory().getItem(1).setAmount(rCooldown);
+        if (rCooldown >= 1 && player.getInventory().getItem(3) != null) {
+            player.getInventory().getItem(3).setAmount(rCooldown);
+            player.getInventory().getItem(3).removeEnchantment(Enchantment.ARROW_DAMAGE);
         }
-        else {
-            player.getInventory().getItem(1).setAmount(1);
-            player.getInventory().getItem(1).addUnsafeEnchantment(Enchantment.DAMAGE_ALL, rLevel);
+        else if (player.getInventory().getItem(3) != null) {
+            player.getInventory().getItem(3).setAmount(1);
+            player.getInventory().getItem(3).addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, rLevel);
         }
         
-        dCooldown--;
+        /*dCooldown--;
         if (dCooldown > 1) {
-            player.getInventory().getItem(1).setAmount(dCooldown);
+            player.getInventory().getItem(4).setAmount(dCooldown);
         }
         else {
-            player.getInventory().getItem(1).setAmount(1);
-            player.getInventory().getItem(1).addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
+            player.getInventory().getItem(4).setAmount(1);
+            player.getInventory().getItem(4).addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
         }
         
         fCooldown--;
         if (fCooldown > 1) {
-            player.getInventory().getItem(1).setAmount(fCooldown);
+            player.getInventory().getItem(5).setAmount(fCooldown);
         }
         else {
-            player.getInventory().getItem(1).setAmount(1);
-            player.getInventory().getItem(1).addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
+            player.getInventory().getItem(5).setAmount(1);
+            player.getInventory().getItem(5).addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
+        }*/
+        
+        recallCooldown--;
+        if (recallCooldown >= 1 && player.getInventory().getItem(3) != null) {
+            player.getInventory().getItem(8).setAmount(recallCooldown);
+            
+        }
+        else if (player.getInventory().getItem(8) != null) {
+            player.getInventory().getItem(8).setAmount(1);
+            
         }
     }
     
@@ -308,6 +348,6 @@ public class Champion {
         
         player.setLevel(level);
         player.setMaxHealth(maxHealth);
-        player.setHealth(health);
+        //player.setHealth(health);
     }
 }

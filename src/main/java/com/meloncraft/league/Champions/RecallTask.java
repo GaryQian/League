@@ -29,18 +29,20 @@ public class RecallTask extends BukkitRunnable{
     
     public void run() {
         if (plugin.arena.started) {
-            if (teams.getChampion(player).recalling) {
+            if (teams.getChampion(player).recalling && teams.getChampion(player).recallCooldown < 1) {
+                
                 if (teams.getTeam(player).equals("blue")) {
                     player.teleport(plugin.arena.blueSpawn);
                 }
                 else if (teams.getTeam(player).equals("purple")) {
                     player.teleport(plugin.arena.purpleSpawn);
                 }
+                teams.getChampion(player).setRecalling(false, false);
             }
             //else {
                 //player.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "RECALL INTERRUPTED!");
             //}
-            teams.getChampion(player).setRecalling(false);
+            
         }
     }
     
