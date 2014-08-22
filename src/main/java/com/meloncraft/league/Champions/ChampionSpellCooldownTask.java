@@ -6,20 +6,17 @@
 
 package com.meloncraft.league.Champions;
 
-import com.meloncraft.league.Arena.ArenaHandler;
 import com.meloncraft.league.League;
-import com.meloncraft.league.Teams;
-import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  *
  * @author Gary
  */
-public class ChampionBasicCooldownTask extends BukkitRunnable{
+public class ChampionSpellCooldownTask {
     League plugin;
     Champion champion;
     
-    public ChampionBasicCooldownTask(League plug, Champion champ) {
+    public ChampionSpellCooldownTask(League plug, Champion champ) {
         plugin = plug;
         champion = champ;
     }
@@ -30,3 +27,4 @@ public class ChampionBasicCooldownTask extends BukkitRunnable{
             
     
 }
+

@@ -6,6 +6,7 @@
 
 package com.meloncraft.league.Arena;
 
+import com.meloncraft.league.Champions.Champion;
 import com.meloncraft.league.League;
 import com.meloncraft.league.Teams;
 import org.bukkit.entity.Player;
@@ -28,11 +29,16 @@ public class ClockTask extends BukkitRunnable{
     
     public void run() {
         arena.clockTick();
+        Champion champ;
         for (Player player : teams.getBlueTeam()) {
-            teams.getChampion(player).respawnTimeTick();
+            champ = teams.getChampion(player);
+            champ.respawnTimeTick();
+            champ.spellCooldownTick();
         }
         for (Player player : teams.getPurpleTeam()) {
-            teams.getChampion(player).respawnTimeTick();
+            champ = teams.getChampion(player);
+            champ.respawnTimeTick();
+            champ.spellCooldownTick();
         }
         arena.blueMid3.heal(15);
         arena.purpleMid3.heal(15);

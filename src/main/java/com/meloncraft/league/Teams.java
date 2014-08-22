@@ -36,10 +36,10 @@ public class Teams {
         purpleTeam  = new ArrayList<Player>();
         blueQueue = new ArrayList<Player>();
         purpleQueue  = new ArrayList<Player>();
-        blueChampions = new Champion[4];
-        purpleChampions = new Champion[4];
-        blueRespawnTime = new int[4];
-        purpleRespawnTime = new int[4];
+        blueChampions = new Champion[5];
+        purpleChampions = new Champion[5];
+        blueRespawnTime = new int[5];
+        purpleRespawnTime = new int[5];
         int count = 0;
         plugin = plug;
         world = plugin.mainWorld;
@@ -212,7 +212,7 @@ public class Teams {
             switch (gen.nextInt(2)) {
                 case 0: champ = "Ashe";
                     break;
-                case 1: champ = "Master_Yi";
+                case 1: champ = "Master Yi";
                     break;
             }
             

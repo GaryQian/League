@@ -64,11 +64,13 @@ public class JoinTeam implements Listener {
     
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        event.getPlayer().teleport(new Location(plugin.mainWorld, 0, 15, 0));
-        assignTeam(event.getPlayer());
-        event.getPlayer().setHealthScale(40);
-        event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
-        event.getPlayer().getInventory().clear();
+        if (!plugin.arena.started) {
+            event.getPlayer().teleport(new Location(plugin.mainWorld, 0, 15, 0));
+            assignTeam(event.getPlayer());
+            event.getPlayer().setHealthScale(40);
+            event.getPlayer().setHealth(event.getPlayer().getMaxHealth());
+            event.getPlayer().getInventory().clear();
+        }
     }
     
     @EventHandler

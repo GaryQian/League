@@ -9,6 +9,7 @@ package com.meloncraft.league;
 import com.meloncraft.league.Arena.ArenaHandler;
 import com.meloncraft.league.Arena.Turret;
 import com.meloncraft.league.Champions.Champion;
+import com.meloncraft.league.Champions.RecallTask;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.ChatColor;
@@ -25,6 +26,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  *
@@ -144,14 +146,105 @@ public class GeneralListeners implements Listener {
             }
         }
     }
+    //########################################
+    //METHODS USED IN onInteract()
     
+    
+    public void castSpell(Champion champ, PlayerInteractEvent event) {
+            switch (player.getInventory().getHeldItemSlot()) {
+                case 0: //Q
+                    if (champ.qCooldown <= 0) {
+                        champ.qSpell();
+                    }
+                    else {
+                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.qCooldown + ChatColor.GOLD + " before you can cast this.");
+                        event.setCancelled(true);
+                    }
+                    break;
+                case 1: //W
+                    if (champ.wCooldown <= 0) {
+                        champ.wSpell();
+                    }
+                    else {
+                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.wCooldown + ChatColor.GOLD + " before you can cast this.");
+                        event.setCancelled(true);
+                    }
+                    break;
+                case 2: //E
+                    if (champ.eCooldown <= 0) {
+                        champ.eSpell();
+                    }
+                    else {
+                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.eCooldown + ChatColor.GOLD + " before you can cast this.");
+                        event.setCancelled(true);
+                    }
+                    break;
+                case 3: //R
+                    if (champ.rCooldown <= 0) {
+                        champ.rSpell();
+                    }
+                    else {
+                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.rCooldown + ChatColor.GOLD + " before you can cast this.");
+                        event.setCancelled(true);
+                    }
+                    break;
+                case 4: //D
+                    if (champ.qCooldown <= 0) {
+                        champ.qSpell();
+                    }
+                    else {
+                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.qCooldown + ChatColor.GOLD + " before you can cast this.");
+                        event.setCancelled(true);
+                    }
+                    break;
+                case 5: //F
+                    if (champ.qCooldown <= 0) {
+                        champ.qSpell();
+                    }
+                    else {
+                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.qCooldown + ChatColor.GOLD + " before you can cast this.");
+                        event.setCancelled(true);
+                    }
+                    break;
+                case 6: //active item
+                    
+                    break;
+                case 7: //active item
+                    
+                    break;
+                case 8: //recall
+                    if (arena.started) {
+                        teams.getChampion(player).setRecalling(true);
+                        player.sendMessage(ChatColor.GREEN + "Recalling. Hold still for 8 seconds! Don't move a muscle!");
+
+                        BukkitTask championRecall = new RecallTask(plugin, teams, player).runTaskLater(plugin, 8 * 20);
+                    }
+                    break;
+            }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //##########################################
     @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
+    public boolean onInteract(PlayerInteractEvent event) {
         
         player = event.getPlayer();
-        
-        
-        
+        Champion champion = teams.getChampion(player);
         
         //_________
         //RIGHT CLICK ACTIONS
@@ -166,7 +259,7 @@ public class GeneralListeners implements Listener {
                 else {
                     if (teams.getTeamSize("purple") < 5) {
                         if (teams.blueChampions[teams.blueTeam.lastIndexOf(player)] != null) {
-                                tempChampion = teams.getChampion(player);
+                                tempChampion = champion;
                                 teams.removeChampion(player);
                                 teams.removePlayer(player);
                                 teams.addPurple(player);
@@ -210,7 +303,7 @@ public class GeneralListeners implements Listener {
                 else {
                     if (teams.getTeamSize("blue") < 5) {
                         if (teams.purpleChampions[teams.purpleTeam.lastIndexOf(player)] != null) {
-                                tempChampion = teams.getChampion(player);
+                                tempChampion = champion;
                                 teams.removeChampion(player);
                                 teams.removePlayer(player);
                                 teams.addBlue(player);
@@ -243,8 +336,18 @@ public class GeneralListeners implements Listener {
                     }
                 }
             }
+            return true;
         }
-
+        
+        
+        //_______
+        //RIGHT CLICK AIR ACTIONS
+        
+        else if (event.getAction() == Action.RIGHT_CLICK_AIR && arena.started) {
+            //activate ability/spell
+            castSpell(champion, event);
+            return true;
+        }
 
 
         //_______
@@ -256,12 +359,12 @@ public class GeneralListeners implements Listener {
             
             //--------------
             //check if tower is clicked
-            if (arena.started) {
+            if (arena.started && champion.basicAttack) {
                 if (teams.getTeam(player).equals("blue")) {
                     turret = arena.isPurpleTurret(event.getClickedBlock().getLocation());
                     if (turret != null) {
-                        if (teams.getChampion(player) != null) {
-                            turret.hit(teams.getChampion(player).basicAttack());
+                        if (champion != null) {
+                            turret.hit(champion.basicAttack());
                             tempLoc = event.getClickedBlock().getLocation().add(.5, 0, .5);
                             plugin.mainWorld.createExplosion(tempLoc, (float) 0.01, false);
                             //hitTurret = true;
@@ -276,8 +379,8 @@ public class GeneralListeners implements Listener {
                 else if (teams.getTeam(player).equals("purple")) {
                     turret = arena.isBlueTurret(event.getClickedBlock().getLocation());
                     if (turret != null) {
-                        if (teams.getChampion(player) != null) {
-                            turret.hit(teams.getChampion(player).basicAttack());
+                        if (champion != null) {
+                            turret.hit(champion.basicAttack());
                             tempLoc = event.getClickedBlock().getLocation().add(.5, 0, .5);
                             plugin.mainWorld.createExplosion(tempLoc, (float) 0.01, false);
                             //hitTurret = true;
@@ -291,16 +394,19 @@ public class GeneralListeners implements Listener {
 
                 //---------------
                 else {
+                    champion.basicAttack();
                     //regular attack
                 }
             }
+            else {
+                event.setCancelled(true);
+            }
         }
         
-        //_______
-        //RIGHT CLICK AIR ACTIONS
-        
-        if (event.getAction() == Action.RIGHT_CLICK_AIR) {
-            
+        else if (event.getAction() == Action.LEFT_CLICK_AIR && arena.started && champion.basicAttack) {
+            champion.basicAttack();
         }
+        
+        return false;
     }
 }
