@@ -7,6 +7,7 @@
 package com.meloncraft.league.Champions;
 
 import com.meloncraft.league.League;
+import java.util.ArrayList;
 import net.minecraft.server.v1_7_R4.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,8 +15,8 @@ import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 
 /**
@@ -38,6 +39,7 @@ public class Champion {
     public boolean recalling, 
             //basicAttack cooldown
             basicAttack;
+    public ItemMeta portalMeta;
     
     League plugin;
     
@@ -77,6 +79,7 @@ public class Champion {
         kit = new ItemStack[9];
         respawnTime = 0;
         inv = new ItemStack[103];
+        
         
         setChampion(champion);
         
@@ -121,6 +124,12 @@ public class Champion {
                 break;
         }
         kit[8] = new ItemStack(Material.PORTAL);
+        portalMeta = kit[8].getItemMeta();
+        portalMeta.setDisplayName("Recall");
+        ArrayList<String> lore = new ArrayList<String>();
+        lore.add("Rightclick and stay still to go back to spawn");
+        portalMeta.setLore(lore);
+        kit[8].setItemMeta(portalMeta);
     }
     
     public void giveKit() {

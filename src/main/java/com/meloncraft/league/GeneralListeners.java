@@ -9,24 +9,22 @@ package com.meloncraft.league;
 import com.meloncraft.league.Arena.ArenaHandler;
 import com.meloncraft.league.Arena.Turret;
 import com.meloncraft.league.Champions.Champion;
-import com.meloncraft.league.Champions.RecallTask;
-import java.util.ArrayList;
-import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.inventory.ItemStack;
 
 /**
  *
@@ -62,12 +60,16 @@ public class GeneralListeners implements Listener {
     
     //Prevent Items from dropping
     @EventHandler
-    public void onItemDrop(ItemSpawnEvent event) {
+    public void onItemDrop(PlayerDropItemEvent event) {
         
         //if (event.getEntityType() == EntityType.DROPPED_ITEM) {
-            event.setCancelled(true);
-        //}
+        event.setCancelled(true);
         
+        if (event.getItemDrop().getItemStack().getType() == Material.PORTAL) {
+            //event.getPlayer().getInventory().clear(event.getPlayer().getInventory().first(Material.PORTAL));
+            event.getPlayer().getInventory().setItem(8, new ItemStack(Material.PORTAL));
+            event.getPlayer().getInventory().getItem(8).setItemMeta(teams.getChampion(event.getPlayer()).portalMeta);
+        }
     }
     
     @EventHandler
@@ -169,7 +171,7 @@ public class GeneralListeners implements Listener {
                         champ.qSpell();
                     }
                     else {
-                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.qCooldown + ChatColor.GOLD + " before you can cast this.");
+                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.qCooldown + ChatColor.GOLD + " seconds before you can cast this.");
                         event.setCancelled(true);
                     }
                     break;
@@ -178,7 +180,7 @@ public class GeneralListeners implements Listener {
                         champ.wSpell();
                     }
                     else {
-                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.wCooldown + ChatColor.GOLD + " before you can cast this.");
+                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.wCooldown + ChatColor.GOLD + " seconds before you can cast this.");
                         event.setCancelled(true);
                     }
                     break;
@@ -187,7 +189,7 @@ public class GeneralListeners implements Listener {
                         champ.eSpell();
                     }
                     else {
-                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.eCooldown + ChatColor.GOLD + " before you can cast this.");
+                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.eCooldown + ChatColor.GOLD + " seconds before you can cast this.");
                         event.setCancelled(true);
                     }
                     break;
@@ -196,7 +198,7 @@ public class GeneralListeners implements Listener {
                         champ.rSpell();
                     }
                     else {
-                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.rCooldown + ChatColor.GOLD + " before you can cast this.");
+                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.rCooldown + ChatColor.GOLD + " seconds before you can cast this.");
                         event.setCancelled(true);
                     }
                     break;
@@ -205,7 +207,7 @@ public class GeneralListeners implements Listener {
                         champ.qSpell();
                     }
                     else {
-                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.qCooldown + ChatColor.GOLD + " before you can cast this.");
+                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.qCooldown + ChatColor.GOLD + " seconds before you can cast this.");
                         event.setCancelled(true);
                     }
                     break;
@@ -214,7 +216,7 @@ public class GeneralListeners implements Listener {
                         champ.qSpell();
                     }
                     else {
-                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.qCooldown + ChatColor.GOLD + " before you can cast this.");
+                        champ.sendMessage(ChatColor.RED + "[SPELL]: " + ChatColor.GOLD + "You must wait " + ChatColor.GREEN + champ.qCooldown + ChatColor.GOLD + " seconds before you can cast this.");
                         event.setCancelled(true);
                     }
                     break;
@@ -371,7 +373,7 @@ public class GeneralListeners implements Listener {
                     turret = arena.isPurpleTurret(event.getClickedBlock().getLocation());
                     if (turret != null) {
                         if (champion != null) {
-                            turret.hit(champion.basicAttack());
+                            turret.hit(champion.getDamage());
                             tempLoc = event.getClickedBlock().getLocation().add(.5, 0, .5);
                             plugin.mainWorld.createExplosion(tempLoc, (float) 0.01, false);
                             //hitTurret = true;
@@ -387,7 +389,7 @@ public class GeneralListeners implements Listener {
                     turret = arena.isBlueTurret(event.getClickedBlock().getLocation());
                     if (turret != null) {
                         if (champion != null) {
-                            turret.hit(champion.basicAttack());
+                            turret.hit(champion.getDamage());
                             tempLoc = event.getClickedBlock().getLocation().add(.5, 0, .5);
                             plugin.mainWorld.createExplosion(tempLoc, (float) 0.01, false);
                             //hitTurret = true;
