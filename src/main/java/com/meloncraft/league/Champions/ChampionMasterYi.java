@@ -9,7 +9,9 @@ package com.meloncraft.league.Champions;
 import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  *
@@ -18,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 public class ChampionMasterYi implements ChampionInstance {
     public ItemStack[] kit;
     public Champion champion;
+    private ItemMeta meta;
     
     public ChampionMasterYi(Champion champ) {
         champion = champ;
@@ -25,28 +28,35 @@ public class ChampionMasterYi implements ChampionInstance {
         ArrayList<String> lore = new ArrayList<String>();
         
         kit[0] = new ItemStack(Material.GOLD_SWORD);
-        kit[0].getItemMeta().setDisplayName(ChatColor.GOLD + "Alpha Strike");
+        meta = kit[0].getItemMeta();
+        meta.setDisplayName(ChatColor.RED + "Alpha Strike");
         lore.add("Master Yi teleports between up to 4 targets, dealing damage to each");
-        kit[0].getItemMeta().setLore(lore);
+        meta.setLore(lore);
+        kit[0].setItemMeta(meta);
         lore.clear();
         
         kit[1] = new ItemStack(Material.EMERALD);
-        kit[1].getItemMeta().setDisplayName(ChatColor.GOLD + "Meditate");
+        meta = kit[1].getItemMeta();
+        meta.setDisplayName(ChatColor.GREEN + "Meditate");
         lore.add("Master Yi regains health and takes reduced damage for a short duration");
-        kit[1].getItemMeta().setLore(lore);
+        meta.setLore(lore);
+        kit[1].setItemMeta(meta);
         lore.clear();
         
-        
         kit[2] = new ItemStack(Material.REDSTONE_TORCH_ON);
-        kit[2].getItemMeta().setDisplayName(ChatColor.GOLD + "Wuju Style");
+        meta = kit[2].getItemMeta();
+        meta.setDisplayName(ChatColor.RED + "Wuju Style");
         lore.add("Master Yi passively gains attack damage. Upon activation, Master Yi deals additional damage. Passive is lost on cooldown.");
-        kit[2].getItemMeta().setLore(lore);
+        meta.setLore(lore);
+        kit[2].setItemMeta(meta);
         lore.clear();
         
         kit[3] = new ItemStack(Material.BLAZE_POWDER);
-        kit[3].getItemMeta().setDisplayName(ChatColor.GOLD + "Highlander");
+        meta = kit[3].getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD + "Highlander");
         lore.add("Increases movement speed and attack speed. Kills or assists extend Highlander's duration and reduces cooldowns");
-        kit[3].getItemMeta().setLore(lore);
+        meta.setLore(lore);
+        kit[3].setItemMeta(meta);
         lore.clear();
         
     }
@@ -55,22 +65,23 @@ public class ChampionMasterYi implements ChampionInstance {
         return kit;
     }
     
-    public void qSpell() {
+    public void qSpell(Entity target) {
         champion.sendMessage("Q");
+        
         champion.setQCooldown(10);
     }
     
-    public void wSpell() {
+    public void wSpell(Entity target) {
         champion.sendMessage("W");
         champion.setWCooldown(30);
     }
     
-    public void eSpell() {
+    public void eSpell(Entity target) {
         champion.sendMessage("E");
         champion.setECooldown(15);
     }
     
-    public void rSpell() {
+    public void rSpell(Entity target) {
         champion.sendMessage("R");
         champion.setRCooldown(60);
     }

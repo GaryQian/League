@@ -6,6 +6,7 @@
 
 package com.meloncraft.league.Champions;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -17,12 +18,12 @@ public interface ChampionInstance {
     
     public ItemStack[] getKit();
     
-    public void qSpell();
+    public void qSpell(Entity target);
     
-    public void wSpell();
+    public void wSpell(Entity target);
     
-    public void eSpell();
+    public void eSpell(Entity target);
     
-    public void rSpell();
+    public void rSpell(Entity target);
     
 }

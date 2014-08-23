@@ -80,6 +80,7 @@ public class JoinTeam implements Listener {
                 event.getPlayer().teleport(plugin.arena.purpleSpawn);
             }
         }
+        event.getPlayer().setHealthScale(40);
     }
     
     @EventHandler

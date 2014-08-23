@@ -8,12 +8,14 @@ package com.meloncraft.league.Champions;
 
 import com.meloncraft.league.League;
 import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.server.v1_7_R4.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -166,16 +168,16 @@ public class Champion {
     }
     
     public void qSpell(){
-        championInstance.qSpell();
+        championInstance.qSpell(getTarget(range));
     }
     public void wSpell(){
-        championInstance.wSpell();
+        championInstance.wSpell(getTarget(range));
     }
     public void eSpell(){
-        championInstance.eSpell();
+        championInstance.eSpell(getTarget(range));
     }
     public void rSpell(){
-        championInstance.rSpell();
+        championInstance.rSpell(getTarget(range));
     }
     public void dSpell(){
         
@@ -183,6 +185,7 @@ public class Champion {
     public void fSpell(){
         
     }
+    
     
     
     public void setQCooldown(int i) {
@@ -346,6 +349,42 @@ public class Champion {
     
     public void sendMessage(String str) {
         player.sendMessage(str);
+    }
+    
+    public ArrayList<Entity> getNearbyEntities(double range) {
+        ArrayList<Entity> entities = new ArrayList<Entity>();
+        for (Entity entity : plugin.mainWorld.getEntities()) {
+            if (player.getLocation().distance(entity.getLocation()) <= range) {
+                entities.add(entity);
+            }
+        }
+        if (entities.size() > 0) {
+            return entities;
+        }
+        return null;
+    }
+    
+    public Entity getClosestEntity(double range) {
+        Entity ent = null;
+        double dist = range + 1;
+        ArrayList<Entity> entities = getNearbyEntities(range);
+        if (entities != null) {
+            for (Entity entity : entities) {
+                if (entity.getLocation().distance(player.getLocation()) <= dist) {
+                    dist = entity.getLocation().distance(player.getLocation());
+                    ent = entity;
+                }
+            }
+            return ent;
+        }
+        return null;
+    }
+    
+    public Entity getTarget(double range) {
+        Entity ent = null;
+        
+        return null;
+        
     }
     
     public void refresh() {
