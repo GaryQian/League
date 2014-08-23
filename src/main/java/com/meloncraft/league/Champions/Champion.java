@@ -363,9 +363,10 @@ public class Champion {
         player.sendMessage(str);
     }
     
+    
     public List<Entity> getNearbyEntities(double range) {
         
-        return player.getNearbyEntities(range, range, range);
+        return player.getNearbyEntities(2 * range, 2 * range, 2 * range);
         
         
         /*ArrayList<Entity> entities = new ArrayList<Entity>();
@@ -404,7 +405,7 @@ public class Champion {
         entities = getNearbyEntities(range);
         if (entities != null) {
             for (Entity entity : entities) {
-                if (entity.getLocation().distance(player.getLocation()) <= dist && player.hasLineOfSight(entity)) {
+                if (entity.getLocation().distance(player.getLocation()) <= dist && player.hasLineOfSight(entity) && entity instanceof LivingEntity) {
                     dist = entity.getLocation().distance(player.getLocation());
                     ent = entity;
                 }
