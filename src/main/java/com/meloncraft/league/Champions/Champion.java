@@ -13,13 +13,16 @@ import net.minecraft.server.v1_7_R4.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.BlockIterator;
 
 /**
  *
@@ -27,7 +30,8 @@ import org.bukkit.scheduler.BukkitTask;
  */
 public class Champion {
     public int level, kills, deaths, assists, gold, respawnTime, qCooldown, wCooldown, eCooldown, rCooldown, dCooldown, fCooldown, recallCooldown, qLevel, wLevel, eLevel, rLevel, points;
-    public double range, speed, incomingDamage;
+    public double range, incomingDamage, speed;
+    //public float speed;
     public double health, damage, mana, AP, armor, magicResist, healthRegen, manaRegen, lifesteal, attackSpeed;
     public double maxHealth, maxMana;
     public double baseHealth, baseDamage, baseMana;
@@ -83,6 +87,7 @@ public class Champion {
         inv = new ItemStack[103];
         
         
+        
         setChampion(champion);
         
         baseHealth = 550;
@@ -91,13 +96,14 @@ public class Champion {
         damageScale = 3;
         baseMana = 500;
         manaScale = 50;
-        speed = 1;
+        speed = .2;
         healthRegen = 5;
         manaRegen = 1;
         
         
         
         refresh();
+        player.setWalkSpeed((float) speed);
         health = maxHealth;
         
         player.setHealthScale(40);
@@ -118,10 +124,10 @@ public class Champion {
     
     public void setChampion(String champ) {
         switch (champ) {
-            case "Ashe": championInstance = new ChampionAshe(this);
+            case "Ashe": championInstance = new ChampionAshe(this, plugin);
                         kit = championInstance.getKit();
                 break;
-            case "Master Yi": championInstance = new ChampionMasterYi(this);
+            case "Master Yi": championInstance = new ChampionMasterYi(this, plugin);
                         kit = championInstance.getKit();
                 break;
         }
@@ -201,6 +207,10 @@ public class Champion {
         rCooldown = i;
     }
     
+    public void drainMana(double amount) {
+        mana -= amount;
+    }
+    
     public double getDamage() {
         return damage;
     }
@@ -234,6 +244,8 @@ public class Champion {
             if (recalling) {
                 setRecalling(false, true);
             }
+            boolean hit = false;
+            hit = championInstance.basicAttack(getTarget(range));
             if (lifesteal > 0) {
                 health += damage * (lifesteal / 100);
             }
@@ -351,10 +363,14 @@ public class Champion {
         player.sendMessage(str);
     }
     
-    public ArrayList<Entity> getNearbyEntities(double range) {
-        ArrayList<Entity> entities = new ArrayList<Entity>();
+    public List<Entity> getNearbyEntities(double range) {
+        
+        return player.getNearbyEntities(range, range, range);
+        
+        
+        /*ArrayList<Entity> entities = new ArrayList<Entity>();
         for (Entity entity : plugin.mainWorld.getEntities()) {
-            if (player.getLocation().distance(entity.getLocation()) <= range) {
+            if (player.getLocation().distance(entity.getLocation()) <= range && entity instanceof LivingEntity) {
                 entities.add(entity);
             }
         }
@@ -362,12 +378,13 @@ public class Champion {
             return entities;
         }
         return null;
+                */
     }
     
     public Entity getClosestEntity(double range) {
         Entity ent = null;
         double dist = range + 1;
-        ArrayList<Entity> entities = getNearbyEntities(range);
+        List<Entity> entities = getNearbyEntities(range);
         if (entities != null) {
             for (Entity entity : entities) {
                 if (entity.getLocation().distance(player.getLocation()) <= dist) {
@@ -380,11 +397,39 @@ public class Champion {
         return null;
     }
     
-    public Entity getTarget(double range) {
+    public Entity getClosestVisibleEntity(double range) {
         Entity ent = null;
-        
+        double dist = range + 1;
+        List<Entity> entities = new ArrayList<Entity>();
+        entities = getNearbyEntities(range);
+        if (entities != null) {
+            for (Entity entity : entities) {
+                if (entity.getLocation().distance(player.getLocation()) <= dist && player.hasLineOfSight(entity)) {
+                    dist = entity.getLocation().distance(player.getLocation());
+                    ent = entity;
+                }
+            }
+            return ent;
+        }
         return null;
-        
+    }
+    
+    public LivingEntity getTarget(double range) {
+        Entity ent = null;
+        BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, (int) range + 1);
+        while (iterator.hasNext()) {
+            Block block = iterator.next();
+            for (Entity entity : getNearbyEntities(range)) {
+                if (entity.getLocation().getBlock().equals(block) && entity instanceof LivingEntity) {
+                    return (LivingEntity) entity;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public void resetWalkSpeed() {
+        player.setWalkSpeed((float) speed);
     }
     
     public void refresh() {

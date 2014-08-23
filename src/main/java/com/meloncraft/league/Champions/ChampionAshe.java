@@ -6,12 +6,17 @@
 
 package com.meloncraft.league.Champions;
 
+import com.meloncraft.league.League;
 import java.util.ArrayList;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  *
@@ -21,11 +26,21 @@ public class ChampionAshe implements ChampionInstance {
     public ItemStack[] kit;
     public Champion champion;
     private ItemMeta meta;
+    public boolean qActive;
+    League plugin;
+    double qCost, wCost, eCost, rCost;
     
-    public ChampionAshe(Champion champ) {
+    public ChampionAshe(Champion champ, League plug) {
         champion = champ;
         kit = new ItemStack[9];
         ArrayList<String> lore = new ArrayList<String>();
+        qActive = false;
+        plugin = plug;
+        
+        qCost = 40;
+        wCost = 100;
+        eCost = 50;
+        rCost = 150;
         
         kit[0] = new ItemStack(Material.ICE);
         meta = kit[0].getItemMeta();
@@ -62,27 +77,80 @@ public class ChampionAshe implements ChampionInstance {
         
     }
     
+    public boolean basicAttack(LivingEntity target) {
+        Location loc = champion.player.getEyeLocation();
+        loc.setY(loc.getY() + .2);
+        champion.player.getWorld().spawnArrow(champion.player.getEyeLocation(), champion.player.getEyeLocation().getDirection(), 3f, 0);
+        if (target != null) {
+        target.damage(champion.getDamage());
+            
+            if (qActive) {
+                if (target instanceof Player) {
+                    Player play = (Player) target;
+                    play.setWalkSpeed(.12f);
+                    champion.drainMana(qCost);
+                    BukkitTask slowdown = new SlowTask(plugin, plugin.teams.getChampion(play)).runTaskLater(plugin, 35);
+                }
+            }
+        }
+        
+        
+        return false;
+    }
+    
     public ItemStack[] getKit() {
         return kit;
     }
     
     public void qSpell(Entity target) {
+        meta = kit[0].getItemMeta();
+        ArrayList<String> lore = new ArrayList<String>();
         champion.sendMessage("Q");
-        champion.setQCooldown(2);
+        
+        if (qActive) {
+            qActive = false;
+            meta.setDisplayName(ChatColor.BLUE + "Frost Shot - " + ChatColor.RED + "OFF");
+            lore.add("While active, each basic attack slows and uses mana");
+            meta.setLore(lore);
+            kit[0].setItemMeta(meta);
+            champion.getPlayer().getInventory().setItem(0, kit[0]);
+            lore.clear();
+        }
+        else {
+            qActive = true;
+            meta.setDisplayName(ChatColor.BLUE + "Frost Shot - " + ChatColor.GREEN + "ON");
+            lore.add("While active, each basic attack slows and uses mana");
+            meta.setLore(lore);
+            kit[0].setItemMeta(meta);
+            champion.getPlayer().getInventory().setItem(0, kit[0]);
+            lore.clear();
+        }
+        
+        
+        meta.setDisplayName(ChatColor.BLUE + "Frost Shot - ACTIVE");
+        lore.add("While active, each basic attack slows and uses mana");
+        meta.setLore(lore);
+        kit[0].setItemMeta(meta);
+        champion.getPlayer().getInventory().setItem(0, kit[0]);
+        lore.clear();
+        champion.setQCooldown(3);
     }
     
     public void wSpell(Entity target) {
         champion.sendMessage("W");
+        champion.drainMana(wCost);
         champion.setWCooldown(20);
     }
     
     public void eSpell(Entity target) {
         champion.sendMessage("E");
+        champion.drainMana(eCost);
         champion.setECooldown(20);
     }
     
     public void rSpell(Entity target) {
         champion.sendMessage("R");
+        champion.drainMana(rCost);
         champion.setRCooldown(90);
     }
     

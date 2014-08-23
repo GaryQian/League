@@ -6,10 +6,12 @@
 
 package com.meloncraft.league.Champions;
 
+import com.meloncraft.league.League;
 import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -21,11 +23,13 @@ public class ChampionMasterYi implements ChampionInstance {
     public ItemStack[] kit;
     public Champion champion;
     private ItemMeta meta;
+    League plugin;
     
-    public ChampionMasterYi(Champion champ) {
+    public ChampionMasterYi(Champion champ, League plug) {
         champion = champ;
         kit = new ItemStack[9];
         ArrayList<String> lore = new ArrayList<String>();
+        plugin = plug;
         
         kit[0] = new ItemStack(Material.GOLD_SWORD);
         meta = kit[0].getItemMeta();
@@ -65,10 +69,18 @@ public class ChampionMasterYi implements ChampionInstance {
         return kit;
     }
     
+    public boolean basicAttack(LivingEntity target) {
+        target.damage(champion.getDamage());
+        
+        return false;
+    }
+    
     public void qSpell(Entity target) {
         champion.sendMessage("Q");
         
         champion.setQCooldown(10);
+        
+        
     }
     
     public void wSpell(Entity target) {

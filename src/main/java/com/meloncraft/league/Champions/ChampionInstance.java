@@ -7,6 +7,7 @@
 package com.meloncraft.league.Champions;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -17,6 +18,8 @@ public interface ChampionInstance {
     public ItemStack[] kit = new ItemStack[9];
     
     public ItemStack[] getKit();
+    
+    public boolean basicAttack(LivingEntity target);
     
     public void qSpell(Entity target);
     
