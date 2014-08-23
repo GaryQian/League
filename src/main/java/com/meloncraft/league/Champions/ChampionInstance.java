@@ -21,12 +21,12 @@ public interface ChampionInstance {
     
     public boolean basicAttack(LivingEntity target);
     
-    public void qSpell(Entity target);
+    public void qSpell(LivingEntity target, int level);
     
-    public void wSpell(Entity target);
+    public void wSpell(LivingEntity target, int level);
     
-    public void eSpell(Entity target);
+    public void eSpell(LivingEntity target, int level);
     
-    public void rSpell(Entity target);
+    public void rSpell(LivingEntity target, int level);
     
 }

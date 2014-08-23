@@ -70,7 +70,6 @@ public class Champion {
         bonusManaRegen = 0;
         armor = 0;
         lifesteal = 0;
-        attackSpeed = 27;
         points = 0;
         qCooldown = 0;
         wCooldown = 0;
@@ -99,6 +98,7 @@ public class Champion {
         speed = .2;
         healthRegen = 5;
         manaRegen = 1;
+        attackSpeed = 27;
         
         
         
@@ -174,16 +174,16 @@ public class Champion {
     }
     
     public void qSpell(){
-        championInstance.qSpell(getTarget(range));
+        championInstance.qSpell(getTarget(range), qLevel);
     }
     public void wSpell(){
-        championInstance.wSpell(getTarget(range));
+        championInstance.wSpell(getTarget(range), wLevel);
     }
     public void eSpell(){
-        championInstance.eSpell(getTarget(range));
+        championInstance.eSpell(getTarget(range), eLevel);
     }
     public void rSpell(){
-        championInstance.rSpell(getTarget(range));
+        championInstance.rSpell(getTarget(range), rLevel);
     }
     public void dSpell(){
         

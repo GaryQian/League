@@ -102,7 +102,7 @@ public class ChampionAshe implements ChampionInstance {
         return kit;
     }
     
-    public void qSpell(Entity target) {
+    public void qSpell(LivingEntity target, int level) {
         meta = kit[0].getItemMeta();
         ArrayList<String> lore = new ArrayList<String>();
         champion.sendMessage("Q");
@@ -136,19 +136,19 @@ public class ChampionAshe implements ChampionInstance {
         champion.setQCooldown(3);
     }
     
-    public void wSpell(Entity target) {
+    public void wSpell(LivingEntity target, int level) {
         champion.sendMessage("W");
         champion.drainMana(wCost);
         champion.setWCooldown(20);
     }
     
-    public void eSpell(Entity target) {
+    public void eSpell(LivingEntity target, int level) {
         champion.sendMessage("E");
         champion.drainMana(eCost);
         champion.setECooldown(20);
     }
     
-    public void rSpell(Entity target) {
+    public void rSpell(LivingEntity target, int level) {
         champion.sendMessage("R");
         champion.drainMana(rCost);
         champion.setRCooldown(90);

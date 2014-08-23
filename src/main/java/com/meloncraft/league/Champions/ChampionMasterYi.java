@@ -75,7 +75,7 @@ public class ChampionMasterYi implements ChampionInstance {
         return false;
     }
     
-    public void qSpell(Entity target) {
+    public void qSpell(LivingEntity target, int level) {
         champion.sendMessage("Q");
         
         champion.setQCooldown(10);
@@ -83,17 +83,17 @@ public class ChampionMasterYi implements ChampionInstance {
         
     }
     
-    public void wSpell(Entity target) {
+    public void wSpell(LivingEntity target, int level) {
         champion.sendMessage("W");
         champion.setWCooldown(30);
     }
     
-    public void eSpell(Entity target) {
+    public void eSpell(LivingEntity target, int level) {
         champion.sendMessage("E");
         champion.setECooldown(15);
     }
     
-    public void rSpell(Entity target) {
+    public void rSpell(LivingEntity target, int level) {
         champion.sendMessage("R");
         champion.setRCooldown(60);
     }
