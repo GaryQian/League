@@ -80,7 +80,8 @@ public class ChampionAshe implements ChampionInstance {
     public boolean basicAttack(LivingEntity target) {
         Location loc = champion.player.getEyeLocation();
         loc.setY(loc.getY() + .2);
-        champion.player.getWorld().spawnArrow(champion.player.getEyeLocation(), champion.player.getEyeLocation().getDirection(), 3f, 0);
+        loc.add(champion.player.getEyeLocation().getDirection().multiply(1.5));
+        Entity arrow = champion.player.getWorld().spawnArrow(loc, champion.player.getEyeLocation().getDirection(), 4f, 0);
         if (target != null) {
         target.damage(champion.getDamage());
             
@@ -93,8 +94,8 @@ public class ChampionAshe implements ChampionInstance {
                 }
             }
         }
-        
-        
+        BukkitTask basicCooldown = new ChampionBasicMarksmanCooldownTask(plugin, champion, arrow).runTaskLater(plugin, (int) champion.attackSpeed);
+                
         return false;
     }
     
@@ -126,14 +127,6 @@ public class ChampionAshe implements ChampionInstance {
             lore.clear();
         }
         
-        
-        meta.setDisplayName(ChatColor.BLUE + "Frost Shot - ACTIVE");
-        lore.add("While active, each basic attack slows and uses mana");
-        meta.setLore(lore);
-        kit[0].setItemMeta(meta);
-        champion.getPlayer().getInventory().setItem(0, kit[0]);
-        lore.clear();
-        champion.setQCooldown(3);
     }
     
     public void wSpell(LivingEntity target, int level) {

@@ -41,6 +41,11 @@ commands:
       description: shuts down the server without saving map
       usage: /shutdown
       permission: 
+      permission-message: Test permission messag
+   champion:
+      description: selects chmapion
+      usage: /champion <championname>
+      permission: 
       permission-message: Test permission message
    #team:
       #description: Adds friend to your team.

@@ -138,6 +138,20 @@ public final class League extends JavaPlugin {
                     return true;
                 }
 	}
+        
+        if (cmd.getName().equalsIgnoreCase("champion")) { // If the player typed /basic then do the following...
+            //Version command. Displays Version.
+            switch (args[0].toLowerCase()) {
+                case "ashe": teams.setChampion(sender.getServer().getPlayer(sender.getName()), "Ashe");
+                    break;
+                case "master": if (args[1].equalsIgnoreCase("yi")) {
+                    teams.setChampion(sender.getServer().getPlayer(sender.getName()), "Master Yi");
+                }
+                    break;
+                
+            }
+            
+        }
         if (cmd.getName().equalsIgnoreCase("forcestart")) {
             sender.getServer().getPlayer(sender.getName()).sendMessage("FORCE STARTING GAME!");
             arena.startGame();
