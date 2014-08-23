@@ -6,14 +6,16 @@
 
 package com.meloncraft.league.Champions;
 
+import com.meloncraft.league.Champions.ChampionTasks.MasterYiQTask;
 import com.meloncraft.league.League;
 import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  *
@@ -24,12 +26,22 @@ public class ChampionMasterYi implements ChampionInstance {
     public Champion champion;
     private ItemMeta meta;
     League plugin;
+    public boolean isMarksman;
+    public double qScale = 0;
+    public double wScale = 0;
+    public double eScale = 0;
+    public double rScale = 0;
     
     public ChampionMasterYi(Champion champ, League plug) {
         champion = champ;
         kit = new ItemStack[9];
         ArrayList<String> lore = new ArrayList<String>();
         plugin = plug;
+        isMarksman = false;
+        qScale = 30;
+        wScale = 0;
+        eScale = 0;
+        rScale = 0;
         
         kit[0] = new ItemStack(Material.GOLD_SWORD);
         meta = kit[0].getItemMeta();
@@ -78,6 +90,43 @@ public class ChampionMasterYi implements ChampionInstance {
     public void qSpell(LivingEntity target, int level) {
         champion.sendMessage("Q");
         
+        if (target != null) {
+            champion.getPlayer().teleport(target.getLocation());
+            if (target instanceof Player) {
+                plugin.teams.getChampion((Player) target).hit(champion.getDamage() + level * qScale);
+            }
+            else {
+                target.damage(champion.getDamage() + level * qScale);
+            }
+        }
+        
+        BukkitTask secondAttack = new MasterYiQTask(plugin, champion).runTaskLater(plugin, 5);
+        BukkitTask thirdAttack = new MasterYiQTask(plugin, champion).runTaskLater(plugin, 10);
+        BukkitTask fourthAttack = new MasterYiQTask(plugin, champion).runTaskLater(plugin, 15);
+        /*new BukkitRunnable() {
+            @Override
+            public void run() {
+                Entity ent = null;
+                boolean cont = true;
+                while (cont) {
+                    ent = champion.getClosestEntity(champion.range + 4 );
+                    if (plugin.teams.getTeam(ent).equals(champion.team)) {
+                        cont = false;
+                    }
+                }
+                if (ent != null) {
+                    if (ent instanceof Player) {
+                        plugin.teams.getChampion((Player) ent).hit(champion.getDamage() + level * qScale);
+                    }
+                    else {
+                        target.damage(champion.getDamage() + level * qScale);
+                    }
+                }
+            }
+        }.runTaskLater(plugin, 5);*/
+        
+        
+        
         champion.setQCooldown(10);
         
         
@@ -98,4 +147,7 @@ public class ChampionMasterYi implements ChampionInstance {
         champion.setRCooldown(60);
     }
     
+    public boolean isMarksman() {
+        return isMarksman;
+    }
 }

@@ -17,6 +17,11 @@ import org.bukkit.inventory.ItemStack;
 public interface ChampionInstance {
     public ItemStack[] kit = new ItemStack[9];
     
+    public double qScale = 0;
+    public double wScale = 0;
+    public double eScale = 0;
+    public double rScale = 0;
+    
     public ItemStack[] getKit();
     
     public boolean basicAttack(LivingEntity target);
@@ -29,4 +34,5 @@ public interface ChampionInstance {
     
     public void rSpell(LivingEntity target, int level);
     
+    public boolean isMarksman();
 }

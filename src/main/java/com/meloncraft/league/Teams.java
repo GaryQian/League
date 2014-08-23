@@ -6,12 +6,14 @@
 
 package com.meloncraft.league;
 
+import com.meloncraft.league.Arena.Minions.MinionPopulation;
 import com.meloncraft.league.Champions.Champion;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 /**
@@ -30,6 +32,7 @@ public class Teams {
     public List<World> worlds;
     public World world;
     League plugin;
+    public MinionPopulation population;
     
     public Teams(League plug) {
         blueTeam = new ArrayList<Player>();
@@ -43,6 +46,7 @@ public class Teams {
         int count = 0;
         plugin = plug;
         world = plugin.mainWorld;
+        population = new MinionPopulation(plugin);
         setLobby(plugin.getConfig().getDouble("blue-lobby.x"), plugin.getConfig().getDouble("blue-lobby.y"), plugin.getConfig().getDouble("blue-lobby.z"), plugin.getConfig().getDouble("purple-lobby.x"), plugin.getConfig().getDouble("purple-lobby.y"), plugin.getConfig().getDouble("purple-lobby.z"), plugin.getConfig().getDouble("blue-lobby.pitch"), plugin.getConfig().getDouble("blue-lobby.yaw"), plugin.getConfig().getDouble("purple-lobby.pitch"), plugin.getConfig().getDouble("purple-lobby.yaw"), world);
     }
     
@@ -146,8 +150,22 @@ public class Teams {
             return "purple";
         }
         else {
-            return "none";
+            return null;
         }
+    }
+    
+    public String getTeam(Entity entity) {
+        if (entity != null) {
+            if (entity instanceof Player) {
+                return getTeam((Player) entity);
+            }
+            else {
+                return population.getTeam(entity);
+            }
+        
+        }
+        return null;
+        
     }
     
     

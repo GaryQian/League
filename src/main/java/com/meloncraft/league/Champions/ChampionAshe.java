@@ -29,6 +29,7 @@ public class ChampionAshe implements ChampionInstance {
     public boolean qActive;
     League plugin;
     double qCost, wCost, eCost, rCost;
+    public boolean isMarksman;
     
     public ChampionAshe(Champion champ, League plug) {
         champion = champ;
@@ -36,6 +37,7 @@ public class ChampionAshe implements ChampionInstance {
         ArrayList<String> lore = new ArrayList<String>();
         qActive = false;
         plugin = plug;
+        isMarksman = true;
         
         qCost = 40;
         wCost = 100;
@@ -145,6 +147,10 @@ public class ChampionAshe implements ChampionInstance {
         champion.sendMessage("R");
         champion.drainMana(rCost);
         champion.setRCooldown(90);
+    }
+    
+    public boolean isMarksman() {
+        return isMarksman;
     }
     
 }

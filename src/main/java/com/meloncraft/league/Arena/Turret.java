@@ -268,7 +268,7 @@ public class Turret {
             }
             if (target.getType() == EntityType.PLAYER) {
                 
-                targetPlayer.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "You have been hit by the tower!");
+                targetPlayer.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "You have been hit by the turret!");
                 champion = teams.getChampion(targetPlayer);
                 champion.hit(damage);
                 lastHit = targetPlayer;

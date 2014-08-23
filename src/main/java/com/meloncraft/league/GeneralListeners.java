@@ -13,7 +13,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,6 +28,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.BlockIterator;
 
 /**
  *
@@ -381,7 +385,7 @@ public class GeneralListeners implements Listener {
                         player.sendMessage("YOU HIT THE TURRET");
                     }
                     if (arena.isBlueTurret(event.getClickedBlock().getLocation()) != null) {
-                        player.sendMessage(ChatColor.GOLD + "That is a friendly tower! Attack " + ChatColor.LIGHT_PURPLE + "PURPLE " + ChatColor.GOLD + "towers!");
+                        player.sendMessage(ChatColor.GOLD + "That is a friendly turret! Attack " + ChatColor.LIGHT_PURPLE + "PURPLE " + ChatColor.GOLD + "towers!");
                     }
                 }
 
@@ -397,7 +401,7 @@ public class GeneralListeners implements Listener {
                         player.sendMessage("YOU HIT THE TURRET");
                     }
                     if (arena.isPurpleTurret(event.getClickedBlock().getLocation()) != null) {
-                        player.sendMessage(ChatColor.GOLD + "That is a friendly tower! Attack " + ChatColor.BLUE + "BLUE " + ChatColor.GOLD + "towers!");
+                        player.sendMessage(ChatColor.GOLD + "That is a friendly turret! Attack " + ChatColor.BLUE + "BLUE " + ChatColor.GOLD + "towers!");
                     }
                 }
 
@@ -414,6 +418,48 @@ public class GeneralListeners implements Listener {
         
         else if (event.getAction() == Action.LEFT_CLICK_AIR && arena.started && champion.basicAttack) {
             champion.basicAttack();
+            Entity ent = null;
+            /*if (champion.championInstance.isMarksman()) {
+                if (champion.getTeam().equals("blue")) {
+                    BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, (int) champion.range + 1);
+                    while (iterator.hasNext()) {
+                        Block block = iterator.next();
+                        Turret turret = arena.isPurpleTurret(block.getLocation());
+                        if (turret != null) {
+                            turret.hit(champion.getDamage());
+                            tempLoc = event.getClickedBlock().getLocation().add(.5, 0, .5);
+                            plugin.mainWorld.createExplosion(tempLoc, (float) 0.01, false);
+                            player.sendMessage("YOU HIT THE TURRET");
+                        }
+                        if (arena.isBlueTurret(block.getLocation()) != null) {
+                            player.sendMessage(ChatColor.GOLD + "That is a friendly turret! Attack " + ChatColor.LIGHT_PURPLE + "PURPLE " + ChatColor.GOLD + "towers!");
+                        }
+                        break;
+
+                    } 
+                }
+                
+                if (champion.getTeam().equals("purple")) {
+                    BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, (int) champion.range + 1);
+                    while (iterator.hasNext()) {
+                        Block block = iterator.next();
+                        Turret turret = arena.isBlueTurret(block.getLocation());
+                        if (turret != null) {
+                            turret.hit(champion.getDamage());
+                            tempLoc = event.getClickedBlock().getLocation().add(.5, 0, .5);
+                            plugin.mainWorld.createExplosion(tempLoc, (float) 0.01, false);
+                            player.sendMessage("YOU HIT THE TURRET");
+                        }
+                        if (arena.isPurpleTurret(block.getLocation()) != null) {
+                            player.sendMessage(ChatColor.GOLD + "That is a friendly turret! Attack " + ChatColor.BLUE + "BLUE " + ChatColor.GOLD + "towers!");
+                        }
+                        break;
+
+                    } 
+                }
+                
+                
+            }*/
         }
         
         return false;
