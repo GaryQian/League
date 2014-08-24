@@ -98,6 +98,7 @@ public class ChampionMasterYi implements ChampionInstance {
             else {
                 target.damage(champion.getDamage() + level * qScale);
             }
+            champion.setQCooldown(10);
         }
         
         BukkitTask secondAttack = new MasterYiQTask(plugin, champion).runTaskLater(plugin, 5);
@@ -127,7 +128,7 @@ public class ChampionMasterYi implements ChampionInstance {
         
         
         
-        champion.setQCooldown(10);
+        
         
         
     }

@@ -37,7 +37,6 @@ public class MasterYiQTask extends BukkitRunnable{
                     cont = false;
                 }
             }
-            
         }
         if (ent != null) {
             if (ent instanceof Player) {

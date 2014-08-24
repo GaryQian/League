@@ -18,6 +18,13 @@ maintain-day: true
 
 main-world-generator: CleanroomGenerator:1,bedrock,10,stone,1,dirt,1,grass
 
+use-SQL: true
+database-host:
+database-port:
+database-name:
+SQL-username:
+SQL-passsword:
+
 
 #############################
 #LOBBY SETTINGS

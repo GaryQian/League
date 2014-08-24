@@ -8,6 +8,8 @@ package com.meloncraft.league;
 
 import com.meloncraft.league.Arena.ArenaHandler;
 import com.meloncraft.league.Arena.Minions.MinionPopulation;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -50,6 +52,22 @@ public final class League extends JavaPlugin {
         if (this.getConfig().getBoolean("maintain-day")) {
             arena.maintainDay();
         }
+        
+        //Connect to SQL
+        if (getConfig().getBoolean("use-SQL")) {
+            Connection conn;
+            String url = "jdbc:mysql://" + getConfig().getString("database-host") + ":" + getConfig().getString("databse-port") + "/" + getConfig().getString("database-name");
+            
+            //Attempt to connect
+            try {
+                //Connection succeeded
+                conn = DriverManager.getConnection(url, getConfig().getString("SQL-username"), getConfig().getString("SQL-password"));
+            }
+            catch(Exception e) {
+                
+            }
+        }
+        
         
 
         
