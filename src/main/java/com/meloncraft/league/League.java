@@ -29,6 +29,8 @@ public final class League extends JavaPlugin {
     public ArenaHandler arena;
     public static Teams teams;
     public MinionPopulation minionPopulation;
+    public Connection SQL;
+    public boolean connected;
     
     @Override
     public void onEnable() {
@@ -61,20 +63,15 @@ public final class League extends JavaPlugin {
             //Attempt to connect
             try {
                 //Connection succeeded
+                connected = true;
                 conn = DriverManager.getConnection(url, getConfig().getString("SQL-username"), getConfig().getString("SQL-password"));
+                
             }
             catch(Exception e) {
-                
+                connected = false;
             }
         }
         
-        
-
-        
-        //new Teams();
-        
-        
-        this.getLogger().info(mainWorld.getName());
         
         //Set Lobby Location
         /*Teams.setLobby(getConfig().getInt("blue-lobby.x"), 

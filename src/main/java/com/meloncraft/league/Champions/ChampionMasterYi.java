@@ -31,6 +31,7 @@ public class ChampionMasterYi implements ChampionInstance {
     public double wScale = 0;
     public double eScale = 0;
     public double rScale = 0;
+    double qCost, wCost, eCost, rCost;
     
     public ChampionMasterYi(Champion champ, League plug) {
         champion = champ;
@@ -42,6 +43,11 @@ public class ChampionMasterYi implements ChampionInstance {
         wScale = 0;
         eScale = 0;
         rScale = 0;
+        
+        qCost = 40;
+        wCost = 100;
+        eCost = 50;
+        rCost = 150;
         
         kit[0] = new ItemStack(Material.GOLD_SWORD);
         meta = kit[0].getItemMeta();
@@ -82,7 +88,9 @@ public class ChampionMasterYi implements ChampionInstance {
     }
     
     public boolean basicAttack(LivingEntity target) {
-        target.damage(champion.getDamage());
+        if (target != null) {
+            target.damage(champion.getDamage());
+        }
         
         return false;
     }
@@ -145,7 +153,10 @@ public class ChampionMasterYi implements ChampionInstance {
     
     public void rSpell(LivingEntity target, int level) {
         champion.sendMessage("R");
-        champion.setRCooldown(60);
+        champion.player.setWalkSpeed(.31f);
+        champion.drainMana(rCost);
+        BukkitTask rtimer = new SlowTask(plugin, champion).runTaskLater(plugin, 15 * 20);
+        champion.setRCooldown(90);
     }
     
     public boolean isMarksman() {

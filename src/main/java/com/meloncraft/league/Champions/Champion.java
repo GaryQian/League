@@ -32,7 +32,7 @@ public class Champion {
     public int level, kills, deaths, assists, gold, respawnTime, qCooldown, wCooldown, eCooldown, rCooldown, dCooldown, fCooldown, recallCooldown, qLevel, wLevel, eLevel, rLevel, points;
     public double range, incomingDamage, speed;
     //public float speed;
-    public double health, damage, mana, AP, armor, magicResist, healthRegen, manaRegen, lifesteal, attackSpeed;
+    public double health, damage, mana, AP, armor, magicResist, healthRegen, manaRegen, lifesteal, attackSpeed, baseAttackSpeed;
     public double maxHealth, maxMana;
     public double baseHealth, baseDamage, baseMana;
     public double bonusHealth, bonusDamage, bonusMana, bonusHealthRegen, bonusManaRegen;
@@ -98,10 +98,11 @@ public class Champion {
         speed = .2;
         healthRegen = 5;
         manaRegen = 1;
-        attackSpeed = 27;
+        baseAttackSpeed = 27;
+        range = 5;
         
         
-        
+        attackSpeed = baseAttackSpeed;
         refresh();
         player.setWalkSpeed((float) speed);
         health = maxHealth;
@@ -289,6 +290,18 @@ public class Champion {
         basicAttack = true;
     }
     
+    public void multiplyAttackSpeed(double speed) {
+        attackSpeed = baseAttackSpeed / (1 + speed);
+    }
+    
+    public void setAttackSpeed(double speed) {
+        attackSpeed = speed;
+    }
+    
+    public void resetAttackSpeed() {
+        attackSpeed = baseAttackSpeed;
+    }
+    
     public void spellCooldownTick() {
         qCooldown--;
         if (qCooldown >= 1 && player.getInventory().getItem(0) != null) {
@@ -364,9 +377,9 @@ public class Champion {
     }
     
     
-    public List<Entity> getNearbyEntities(double range) {
+    public List<Entity> getNearbyEntities(double rang) {
         
-        return player.getNearbyEntities(2 * range, 2 * range, 2 * range);
+        return player.getNearbyEntities(2 * rang, rang, 2 * rang);
         
         
         /*ArrayList<Entity> entities = new ArrayList<Entity>();
@@ -382,10 +395,10 @@ public class Champion {
                 */
     }
     
-    public Entity getClosestEntity(double range) {
+    public Entity getClosestEntity(double rang) {
         Entity ent = null;
-        double dist = range + 1;
-        List<Entity> entities = getNearbyEntities(range);
+        double dist = rang + 1;
+        List<Entity> entities = getNearbyEntities(rang);
         if (entities != null) {
             for (Entity entity : entities) {
                 if (entity.getLocation().distance(player.getLocation()) <= dist) {
@@ -398,11 +411,11 @@ public class Champion {
         return null;
     }
     
-    public Entity getClosestVisibleEntity(double range) {
+    public Entity getClosestVisibleEntity(double rang) {
         Entity ent = null;
-        double dist = range + 1;
+        double dist = rang + 1;
         List<Entity> entities = new ArrayList<Entity>();
-        entities = getNearbyEntities(range);
+        entities = getNearbyEntities(rang);
         if (entities != null) {
             for (Entity entity : entities) {
                 if (entity.getLocation().distance(player.getLocation()) <= dist && player.hasLineOfSight(entity) && entity instanceof LivingEntity) {
@@ -415,12 +428,12 @@ public class Champion {
         return null;
     }
     
-    public LivingEntity getTarget(double range) {
+    public LivingEntity getTarget(double rang) {
         Entity ent = null;
-        BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, (int) range + 1);
+        BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, (int) rang + 1);
         while (iterator.hasNext()) {
             Block block = iterator.next();
-            for (Entity entity : getNearbyEntities(range)) {
+            for (Entity entity : getNearbyEntities(rang)) {
                 if (entity.getLocation().getBlock().equals(block) && entity instanceof LivingEntity) {
                     return (LivingEntity) entity;
                 }

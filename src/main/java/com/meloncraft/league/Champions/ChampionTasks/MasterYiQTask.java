@@ -30,7 +30,9 @@ public class MasterYiQTask extends BukkitRunnable{
     public void run() {
         Entity ent = null;
         boolean cont = true;
-        while (cont) {
+        int counter = 0;
+        while (cont && counter < 4) {
+            counter++;
             ent = champion.getClosestEntity(champion.range + 4);
             if (ent != null) {
                 if (plugin.teams.getTeam(ent).equals(champion.team)) {
@@ -38,16 +40,18 @@ public class MasterYiQTask extends BukkitRunnable{
                 }
             }
         }
-        if (ent != null) {
-            if (ent instanceof Player) {
-                plugin.teams.getChampion((Player) ent).hit(champion.getDamage() + champion.qLevel * champion.championInstance.qScale);
-                Location loc = ent.getLocation();
-                loc.add(champion.getPlayer().getEyeLocation().getDirection().multiply(-1));
-                champion.getPlayer().teleport(ent);
-            } else if (ent instanceof LivingEntity) {
-                ent = (LivingEntity) ent;
-                LivingEntity entLive = (LivingEntity) ent;
-                entLive.damage(champion.getDamage() + champion.qLevel * champion.championInstance.qScale);
+        if (counter < 4) {
+            if (ent != null) {
+                if (ent instanceof Player) {
+                    plugin.teams.getChampion((Player) ent).hit(champion.getDamage() + champion.qLevel * champion.championInstance.qScale);
+                    Location loc = ent.getLocation();
+                    loc.add(champion.getPlayer().getEyeLocation().getDirection().multiply(-1));
+                    champion.getPlayer().teleport(ent);
+                } else if (ent instanceof LivingEntity) {
+                    ent = (LivingEntity) ent;
+                    LivingEntity entLive = (LivingEntity) ent;
+                    entLive.damage(champion.getDamage() + champion.qLevel * champion.championInstance.qScale);
+                }
             }
         }
     }
