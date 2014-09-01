@@ -18,11 +18,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 /**
@@ -202,7 +202,7 @@ public class Turret {
                     //plugin.getLogger().info("TESTING7");
                     if (entity.getType() == EntityType.SKELETON) {
                         //plugin.getLogger().info("TESTING8");
-                        if (!plugin.minionPopulation.getTeam(entity).equals(team)) {
+                        if (!plugin.minionPopulation.getTeam((LivingEntity) entity).equals(team)) {
                             //plugin.getLogger().info("TESTING9");
                             isMinionInRange = true;
                             targetMinion = entity;

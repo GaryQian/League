@@ -10,6 +10,7 @@ import com.meloncraft.league.Champions.ChampionTasks.MasterYiQTask;
 import com.meloncraft.league.League;
 import java.util.ArrayList;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -32,6 +33,7 @@ public class ChampionMasterYi implements ChampionInstance {
     public double eScale = 0;
     public double rScale = 0;
     double qCost, wCost, eCost, rCost;
+    Location loc;
     
     public ChampionMasterYi(Champion champ, League plug) {
         champion = champ;
@@ -88,18 +90,20 @@ public class ChampionMasterYi implements ChampionInstance {
     }
     
     public boolean basicAttack(LivingEntity target) {
-        if (target != null) {
+        if (target != null && target instanceof LivingEntity) {
             target.damage(champion.getDamage());
+            
         }
-        
+        BukkitTask basicCooldown = new ChampionBasicCooldownTask(plugin, champion).runTaskLater(plugin, (int) champion.attackSpeed);
         return false;
     }
     
     public void qSpell(LivingEntity target, int level) {
         champion.sendMessage("Q");
         
-        if (target != null) {
-            champion.getPlayer().teleport(target.getLocation());
+        if (target != null && target instanceof LivingEntity) {
+            loc = target.getLocation();
+            champion.getPlayer().teleport(loc);
             if (target instanceof Player) {
                 plugin.teams.getChampion((Player) target).hit(champion.getDamage() + level * qScale);
             }
@@ -133,6 +137,9 @@ public class ChampionMasterYi implements ChampionInstance {
                 }
             }
         }.runTaskLater(plugin, 5);*/
+        if (target != null && target instanceof LivingEntity) {
+            champion.getPlayer().teleport(loc);
+        }
         
         
         

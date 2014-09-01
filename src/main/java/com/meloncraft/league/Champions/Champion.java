@@ -401,7 +401,7 @@ public class Champion {
         List<Entity> entities = getNearbyEntities(rang);
         if (entities != null) {
             for (Entity entity : entities) {
-                if (entity.getLocation().distance(player.getLocation()) <= dist) {
+                if (entity.getLocation().distance(player.getLocation()) <= dist && entity instanceof LivingEntity) {
                     dist = entity.getLocation().distance(player.getLocation());
                     ent = entity;
                 }
@@ -435,9 +435,14 @@ public class Champion {
             Block block = iterator.next();
             for (Entity entity : getNearbyEntities(rang)) {
                 if (entity.getLocation().getBlock().equals(block) && entity instanceof LivingEntity) {
+                    plugin.getLogger().info(entity.toString());
+                    ent = entity;
                     return (LivingEntity) entity;
                 }
             }
+        }
+        if (ent == null) {
+            return (LivingEntity) getClosestEntity(range);
         }
         return null;
     }

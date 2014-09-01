@@ -84,7 +84,7 @@ public class ChampionAshe implements ChampionInstance {
         loc.setY(loc.getY() + .2);
         loc.add(champion.player.getEyeLocation().getDirection().multiply(1.5));
         Entity arrow = champion.player.getWorld().spawnArrow(loc, champion.player.getEyeLocation().getDirection(), 4f, 0);
-        if (target != null) {
+        if (target != null && target instanceof LivingEntity) {
         target.damage(champion.getDamage());
             
             if (qActive) {
