@@ -13,14 +13,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -28,7 +28,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.BlockIterator;
 
 /**
  *
@@ -80,6 +79,13 @@ public class GeneralListeners implements Listener {
     public void onPickupItem(PlayerPickupItemEvent event) {
         event.setCancelled(true);
     }
+    
+    @EventHandler
+    public void onEntityCombust(EntityCombustEvent event){
+        if(event.getEntity() instanceof Zombie){
+            event.setCancelled(true);
+        }
+    } 
     
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {

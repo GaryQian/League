@@ -7,6 +7,7 @@
 package com.meloncraft.league.Arena.Minions;
 
 import com.meloncraft.league.League;
+import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -23,6 +24,13 @@ public class MinionPopulation {
     
     public MinionPopulation(League plug) {
         plugin = plug;
+        blueMidMinions = new ArrayList<LivingEntity>();
+        blueTopMinions = new ArrayList<LivingEntity>();
+        blueBotMinions = new ArrayList<LivingEntity>();
+        
+        purpleMidMinions = new ArrayList<LivingEntity>();
+        purpleTopMinions = new ArrayList<LivingEntity>();
+        purpleBotMinions = new ArrayList<LivingEntity>();
     }
     
     public int getPopulation() {

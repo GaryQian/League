@@ -22,6 +22,7 @@ public class MinionSpawnWaveTask extends BukkitRunnable{
     
     @Override
     public void run() {
+        plugin.getLogger().info("Spawning Minion Wave");
         BukkitTask spawnMinion1 = new MinionSpawnTask(this.plugin).runTask(this.plugin);
         BukkitTask spawnMinon2 = new MinionSpawnTask(this.plugin).runTaskLater(this.plugin, 20);
         BukkitTask spawnMinon3 = new MinionSpawnTask(this.plugin).runTaskLater(this.plugin, 40);

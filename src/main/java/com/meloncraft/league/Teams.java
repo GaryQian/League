@@ -14,6 +14,7 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 /**
@@ -160,7 +161,7 @@ public class Teams {
                 return getTeam((Player) entity);
             }
             else {
-                return population.getTeam(entity);
+                return population.getTeam((LivingEntity) entity);
             }
         
         }
