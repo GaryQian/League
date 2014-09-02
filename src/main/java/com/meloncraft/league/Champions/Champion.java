@@ -209,6 +209,19 @@ public class Champion {
         rCooldown = i;
     }
     
+    public void levelQ() {
+        qLevel++;
+    }
+    public void levelW() {
+        wLevel++;
+    }
+    public void levelE() {
+        eLevel++;
+    }
+    public void levelR() {
+        rLevel++;
+    }
+    
     public void drainMana(double amount) {
         mana -= amount;
     }
@@ -247,13 +260,16 @@ public class Champion {
                 setRecalling(false, true);
             }
             boolean hit = false;
-            hit = championInstance.basicAttack(getTarget(range));
-            if (lifesteal > 0) {
-                health += damage * (lifesteal / 100);
+            LivingEntity targ = getTarget(range);
+            hit = championInstance.basicAttack(targ);
+            if (hit = true) {
+                if (lifesteal > 0) {
+                    health += damage * (lifesteal / 100);
+                }
+                basicAttack = false;
+                BukkitTask basicCooldown = new ChampionBasicCooldownTask(plugin, this).runTaskLater(plugin, (int) attackSpeed);
+                return damage;
             }
-            basicAttack = false;
-            BukkitTask basicCooldown = new ChampionBasicCooldownTask(plugin, this).runTaskLater(plugin, (int) attackSpeed);
-            return damage;
         }
         return 0;
     }
@@ -396,7 +412,7 @@ public class Champion {
                 */
     }
     
-    public Entity getClosestEntity(double rang) {
+    public LivingEntity getClosestEntity(double rang) {
         Entity ent = null;
         double dist = rang + 1;
         List<Entity> entities = getNearbyEntities(rang);
@@ -407,7 +423,23 @@ public class Champion {
                     ent = entity;
                 }
             }
-            return ent;
+            return (LivingEntity) ent;
+        }
+        return null;
+    }
+    
+    public LivingEntity getClosestEnemyEntity(double rang) {
+        Entity ent = null;
+        double dist = rang + 1;
+        List<Entity> entities = getNearbyEntities(rang);
+        if (entities != null) {
+            for (Entity entity : entities) {
+                if (entity.getLocation().distance(player.getLocation()) <= dist && entity instanceof LivingEntity && !plugin.teams.getTeam(entity).equals(team)) {
+                    dist = entity.getLocation().distance(player.getLocation());
+                    ent = entity;
+                }
+            }
+            return (LivingEntity) ent;
         }
         return null;
     }

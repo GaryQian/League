@@ -95,55 +95,58 @@ public class ChampionMasterYi implements ChampionInstance {
     public boolean basicAttack(LivingEntity target) {
         if (target != null && target instanceof LivingEntity) {
             target.damage(champion.getDamage());
-            
+            return true;
         }
-        BukkitTask basicCooldown = new ChampionBasicCooldownTask(plugin, champion).runTaskLater(plugin, (int) champion.attackSpeed);
         return false;
     }
     
     public void qSpell(LivingEntity target, int level) {
-        champion.sendMessage("Q");
-        
-        if (target != null && target instanceof LivingEntity) {
-            loc = target.getLocation();
-            champion.getPlayer().teleport(loc);
-            if (target instanceof Player) {
-                plugin.teams.getChampion((Player) target).hit(champion.getDamage() + level * qScale);
+        if (champion.qLevel > 0) {
+            champion.sendMessage("Q");
+            if (target != null && target instanceof LivingEntity) {
+                
+                loc = target.getLocation();
+                champion.getPlayer().teleport(loc);
+                if (target instanceof Player) {
+                    plugin.teams.getChampion((Player) target).hit(champion.getDamage() + level * qScale);
+                }
+                else {
+                    target.damage(champion.getDamage() + level * qScale);
+                }
+                champion.setQCooldown(10);
             }
-            else {
-                target.damage(champion.getDamage() + level * qScale);
-            }
-            champion.setQCooldown(10);
-        }
-        
-        BukkitTask secondAttack = new MasterYiQTask(plugin, champion).runTaskLater(plugin, 5);
-        BukkitTask thirdAttack = new MasterYiQTask(plugin, champion).runTaskLater(plugin, 10);
-        BukkitTask fourthAttack = new MasterYiQTask(plugin, champion).runTaskLater(plugin, 15);
-        /*new BukkitRunnable() {
+            
+            BukkitTask secondAttack = new MasterYiQTask(plugin, champion).runTaskLater(plugin, 5);
+            BukkitTask thirdAttack = new MasterYiQTask(plugin, champion).runTaskLater(plugin, 10);
+            BukkitTask fourthAttack = new MasterYiQTask(plugin, champion).runTaskLater(plugin, 15);
+            /*new BukkitRunnable() {
             @Override
             public void run() {
-                Entity ent = null;
-                boolean cont = true;
-                while (cont) {
-                    ent = champion.getClosestEntity(champion.range + 4 );
-                    if (plugin.teams.getTeam(ent).equals(champion.team)) {
-                        cont = false;
-                    }
-                }
-                if (ent != null) {
-                    if (ent instanceof Player) {
-                        plugin.teams.getChampion((Player) ent).hit(champion.getDamage() + level * qScale);
-                    }
-                    else {
-                        target.damage(champion.getDamage() + level * qScale);
-                    }
-                }
+            Entity ent = null;
+            boolean cont = true;
+            while (cont) {
+            ent = champion.getClosestEntity(champion.range + 4 );
+            if (plugin.teams.getTeam(ent).equals(champion.team)) {
+            cont = false;
             }
-        }.runTaskLater(plugin, 5);*/
-        if (target != null && target instanceof LivingEntity) {
-            champion.getPlayer().teleport(loc);
+            }
+            if (ent != null) {
+            if (ent instanceof Player) {
+            plugin.teams.getChampion((Player) ent).hit(champion.getDamage() + level * qScale);
+            }
+            else {
+            target.damage(champion.getDamage() + level * qScale);
+            }
+            }
+            }
+            }.runTaskLater(plugin, 5);*/
+            if (target != null && target instanceof LivingEntity) {
+                champion.getPlayer().teleport(loc);
+            }
         }
-        
+        else {
+            champion.player.sendMessage(ChatColor.RED + "You have not learned this skill yet!");
+        }
         
         
         

@@ -84,9 +84,9 @@ public class ChampionAshe implements ChampionInstance {
         loc.setY(loc.getY() + .2);
         loc.add(champion.player.getEyeLocation().getDirection().multiply(1.5));
         Entity arrow = champion.player.getWorld().spawnArrow(loc, champion.player.getEyeLocation().getDirection(), 4f, 0);
+        
         if (target != null && target instanceof LivingEntity) {
-        target.damage(champion.getDamage());
-            
+            target.damage(champion.getDamage());
             if (qActive) {
                 if (target instanceof Player) {
                     Player play = (Player) target;
@@ -95,10 +95,11 @@ public class ChampionAshe implements ChampionInstance {
                     BukkitTask slowdown = new SlowTask(plugin, plugin.teams.getChampion(play)).runTaskLater(plugin, 35);
                 }
             }
+            BukkitTask removeArrow = new RemoveProjectileTask(arrow).runTaskLater(plugin, 3);
+            return true;
         }
-        BukkitTask basicCooldown = new ChampionBasicMarksmanCooldownTask(plugin, champion, arrow).runTaskLater(plugin, (int) champion.attackSpeed);
         BukkitTask removeArrow = new RemoveProjectileTask(arrow).runTaskLater(plugin, 3);
-                
+        
         return false;
     }
     
@@ -107,27 +108,32 @@ public class ChampionAshe implements ChampionInstance {
     }
     
     public void qSpell(LivingEntity target, int level) {
-        meta = kit[0].getItemMeta();
-        ArrayList<String> lore = new ArrayList<String>();
-        champion.sendMessage("Q");
-        
-        if (qActive) {
-            qActive = false;
-            meta.setDisplayName(ChatColor.BLUE + "Frost Shot - " + ChatColor.RED + "OFF");
-            lore.add("While active, each basic attack slows and uses mana");
-            meta.setLore(lore);
-            kit[0].setItemMeta(meta);
-            champion.getPlayer().getInventory().setItem(0, kit[0]);
-            lore.clear();
+        if (champion.qLevel > 0) {
+            meta = kit[0].getItemMeta();
+            ArrayList<String> lore = new ArrayList<String>();
+            champion.sendMessage("Q");
+            
+            if (qActive) {
+                qActive = false;
+                meta.setDisplayName(ChatColor.BLUE + "Frost Shot - " + ChatColor.RED + "OFF");
+                lore.add("While active, each basic attack slows and uses mana");
+                meta.setLore(lore);
+                kit[0].setItemMeta(meta);
+                champion.getPlayer().getInventory().setItem(0, kit[0]);
+                lore.clear();
+            }
+            else {
+                qActive = true;
+                meta.setDisplayName(ChatColor.BLUE + "Frost Shot - " + ChatColor.GREEN + "ON");
+                lore.add("While active, each basic attack slows and uses mana");
+                meta.setLore(lore);
+                kit[0].setItemMeta(meta);
+                champion.getPlayer().getInventory().setItem(0, kit[0]);
+                lore.clear();
+            }
         }
         else {
-            qActive = true;
-            meta.setDisplayName(ChatColor.BLUE + "Frost Shot - " + ChatColor.GREEN + "ON");
-            lore.add("While active, each basic attack slows and uses mana");
-            meta.setLore(lore);
-            kit[0].setItemMeta(meta);
-            champion.getPlayer().getInventory().setItem(0, kit[0]);
-            lore.clear();
+            champion.player.sendMessage(ChatColor.RED + "You have not learned this skill yet!");
         }
         
     }

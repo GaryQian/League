@@ -8,8 +8,8 @@ package com.meloncraft.league.Champions.ChampionTasks;
 
 import com.meloncraft.league.Champions.Champion;
 import com.meloncraft.league.League;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -28,32 +28,25 @@ public class MasterYiQTask extends BukkitRunnable{
     }
     
     public void run() {
-        Entity ent = null;
-        boolean cont = true;
-        int counter = 0;
-        while (cont && counter < 4) {
-            counter++;
-            ent = champion.getClosestEntity(champion.range + 4);
-            if (ent != null) {
-                if (plugin.teams.getTeam(ent).equals(champion.team)) {
-                    cont = false;
-                }
-            }
-        }
-        if (counter < 4) {
-            if (ent != null) {
-                if (ent instanceof Player) {
-                    plugin.teams.getChampion((Player) ent).hit(champion.getDamage() + champion.qLevel * champion.championInstance.qScale);
-                    Location loc = ent.getLocation();
-                    loc.add(champion.getPlayer().getEyeLocation().getDirection().multiply(-1));
-                    champion.getPlayer().teleport(ent);
-                } else if (ent instanceof LivingEntity) {
-                    ent = (LivingEntity) ent;
-                    LivingEntity entLive = (LivingEntity) ent;
-                    entLive.damage(champion.getDamage() + champion.qLevel * champion.championInstance.qScale);
-                }
+        
+        LivingEntity ent = null;
+        ent = champion.getClosestEnemyEntity(champion.range + 4);
+        
+        if (ent != null) {
+            if (ent instanceof Player) {
+                plugin.teams.getChampion((Player) ent).hit(champion.getDamage() + champion.qLevel * champion.championInstance.qScale);
+                Location loc = ent.getLocation();
+                loc.add(champion.getPlayer().getEyeLocation().getDirection().multiply(-1.5));
+                champion.getPlayer().teleport(loc);
+            } else if (ent instanceof LivingEntity) {
+                Location loc = ent.getLocation();
+                loc.add(champion.getPlayer().getEyeLocation().getDirection().multiply(-1.5));
+                champion.getPlayer().teleport(loc);
+                ent.damage(champion.getDamage() + champion.qLevel * champion.championInstance.qScale);
             }
         }
     }
     
+    
 }
+

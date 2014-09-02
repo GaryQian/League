@@ -15,17 +15,20 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityCombustEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -88,6 +91,47 @@ public class GeneralListeners implements Listener {
     public void onEntityCombust(EntityCombustEvent event){
         if(event.getEntity() instanceof Zombie){
             event.setCancelled(true);
+        }
+    }
+    
+    @EventHandler
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
+        LivingEntity ent = (LivingEntity) event.getEntity();
+        if (event.getDamager().getType() == EntityType.ZOMBIE) {
+            ent.damage(12);
+        }
+        
+        if (event.getDamager().getType() == EntityType.SKELETON) {
+            ent.damage(23);
+        }
+    }
+    
+    //on click item in inventory
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        Champion champ = teams.getChampion((Player) event.getWhoClicked());
+        if (event.getSlot() < 4) {
+            if (champ.points > 0) {
+                switch (event.getSlot()) {
+                    case 0: champ.levelQ();
+                        break;
+                    case 1: champ.levelW();
+                        break;
+                    case 2: champ.levelE();
+                        break;
+                    case 3: champ.levelR();
+                        break;
+                }
+            }
+            else {
+                champ.player.sendMessage(ChatColor.RED + "You do not have any ability points! Level up for more points!");
+            }
+            event.setCancelled(true);
+        }
+        
+        else if (event.getSlot() != 6 || event.getSlot() != 7 || event.getSlot() != 33 || event.getSlot() != 34 || event.getSlot() != 23 || event.getSlot() != 24) {
+            event.setCancelled(true);
+            champ.player.sendMessage(ChatColor.RED + "You cannot modify those slots!");
         }
     }
     
