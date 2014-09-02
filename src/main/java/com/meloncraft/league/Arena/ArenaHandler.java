@@ -269,7 +269,7 @@ public class ArenaHandler {
             plugin.getLogger().info("STARTING TURRET ATTACKS!");
             BukkitTask turretAttack = new TurretAttackTask(plugin, teams, this).runTaskTimer(plugin, 10 * 20, 40);
             //start MinionSpawns
-            BukkitTask minonSpawner = new MinionSpawnWaveTask(plugin).runTaskTimer(plugin, 50 * 20, 30 * 20);
+            BukkitTask minonSpawner = new MinionSpawnWaveTask(plugin).runTaskTimer(plugin, 10 * 20, 30 * 20);
             //make teh clock tick
             BukkitTask clockTask = new ClockTask(plugin, this, teams).runTaskTimer(plugin, 0, 20);
             //spawnMinionWave();

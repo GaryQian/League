@@ -32,6 +32,7 @@ public class ChampionMasterYi implements ChampionInstance {
     public double wScale = 0;
     public double eScale = 0;
     public double rScale = 0;
+    public double range;
     double qCost, wCost, eCost, rCost;
     Location loc;
     
@@ -45,6 +46,8 @@ public class ChampionMasterYi implements ChampionInstance {
         wScale = 0;
         eScale = 0;
         rScale = 0;
+        
+        range = 2.5;
         
         qCost = 40;
         wCost = 100;

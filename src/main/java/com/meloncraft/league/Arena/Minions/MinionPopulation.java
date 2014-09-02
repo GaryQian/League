@@ -18,9 +18,9 @@ import org.bukkit.entity.LivingEntity;
  * @author Gary
  */
 public class MinionPopulation {
-    static League plugin;
+    League plugin;
     //List<Minion> blueMinions, purpleMinions;
-    public static List<LivingEntity> blueMidMinions, purpleMidMinions, blueTopMinions, purpleTopMinions, blueBotMinions, purpleBotMinions, allMinions;
+    public List<LivingEntity> blueMidMinions, purpleMidMinions, blueTopMinions, purpleTopMinions, blueBotMinions, purpleBotMinions, allMinions;
     
     public MinionPopulation(League plug) {
         plugin = plug;
@@ -31,6 +31,8 @@ public class MinionPopulation {
         purpleMidMinions = new ArrayList<LivingEntity>();
         purpleTopMinions = new ArrayList<LivingEntity>();
         purpleBotMinions = new ArrayList<LivingEntity>();
+        
+        allMinions = new ArrayList<LivingEntity>();
     }
     
     public int getPopulation() {
@@ -62,23 +64,23 @@ public class MinionPopulation {
         
     }
     
-    public static void addBlueMidMinion() {
+    public void addBlueMidMinion() {
         blueMidMinions.add((LivingEntity) (LivingEntity) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y"), plugin.getConfig().getDouble("blue-nexus.z")) , EntityType.ZOMBIE));
     }
-    public static void addBlueTopMinion() {
+    public void addBlueTopMinion() {
         blueTopMinions.add((LivingEntity) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y"), plugin.getConfig().getDouble("blue-nexus.z")) , EntityType.ZOMBIE));
     }
-    public static void addBlueBotMinion() {
+    public void addBlueBotMinion() {
         blueBotMinions.add((LivingEntity) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y"), plugin.getConfig().getDouble("blue-nexus.z")) , EntityType.ZOMBIE));
     }
     
-    public static void addPurpleMidMinion() {
+    public void addPurpleMidMinion() {
         purpleMidMinions.add((LivingEntity) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("purple-nexus.x"), plugin.getConfig().getDouble("purple-nexus.y"), plugin.getConfig().getDouble("purple-nexus.z")) , EntityType.ZOMBIE));
     }
-    public static void addPurpleTopMinion() {
+    public void addPurpleTopMinion() {
         purpleTopMinions.add((LivingEntity) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("purple-nexus.x"), plugin.getConfig().getDouble("purple-nexus.y"), plugin.getConfig().getDouble("purple-nexus.z")) , EntityType.ZOMBIE));
     }
-    public static void addPurpleBotMinion() {
+    public void addPurpleBotMinion() {
         purpleBotMinions.add((LivingEntity) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("purple-nexus.x"), plugin.getConfig().getDouble("purple-nexus.y"), plugin.getConfig().getDouble("purple-nexus.z")) , EntityType.ZOMBIE));
     }
     
@@ -89,8 +91,6 @@ public class MinionPopulation {
         if (purpleMidMinions.contains(ent) || purpleTopMinions.contains(ent) || purpleBotMinions.contains(ent)) {
             return "purple";
         }
-        else {
             return null;
-        }
     }
 }

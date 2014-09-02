@@ -41,7 +41,7 @@ public class Turret {
     public double damage, damageBase, incomingDamage;
     public static int reward;
     public Entity target, lastHit;
-    public Entity targetMinion;
+    public LivingEntity targetMinion;
     public Class<Minion> minionClass;
     public Class<EntityPlayer> playerClass;
     public Collection<Entity> allEntities;
@@ -200,12 +200,12 @@ public class Turret {
                 }
                 if (distance < distance2) {
                     //plugin.getLogger().info("TESTING7");
-                    if (entity.getType() == EntityType.SKELETON) {
+                    if (entity.getType() == EntityType.SKELETON || entity.getType() == EntityType.ZOMBIE) {
                         //plugin.getLogger().info("TESTING8");
                         if (!plugin.minionPopulation.getTeam((LivingEntity) entity).equals(team)) {
                             //plugin.getLogger().info("TESTING9");
                             isMinionInRange = true;
-                            targetMinion = entity;
+                            targetMinion = (LivingEntity) entity;
                             distance2 = distance;
                         }
                     }
@@ -276,7 +276,9 @@ public class Turret {
 
             }
             else {
-                targetMinion = target;
+                targetMinion = (LivingEntity) target;
+                
+                targetMinion.damage(damage);
                 //targetMinion.hit(damage);
                 lastHit = target;
                 return true;

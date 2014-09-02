@@ -22,12 +22,14 @@ public class MinionSpawnWaveTask extends BukkitRunnable{
     
     @Override
     public void run() {
-        plugin.getLogger().info("Spawning Minion Wave");
-        BukkitTask spawnMinion1 = new MinionSpawnTask(this.plugin).runTask(this.plugin);
-        BukkitTask spawnMinon2 = new MinionSpawnTask(this.plugin).runTaskLater(this.plugin, 20);
-        BukkitTask spawnMinon3 = new MinionSpawnTask(this.plugin).runTaskLater(this.plugin, 40);
-        BukkitTask spawnMinon4 = new MinionSpawnTask(this.plugin).runTaskLater(this.plugin, 60);
-        BukkitTask spawnMinon5 = new MinionSpawnTask(this.plugin).runTaskLater(this.plugin, 80);
-        BukkitTask spawnMinon6 = new MinionSpawnTask(this.plugin).runTaskLater(this.plugin, 100);
+        if (plugin.minionPopulation.getPopulation() < 130) {
+            plugin.getLogger().info("Spawning Minion Wave");
+            BukkitTask spawnMinion1 = new MinionSpawnTask(this.plugin, 455).runTask(this.plugin);
+            BukkitTask spawnMinon2 = new MinionSpawnTask(this.plugin, 455).runTaskLater(this.plugin, 20);
+            BukkitTask spawnMinon3 = new MinionSpawnTask(this.plugin, 455).runTaskLater(this.plugin, 40);
+            BukkitTask spawnMinon4 = new MinionSpawnTask(this.plugin, 290).runTaskLater(this.plugin, 60);
+            BukkitTask spawnMinon5 = new MinionSpawnTask(this.plugin, 290).runTaskLater(this.plugin, 80);
+            BukkitTask spawnMinon6 = new MinionSpawnTask(this.plugin, 290).runTaskLater(this.plugin, 100);
+        }
     }
 }

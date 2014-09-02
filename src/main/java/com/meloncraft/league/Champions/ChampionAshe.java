@@ -97,6 +97,7 @@ public class ChampionAshe implements ChampionInstance {
             }
         }
         BukkitTask basicCooldown = new ChampionBasicMarksmanCooldownTask(plugin, champion, arrow).runTaskLater(plugin, (int) champion.attackSpeed);
+        BukkitTask removeArrow = new RemoveProjectileTask(arrow).runTaskLater(plugin, 3);
                 
         return false;
     }

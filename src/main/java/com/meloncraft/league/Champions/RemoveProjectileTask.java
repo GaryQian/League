@@ -14,19 +14,16 @@ import org.bukkit.scheduler.BukkitRunnable;
  *
  * @author Gary
  */
-public class ChampionBasicMarksmanCooldownTask extends BukkitRunnable{
+public class RemoveProjectileTask extends BukkitRunnable{
     League plugin;
     Champion champion;
     Entity projectile;
     
-    public ChampionBasicMarksmanCooldownTask(League plug, Champion champ, Entity project) {
-        plugin = plug;
-        champion = champ;
+    public RemoveProjectileTask(Entity project) {
         projectile = project;
     }
     
     public void run() {
-        champion.resetBasic();
         projectile.remove();
     }
 

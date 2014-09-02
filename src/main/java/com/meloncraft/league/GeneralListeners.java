@@ -24,6 +24,8 @@ import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemBreakEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -80,12 +82,32 @@ public class GeneralListeners implements Listener {
         event.setCancelled(true);
     }
     
+    
+    //prevent zombies burning
     @EventHandler
     public void onEntityCombust(EntityCombustEvent event){
         if(event.getEntity() instanceof Zombie){
             event.setCancelled(true);
         }
-    } 
+    }
+    
+    //prevent items from breaking/
+    /*
+    @EventHandler
+    public void onItemHeld(PlayerItemHeldEvent event){
+        Player player = event.getPlayer();
+        player.getInventory().getItem(event.getNewSlot()).setDurability(player.getInventory().getItem(event.getNewSlot()).getType().getMaxDurability());
+    }
+    */
+    
+    //prevent items from breaking
+    @EventHandler
+    public void onItemBreak(PlayerItemBreakEvent event){
+        event.getBrokenItem().setDurability(event.getBrokenItem().getType().getMaxDurability());
+    }
+    
+    
+    
     
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {

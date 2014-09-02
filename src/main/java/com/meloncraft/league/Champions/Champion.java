@@ -12,6 +12,7 @@ import java.util.List;
 import net.minecraft.server.v1_7_R4.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
@@ -429,18 +430,28 @@ public class Champion {
     }
     
     public LivingEntity getTarget(double rang) {
+        
         Entity ent = null;
         BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, (int) rang + 1);
         while (iterator.hasNext()) {
             Block block = iterator.next();
+            Location loc = null;
             for (Entity entity : getNearbyEntities(rang)) {
-                if (entity.getLocation().getBlock().equals(block) && entity instanceof LivingEntity) {
+                loc = entity.getLocation();
+                if (loc.getBlock().equals(block) && entity instanceof LivingEntity) {
+                    plugin.getLogger().info(entity.toString());
+                    ent = entity;
+                    return (LivingEntity) entity;
+                }
+                loc = loc.add(0, 1, 0);
+                if (loc.getBlock().equals(block) && entity instanceof LivingEntity) {
                     plugin.getLogger().info(entity.toString());
                     ent = entity;
                     return (LivingEntity) entity;
                 }
             }
         }
+        plugin.getLogger().info("no target aimed at");
         if (ent == null) {
             return (LivingEntity) getClosestEntity(range);
         }
