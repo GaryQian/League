@@ -47,6 +47,11 @@ commands:
       usage: /champion <championname>
       permission: 
       permission-message: Test permission message
+   level:
+      description: Levels up your champion
+      usage: /level
+      permission: 
+      permission-message: Test permission message
    #team:
       #description: Adds friend to your team.
       #usage: /team

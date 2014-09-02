@@ -31,7 +31,7 @@ import org.bukkit.util.BlockIterator;
  */
 public class Champion {
     public int level, kills, deaths, assists, gold, respawnTime, qCooldown, wCooldown, eCooldown, rCooldown, dCooldown, fCooldown, recallCooldown, qLevel, wLevel, eLevel, rLevel, points;
-    public double range, incomingDamage, speed;
+    public double range, incomingDamage, speed, xp;
     //public float speed;
     public double health, damage, mana, AP, armor, magicResist, healthRegen, manaRegen, lifesteal, attackSpeed, baseAttackSpeed;
     public double maxHealth, maxMana;
@@ -85,6 +85,7 @@ public class Champion {
         kit = new ItemStack[9];
         respawnTime = 0;
         inv = new ItemStack[103];
+        xp = 0;
         
         
         
@@ -117,6 +118,10 @@ public class Champion {
     
     public String getTeam() {
         return team;
+    }
+    
+    public void addXp(double num) {
+        xp += num;
     }
     
     public void addLevel() {

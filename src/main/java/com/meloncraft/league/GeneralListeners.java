@@ -9,6 +9,7 @@ package com.meloncraft.league;
 import com.meloncraft.league.Arena.ArenaHandler;
 import com.meloncraft.league.Arena.Turret;
 import com.meloncraft.league.Champions.Champion;
+import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,6 +25,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -154,11 +156,12 @@ public class GeneralListeners implements Listener {
     
     
     @EventHandler
-    public void onDeath(PlayerDeathEvent event) {
+    public void onPlayerDeath(PlayerDeathEvent event) {
         double respawnTime = 5;
         int totalRespawnTime = 5;
         teams.getChampion(player).storeInventory();
         event.setKeepLevel(true);
+        event.setKeepInventory(true);
         respawnTime += teams.getChampion(event.getEntity()).getLevel() * 2.5;
         if (arena.clock > 20 * 60) {
             respawnTime = respawnTime + ((respawnTime / 50) * ((arena.clock / 60) - 20));
@@ -171,6 +174,25 @@ public class GeneralListeners implements Listener {
         teams.getChampion(event.getEntity()).setRespawnTime(totalRespawnTime);
         //begin respawn timer
     }
+    
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent event) {
+        if (!(event.getEntity() instanceof Player)) {
+            ArrayList<Player> players = new ArrayList<Player>();
+            for (Entity entity : event.getEntity().getNearbyEntities(12, 10, 12)) {
+                if (entity instanceof Player) {
+                    if (!teams.getTeam((Player) entity).equals(teams.getTeam(event.getEntity()))) {
+                        players.add((Player) entity);
+                    }
+                }
+            }
+            for (Player player : players) {
+                teams.getChampion(player).addXp(50 / players.size());
+            }
+        }
+    }
+    
+    
     
     @EventHandler
     public void onMove(PlayerMoveEvent event) {

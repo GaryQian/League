@@ -207,6 +207,14 @@ public final class League extends JavaPlugin {
             this.getServer().shutdown();
             return true;
         }
+        
+        if (cmd.getName().equalsIgnoreCase("level")) {
+            if (arena.started) {
+                teams.getChampion(sender.getServer().getPlayer(sender.getName())).addLevel();
+            }
+            
+            return true;
+        }
         if (cmd.getName().equalsIgnoreCase("fixTurrets")) {
             arena.blueMid1.fixTurret();
             arena.blueMid2.fixTurret();

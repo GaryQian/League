@@ -48,33 +48,33 @@ public class MinionSpawnTask extends BukkitRunnable{
         minionPopulation.addBlueMidMinion();
         minionPopulation.blueMidMinions.get(minionPopulation.blueMidMinions.size() - 1).setMaxHealth(maxHealth);
         minionPopulation.blueMidMinions.get(minionPopulation.blueMidMinions.size() - 1).setHealth(maxHealth);
-        minionPopulation.blueMidMinions.get(minionPopulation.blueMidMinions.size() - 1).addPotionEffect(effect);
+        //minionPopulation.blueMidMinions.get(minionPopulation.blueMidMinions.size() - 1).addPotionEffect(effect);
         
         minionPopulation.addBlueTopMinion();
         minionPopulation.blueTopMinions.get(minionPopulation.blueMidMinions.size() - 1).setMaxHealth(maxHealth);
         minionPopulation.blueTopMinions.get(minionPopulation.blueMidMinions.size() - 1).setHealth(maxHealth);
-        minionPopulation.blueTopMinions.get(minionPopulation.blueMidMinions.size() - 1).addPotionEffect(effect);
+        //minionPopulation.blueTopMinions.get(minionPopulation.blueMidMinions.size() - 1).addPotionEffect(effect);
         
         minionPopulation.addBlueBotMinion();
         minionPopulation.blueBotMinions.get(minionPopulation.blueMidMinions.size() - 1).setMaxHealth(maxHealth);
         minionPopulation.blueBotMinions.get(minionPopulation.blueMidMinions.size() - 1).setHealth(maxHealth);
-        minionPopulation.blueBotMinions.get(minionPopulation.blueMidMinions.size() - 1).addPotionEffect(effect);
+        //minionPopulation.blueBotMinions.get(minionPopulation.blueMidMinions.size() - 1).addPotionEffect(effect);
         
         
         minionPopulation.addPurpleMidMinion();
         minionPopulation.purpleMidMinions.get(minionPopulation.purpleMidMinions.size() - 1).setMaxHealth(maxHealth);
         minionPopulation.purpleMidMinions.get(minionPopulation.purpleMidMinions.size() - 1).setHealth(maxHealth);
-        minionPopulation.purpleMidMinions.get(minionPopulation.purpleMidMinions.size() - 1).addPotionEffect(effect);
+        //minionPopulation.purpleMidMinions.get(minionPopulation.purpleMidMinions.size() - 1).addPotionEffect(effect);
         
         minionPopulation.addPurpleTopMinion();
         minionPopulation.purpleTopMinions.get(minionPopulation.purpleMidMinions.size() - 1).setMaxHealth(maxHealth);
         minionPopulation.purpleTopMinions.get(minionPopulation.purpleMidMinions.size() - 1).setHealth(maxHealth);
-        minionPopulation.purpleTopMinions.get(minionPopulation.purpleMidMinions.size() - 1).addPotionEffect(effect);
+        //minionPopulation.purpleTopMinions.get(minionPopulation.purpleMidMinions.size() - 1).addPotionEffect(effect);
         
         minionPopulation.addPurpleBotMinion();
         minionPopulation.purpleBotMinions.get(minionPopulation.purpleMidMinions.size()).setMaxHealth(maxHealth);
         minionPopulation.purpleBotMinions.get(minionPopulation.purpleMidMinions.size()).setHealth(maxHealth);
-        minionPopulation.purpleBotMinions.get(minionPopulation.purpleMidMinions.size() - 1).addPotionEffect(effect);
+        //minionPopulation.purpleBotMinions.get(minionPopulation.purpleMidMinions.size() - 1).addPotionEffect(effect);
 
     }
 }
