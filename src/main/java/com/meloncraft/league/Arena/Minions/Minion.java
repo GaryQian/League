@@ -6,8 +6,8 @@
 
 package com.meloncraft.league.Arena.Minions;
 
-import net.minecraft.server.v1_7_R4.Entity;
 import net.minecraft.server.v1_7_R4.EntitySkeleton;
+import net.minecraft.server.v1_7_R4.GenericAttributes;
 import net.minecraft.server.v1_7_R4.World;
 //import org.bukkit.World;
 
@@ -17,8 +17,6 @@ import net.minecraft.server.v1_7_R4.World;
  * @author Gary
  */
 public class Minion extends EntitySkeleton{
-    World world;
-    public String team;
     //sets up the health and other stats of minions
     public Minion(World world) {
         super(world);
@@ -29,11 +27,11 @@ public class Minion extends EntitySkeleton{
         return
     }*/
     
-    public String getTeam() {
-        return team;
-    }
+    //UPDATE INSTRUCTIONS: OVERRRIDE THE METHOD IN EntityZombie.java containing "this.getAttributeInstance(GenericAttributes.b).setValue("
     
-    public void hit(double damage) {
-        
+    @Override
+    protected void aD() {
+        super.aD();
+        this.getAttributeInstance(GenericAttributes.b).setValue(3000.0D);
     }
 }

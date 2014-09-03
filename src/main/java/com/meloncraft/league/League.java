@@ -7,6 +7,7 @@
 package com.meloncraft.league;
 
 import com.meloncraft.league.Arena.ArenaHandler;
+import com.meloncraft.league.Arena.CustomEntityType;
 import com.meloncraft.league.Arena.Minions.MinionPopulation;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,6 +17,7 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 /**
@@ -34,6 +36,13 @@ public final class League extends JavaPlugin {
     
     @Override
     public void onEnable() {
+        
+        //NMS STUFF
+        
+        CustomEntityType.registerEntities();
+        
+        //END NMS STUFF
+        
         this.saveDefaultConfig();
         this.getConfig();
         creator = new WorldCreator("world");
@@ -120,11 +129,17 @@ public final class League extends JavaPlugin {
         arena.purpleNexus1.fixTurret();
         arena.purpleNexus2.fixTurret();
         
+        CustomEntityType.unregisterEntities();
+        
         for (Player player : this.getServer().getOnlinePlayers()) {
             player.kickPlayer("Thanks for playing!");
         }
         
         rollback("world");
+        
+        for (Entity entity : mainWorld.getEntities()) {
+            entity.remove();
+        }
     }
     
     String version = "1.0.0";

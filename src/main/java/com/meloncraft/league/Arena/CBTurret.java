@@ -6,7 +6,7 @@
 
 package com.meloncraft.league.Arena;
 
-import com.meloncraft.league.Arena.Minions.Minion;
+/*import com.meloncraft.league.Arena.Minions.Minion;
 import com.meloncraft.league.Champions.Champion;
 import com.meloncraft.league.League;
 import com.meloncraft.league.Teams;
@@ -24,7 +24,7 @@ import org.bukkit.entity.Player;
  *
  * @author Gary
  */
-public class CBTurret {
+/*public class CBTurret {
     League plugin;
     public Location center, temp;
     public CraftWorld world;
@@ -60,7 +60,7 @@ public class CBTurret {
         championAttacked = false;
         turretBody = new ArrayList<Location>();
         world = ((CraftWorld)plugin.getServer().getWorlds().get(0))/*.getHandle()*/;
-        height = plugin.getConfig().getInt("turret-height");
+        /*height = plugin.getConfig().getInt("turret-height");
         x1 = x - 1;
         x2 = x + 1;
         
@@ -145,7 +145,7 @@ public class CBTurret {
         
         //Location loc = new Location(plugin.mainWorld, x, y, z);
         //return turretBody.contains(loc.getBlock().getLocation());
-    }
+    /*}
     
     
     //returns the targeted Craftbukkit entity (NOT BUKKIT ENTITY!)
@@ -284,3 +284,4 @@ public class CBTurret {
         
     }
 }
+*/

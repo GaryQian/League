@@ -126,7 +126,7 @@ public class Champion {
         xp += num;
         totalXp += num;
         
-        if (xp >= xpNeeded) {
+        if (xp >= xpNeeded && level < 18) {
             addLevel();
         }
     }
