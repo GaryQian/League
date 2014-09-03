@@ -187,7 +187,8 @@ public class GeneralListeners implements Listener {
                 }
             }
             for (Player player : players) {
-                teams.getChampion(player).addXp(50 / players.size());
+                if (event.getEntity().getType() == EntityType.ZOMBIE) teams.getChampion(player).addXp(55.88 / players.size());
+                else if (event.getEntity().getType() == EntityType.SKELETON) teams.getChampion(player).addXp(29.44 / players.size());
             }
         }
     }

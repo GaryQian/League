@@ -84,6 +84,17 @@ purple-nexus:
     x: 
     y: 
     z: 
+        
+###########################################################################
+#ARENA SETTINGS
+top-middle:
+    x: 
+    y: 
+    z: 
+bot-middle:
+    x: 
+    y: 
+    z: 
 
 
 

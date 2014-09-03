@@ -49,6 +49,8 @@ public class ArenaHandler {
         
         disconnectedPlayers = new ArrayList<UUID>();
         
+        
+        
         setSpawns(plugin.getConfig().getDouble("blue-spawn.x"), plugin.getConfig().getDouble("blue-spawn.y"), plugin.getConfig().getDouble("blue-spawn.z"), plugin.getConfig().getDouble("purple-spawn.x"), plugin.getConfig().getDouble("purple-spawn.y"), plugin.getConfig().getDouble("purple-spawn.z"), plugin.getConfig().getDouble("blue-spawn.pitch"), plugin.getConfig().getDouble("blue-spawn.yaw"), plugin.getConfig().getDouble("purple-spawn.pitch"), plugin.getConfig().getDouble("purple-spawn.yaw"), world);
         //blueSpawn = new Location(plugin.mainWorld, config.getDouble("blue-spawn.x"), config.getDouble("blue-spawn.y"), config.getDouble("blue-spawn.z"));
         //purpleSpawn = new Location(plugin.mainWorld, config.getDouble("purple-spawn.x"), config.getDouble("purple-spawn.y"), config.getDouble("purple-spawn.z"));

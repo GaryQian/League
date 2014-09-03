@@ -10,8 +10,11 @@ import com.meloncraft.league.League;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Location;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 
 /**
  *
@@ -21,6 +24,7 @@ public class MinionPopulation {
     League plugin;
     //List<Minion> blueMinions, purpleMinions;
     public List<LivingEntity> blueMidMinions, purpleMidMinions, blueTopMinions, purpleTopMinions, blueBotMinions, purpleBotMinions, allMinions;
+    LivingEntity topMiddle, botMiddle, blueNexus, purpleNexus;
     
     public MinionPopulation(League plug) {
         plugin = plug;
@@ -33,6 +37,24 @@ public class MinionPopulation {
         purpleBotMinions = new ArrayList<LivingEntity>();
         
         allMinions = new ArrayList<LivingEntity>();
+        
+        
+        //targets for the minions to walk towards
+        topMiddle = (LivingEntity) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("top-middle.x"), plugin.getConfig().getDouble("top-middle.y") - 3, plugin.getConfig().getDouble("top-middle.z")), EntityType.ZOMBIE);
+        botMiddle = (LivingEntity) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("bot-middle.x"), plugin.getConfig().getDouble("bot-middle.y") - 3, plugin.getConfig().getDouble("bot-middle.z")), EntityType.ZOMBIE);
+        
+        blueNexus = (LivingEntity) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y") - 6, plugin.getConfig().getDouble("blue-nexus.z")), EntityType.ZOMBIE);
+        purpleNexus = (LivingEntity) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("purple-nexus.x"), plugin.getConfig().getDouble("purple-nexus.y") - 6, plugin.getConfig().getDouble("purple-nexus.z")), EntityType.ZOMBIE);
+        
+        topMiddle.setMaxHealth(9999999);
+        botMiddle.setMaxHealth(9999999);
+        blueNexus.setMaxHealth(9999999);
+        purpleNexus.setMaxHealth(9999999);
+        
+        topMiddle.setHealth(9999999);
+        botMiddle.setHealth(9999999);
+        blueNexus.setHealth(9999999);
+        purpleNexus.setHealth(9999999);
     }
     
     public int getPopulation() {
@@ -92,5 +114,83 @@ public class MinionPopulation {
             return "purple";
         }
             return null;
+    }
+    
+    public LivingEntity target(LivingEntity entity, String team, String lane) {
+        List<Entity> entities = new ArrayList<Entity>();
+        entities = entity.getNearbyEntities(8, 5, 8);
+        double dist, dist2;
+        dist = 10;
+        dist2 = 10;
+        LivingEntity targ = null;
+        Creature creature = (Creature) entity;
+        //check for minions
+        for (Entity ent : entities) {
+            dist2 = entity.getLocation().distance(ent.getLocation());
+            if (!plugin.teams.getTeam(ent).equals(team) && ent instanceof LivingEntity && dist2 < dist && !(ent instanceof Player)) {
+                dist = dist2;
+                targ = (LivingEntity) ent;
+            }
+
+        }
+        //check for players
+        if (targ == null) {
+            for (Entity ent : entities) {
+                dist2 = entity.getLocation().distance(ent.getLocation());
+                if (!plugin.teams.getTeam(ent).equals(team) && ent instanceof Player && dist2 < dist) {
+                    dist = dist2;
+                    targ = (LivingEntity) ent;
+                }
+            }
+        }
+        
+        if (targ == null) {
+            if (lane.equals("top")) {
+                if (creature.getLocation().distance(topMiddle.getLocation()) < 10) {
+                    if (team.equals("blue")) {
+                        creature.setTarget(purpleNexus);
+                    }
+                    else if (team.equals("purple")) {
+                        creature.setTarget(blueNexus);
+                    }
+                }
+                else {
+                    creature.setTarget(botMiddle);
+                }
+            }
+            if (lane.equals("bot")) {
+                if (creature.getLocation().distance(topMiddle.getLocation()) < 10) {
+                    if (team.equals("blue")) {
+                        creature.setTarget(purpleNexus);
+                    }
+                    else if (team.equals("purple")) {
+                        creature.setTarget(blueNexus);
+                    }
+                }
+                else {
+                    creature.setTarget(botMiddle);
+                }
+                
+            }
+            
+            
+            //mid lane pathfinding
+            if (lane.equals("mid")) {
+                if (team.equals("blue")) {
+                    creature.setTarget(purpleNexus);
+                    topMiddle.setHealth(9999999);
+                    botMiddle.setHealth(9999999);
+                    blueNexus.setHealth(9999999);
+                    purpleNexus.setHealth(9999999);
+                }
+                else if (team.equals("purple")) {
+                    creature.setTarget(blueNexus);
+                }
+            }
+        }
+        else {
+            creature.setTarget(targ);
+        }
+        return targ;
     }
 }
