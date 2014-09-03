@@ -25,28 +25,34 @@ public class MinionTargetTask extends BukkitRunnable{
     
     public void run() {
         for (LivingEntity entity : pop.blueMidMinions) {
+            if (entity != null)
             pop.target(entity, "blue", "mid");
         }
         
         for (LivingEntity entity : pop.blueTopMinions) {
+            if (entity != null)
             pop.target(entity, "blue", "top");
         }
         
         for (LivingEntity entity : pop.blueBotMinions) {
+            if (entity != null)
             pop.target(entity, "blue", "bot");
         }
         
         
         
         for (LivingEntity entity : pop.purpleMidMinions) {
+            if (entity != null)
             pop.target(entity, "purple", "mid");
         }
         
         for (LivingEntity entity : pop.purpleTopMinions) {
+            if (entity != null)
             pop.target(entity, "purple", "top");
         }
         
         for (LivingEntity entity : pop.purpleBotMinions) {
+            if (entity != null)
             pop.target(entity, "purple", "bot");
         }
     }

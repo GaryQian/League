@@ -7,6 +7,7 @@
 package com.meloncraft.league.Arena;
 
 import com.meloncraft.league.Arena.Minions.MinionSpawnWaveTask;
+import com.meloncraft.league.Arena.Minions.MinionTargetTask;
 import com.meloncraft.league.Champions.RecallTask;
 import com.meloncraft.league.DayTask;
 import com.meloncraft.league.League;
@@ -267,6 +268,9 @@ public class ArenaHandler {
                     //assign random champ
                 }
             }
+            
+            plugin.minionPopulation.spawnTargetMinions();
+            
             //start turret attacking
             plugin.getLogger().info("STARTING TURRET ATTACKS!");
             BukkitTask turretAttack = new TurretAttackTask(plugin, teams, this).runTaskTimer(plugin, 10 * 20, 40);
@@ -274,6 +278,8 @@ public class ArenaHandler {
             BukkitTask minonSpawner = new MinionSpawnWaveTask(plugin).runTaskTimer(plugin, 10 * 20, 30 * 20);
             //make teh clock tick
             BukkitTask clockTask = new ClockTask(plugin, this, teams).runTaskTimer(plugin, 0, 20);
+            
+            BukkitTask minionTargeter = new MinionTargetTask(plugin, plugin.minionPopulation).runTaskTimer(plugin, 10 * 20, 25);
             //spawnMinionWave();
         }
     }

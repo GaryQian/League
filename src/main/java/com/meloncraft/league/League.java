@@ -47,7 +47,7 @@ public final class League extends JavaPlugin {
         arena = new ArenaHandler(this, teams);
         new GeneralListeners(this, arena, teams);
         new JoinTeam(this, teams);
-        minionPopulation = new MinionPopulation(this);
+        minionPopulation = new MinionPopulation(this, teams);
         
         
         //keep time day

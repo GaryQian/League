@@ -47,7 +47,7 @@ public class Teams {
         int count = 0;
         plugin = plug;
         world = plugin.mainWorld;
-        population = new MinionPopulation(plugin);
+        population = new MinionPopulation(plugin, this);
         setLobby(plugin.getConfig().getDouble("blue-lobby.x"), plugin.getConfig().getDouble("blue-lobby.y"), plugin.getConfig().getDouble("blue-lobby.z"), plugin.getConfig().getDouble("purple-lobby.x"), plugin.getConfig().getDouble("purple-lobby.y"), plugin.getConfig().getDouble("purple-lobby.z"), plugin.getConfig().getDouble("blue-lobby.pitch"), plugin.getConfig().getDouble("blue-lobby.yaw"), plugin.getConfig().getDouble("purple-lobby.pitch"), plugin.getConfig().getDouble("purple-lobby.yaw"), world);
     }
     

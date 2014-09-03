@@ -72,8 +72,8 @@ public class MinionSpawnTask extends BukkitRunnable{
         //minionPopulation.purpleTopMinions.get(minionPopulation.purpleMidMinions.size() - 1).addPotionEffect(effect);
         
         minionPopulation.addPurpleBotMinion();
-        minionPopulation.purpleBotMinions.get(minionPopulation.purpleMidMinions.size()).setMaxHealth(maxHealth);
-        minionPopulation.purpleBotMinions.get(minionPopulation.purpleMidMinions.size()).setHealth(maxHealth);
+        minionPopulation.purpleBotMinions.get(minionPopulation.purpleMidMinions.size() - 1).setMaxHealth(maxHealth);
+        minionPopulation.purpleBotMinions.get(minionPopulation.purpleMidMinions.size() - 1).setHealth(maxHealth);
         //minionPopulation.purpleBotMinions.get(minionPopulation.purpleMidMinions.size() - 1).addPotionEffect(effect);
 
     }
