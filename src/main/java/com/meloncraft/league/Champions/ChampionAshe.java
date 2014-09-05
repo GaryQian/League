@@ -11,11 +11,12 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 
 /**
@@ -83,7 +84,8 @@ public class ChampionAshe implements ChampionInstance {
         Location loc = champion.player.getEyeLocation();
         loc.setY(loc.getY() + .2);
         loc.add(champion.player.getEyeLocation().getDirection().multiply(1.5));
-        Entity arrow = champion.player.getWorld().spawnArrow(loc, champion.player.getEyeLocation().getDirection(), 4f, 0);
+        Projectile arrow = champion.player.getWorld().spawnArrow(loc, champion.player.getEyeLocation().getDirection(), 5f, 0);
+        arrow.setShooter((ProjectileSource) champion.player);
         
         if (target != null && target instanceof LivingEntity) {
             target.damage(champion.getDamage());
@@ -95,10 +97,10 @@ public class ChampionAshe implements ChampionInstance {
                     BukkitTask slowdown = new SlowTask(plugin, plugin.teams.getChampion(play)).runTaskLater(plugin, 35);
                 }
             }
-            BukkitTask removeArrow = new RemoveProjectileTask(arrow).runTaskLater(plugin, 3);
+            BukkitTask removeArrow = new RemoveProjectileTask(arrow).runTaskLater(plugin, 1);
             return true;
         }
-        BukkitTask removeArrow = new RemoveProjectileTask(arrow).runTaskLater(plugin, 3);
+        BukkitTask removeArrow = new RemoveProjectileTask(arrow).runTaskLater(plugin, 1);
         
         return false;
     }

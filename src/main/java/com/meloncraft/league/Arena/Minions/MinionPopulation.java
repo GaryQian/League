@@ -25,12 +25,16 @@ public class MinionPopulation {
     League plugin;
     //List<Minion> blueMinions, purpleMinions;
     public List<LivingEntity> blueMidMinions, purpleMidMinions, blueTopMinions, purpleTopMinions, blueBotMinions, purpleBotMinions, allMinions;
-    LivingEntity topMiddle, botMiddle, blueNexus, purpleNexus;
+    public LivingEntity topMiddle, botMiddle, blueNexus, purpleNexus;
     Teams teams;
+    public List<Integer> ids;
     
     public MinionPopulation(League plug, Teams team) {
         plugin = plug;
         teams = team;
+        
+        ids = new ArrayList<Integer>();
+        
         blueMidMinions = new ArrayList<LivingEntity>();
         blueTopMinions = new ArrayList<LivingEntity>();
         blueBotMinions = new ArrayList<LivingEntity>();
@@ -46,10 +50,15 @@ public class MinionPopulation {
     public void spawnTargetMinions() {
         //targets for the minions to walk towards
         topMiddle = (LivingEntity) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("top-middle.x"), plugin.getConfig().getDouble("top-middle.y") - 4, plugin.getConfig().getDouble("top-middle.z")), EntityType.SLIME);
+        ids.add(topMiddle.getEntityId());
         botMiddle = (LivingEntity) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("bot-middle.x"), plugin.getConfig().getDouble("bot-middle.y") - 4, plugin.getConfig().getDouble("bot-middle.z")), EntityType.SLIME);
+        ids.add(botMiddle.getEntityId());
+        
         
         blueNexus = (LivingEntity) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("blue-nexus.x"), plugin.getConfig().getDouble("blue-nexus.y") - 7, plugin.getConfig().getDouble("blue-nexus.z")), EntityType.SLIME);
+        ids.add(blueNexus.getEntityId());
         purpleNexus = (LivingEntity) plugin.mainWorld.spawnEntity(new Location(plugin.mainWorld, plugin.getConfig().getDouble("purple-nexus.x"), plugin.getConfig().getDouble("purple-nexus.y") - 7, plugin.getConfig().getDouble("purple-nexus.z")), EntityType.SLIME);
+        ids.add(purpleNexus.getEntityId());
         
         
         
@@ -217,10 +226,11 @@ public class MinionPopulation {
                 if (team.equals("blue")) {
                     plugin.getLogger().info("test10");
                     creature.setTarget(purpleNexus);
-                    topMiddle.setHealth(9999999);
+                    /*topMiddle.setHealth(9999999);
                     botMiddle.setHealth(9999999);
                     blueNexus.setHealth(9999999);
                     purpleNexus.setHealth(9999999);
+                    */
                 }
                 else if (team.equals("purple")) {
                     plugin.getLogger().info("test11");

@@ -99,12 +99,17 @@ public class GeneralListeners implements Listener {
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         LivingEntity ent = (LivingEntity) event.getEntity();
-        if (event.getDamager().getType() == EntityType.ZOMBIE) {
-            ent.damage(12);
+        if (plugin.minionPopulation.ids.contains(ent.getEntityId())) {
+            event.setCancelled(true);
         }
-        
-        if (event.getDamager().getType() == EntityType.SKELETON) {
-            ent.damage(23);
+        else {
+            if (event.getDamager().getType() == EntityType.ZOMBIE) {
+                ent.damage(12);
+            }
+            
+            if (event.getDamager().getType() == EntityType.SKELETON) {
+                ent.damage(23);
+            }
         }
     }
     
