@@ -88,6 +88,20 @@ public class ChampionMasterYi implements ChampionInstance {
         
     }
     
+    public void setup() {
+        champion.setBaseHealth(550);
+        champion.setHealthScale(92);
+        champion.setBaseDamage(55);
+        champion.setDamageScale(3);
+        champion.setBaseMana(500);
+        champion.setManaScale(50);
+        champion.setSpeed(.21);
+        champion.setHealthRegen(5);
+        champion.setManaRegen(1);
+        champion.setBaseAttackSpeed(27);
+        champion.setRange(3);
+    }
+    
     public ItemStack[] getKit() {
         return kit;
     }

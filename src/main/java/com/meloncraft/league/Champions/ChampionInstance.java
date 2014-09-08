@@ -22,6 +22,8 @@ public interface ChampionInstance {
     public double eScale = 0;
     public double rScale = 0;
     
+    public void setup();
+    
     public ItemStack[] getKit();
     
     public boolean basicAttack(LivingEntity target);

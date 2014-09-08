@@ -93,7 +93,9 @@ public class Champion {
         
         setChampion(champion);
         
-        baseHealth = 550;
+        
+        championInstance.setup();
+        /*baseHealth = 550;
         healthScale = 92;
         baseDamage = 55;
         damageScale = 3;
@@ -103,7 +105,7 @@ public class Champion {
         healthRegen = 5;
         manaRegen = 1;
         baseAttackSpeed = 27;
-        range = 5;
+        range = 5;*/
         
         
         attackSpeed = baseAttackSpeed;
@@ -117,6 +119,60 @@ public class Champion {
         team = tea;
         giveKit();
     }
+    
+    
+    
+    
+    
+    
+    
+    //############################################################
+    //Champ setup
+    
+    public void setBaseHealth(double num) {
+        baseHealth = num;
+    }
+    
+    public void setHealthScale(double num) {
+        healthScale = num;
+    }
+    public void setBaseDamage(double num) {
+        baseDamage = num;
+    }
+    public void setDamageScale(double num) {
+        damageScale = num;
+    }
+    public void setBaseMana(double num) {
+        baseMana = num;
+    }
+    public void setManaScale(double num) {
+        manaScale = num;
+    }
+    public void setSpeed(double num) {
+        speed = num;
+    }
+    public void setHealthRegen(double num) {
+        healthRegen = num;
+    }
+    public void setManaRegen(double num) {
+        manaRegen = num;
+    }
+    public void setBaseAttackSpeed(double num) {
+        baseAttackSpeed = num;
+    }
+    public void setRange(double num) {
+        range = num;
+    }
+    
+    
+    
+    
+    //#####################################################################
+    
+    
+    
+    
+    
     
     public String getTeam() {
         return team;
@@ -136,6 +192,8 @@ public class Champion {
         points++;
         xp -= xpNeeded;
         xpNeeded += 100;
+        
+        player.setLevel(level);
     }
     
     public void setChampion(String champ) {

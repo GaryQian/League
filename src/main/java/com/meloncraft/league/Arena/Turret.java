@@ -13,13 +13,13 @@ import com.meloncraft.league.Teams;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import net.minecraft.server.v1_7_R4.EntityPlayer;
+//import net.minecraft.server.v1_7_R4.EntityPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
+//import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -43,7 +43,7 @@ public class Turret {
     public Entity target, lastHit;
     public LivingEntity targetMinion;
     public Class<Minion> minionClass;
-    public Class<EntityPlayer> playerClass;
+    //public Class<EntityPlayer> playerClass;
     public Collection<Entity> allEntities;
     public boolean championAttacked, isDead;
     public double x1, x2, z1, z2, x, y, z;
@@ -191,7 +191,7 @@ public class Turret {
             distance = entity.getLocation().distance(center);
             if (distance < range) {
                 //plugin.getLogger().info("TESTING5");
-                if (entity instanceof CraftPlayer) {
+                if (entity instanceof Player) {
                     champion = teams.getChampion((Player) entity);
                     if (!teams.getTeam((Player) entity).equals(team)) {
                         //plugin.getLogger().info("TESTING6");

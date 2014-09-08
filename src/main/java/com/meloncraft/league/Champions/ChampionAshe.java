@@ -80,6 +80,20 @@ public class ChampionAshe implements ChampionInstance {
         
     }
     
+    public void setup() {
+        champion.setBaseHealth(550);
+        champion.setHealthScale(92);
+        champion.setBaseDamage(55);
+        champion.setDamageScale(3);
+        champion.setBaseMana(500);
+        champion.setManaScale(50);
+        champion.setSpeed(.2);
+        champion.setHealthRegen(5);
+        champion.setManaRegen(1);
+        champion.setBaseAttackSpeed(27);
+        champion.setRange(6);
+    }
+    
     public boolean basicAttack(LivingEntity target) {
         Location loc = champion.player.getEyeLocation();
         loc.setY(loc.getY() + .2);
